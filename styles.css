@@ -128,3 +128,9 @@ footer a { color: var(--gold); }
 }
 
 footer { padding: 48px 0; padding-bottom: max(48px, calc(48px + env(safe-area-inset-bottom))); }
+
+.hero__next { display: inline-flex; align-items: center; gap: 10px; margin-top: 28px; padding: 10px 18px; border: 1px solid var(--gold); border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: var(--gold); background: rgba(255,205,0,0.06); }
+.hero__next .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px rgba(255,205,0,0.6); animation: nextpulse 1.8s ease-in-out infinite; }
+@keyframes nextpulse { 50% { transform: scale(1.4); opacity: 0.6; } }
+.imin { display: inline-block; margin-top: 8px; padding: 10px 18px; background: var(--warm); color: var(--bg); font-weight: 700; font-size: 0.875rem; border-radius: 6px; }
+.imin:hover { background: var(--gold); text-decoration: none; }
