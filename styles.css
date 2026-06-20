@@ -160,3 +160,11 @@ footer { padding: 48px 0; padding-bottom: max(48px, calc(48px + env(safe-area-in
 .figure img { display: block; width: 100%; }
 .figure figcaption { padding: 10px 14px; font-size: 0.8125rem; color: var(--ink-dim); }
 .figure figcaption .cr { display: block; margin-top: 2px; font-size: 0.6875rem; color: rgba(245,241,232,0.35); }
+
+/* === craft pass 2026-06-20: from a 25-site design study === */
+@view-transition { navigation: auto; }
+::view-transition-old(root),::view-transition-new(root){ animation-duration:.35s; }
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{ animation-duration:.001ms!important; animation-iteration-count:1!important; transition-duration:.001ms!important; scroll-behavior:auto!important; } }
+:focus-visible{ outline:3px solid var(--gold,#C8962B); outline-offset:3px; border-radius:6px; }
+[class*="card"]{ transition: transform .18s cubic-bezier(.16,1,.3,1), box-shadow .18s ease; }
+[class*="card"]:hover{ transform: translateY(-3px); }
