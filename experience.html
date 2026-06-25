@@ -69,12 +69,20 @@ h1 .r{color:var(--red)}h1 .g{color:var(--gold)}
 .acc summary::after{content:'+';font-size:1.3rem;color:var(--red)}.acc details[open] summary::after{content:'\2013'}
 .acc .a{padding:0 20px 18px;color:#33405e;font-size:.92rem}
 .hide{display:none}
+.predict{display:flex;align-items:center;justify-content:center;gap:clamp(16px,5vw,40px);background:#fff;border:1px solid rgba(10,23,51,.1);border-radius:16px;padding:30px 20px;box-shadow:0 3px 14px rgba(10,23,51,.06)}
+.pteam{text-align:center;font-weight:700}.pflag{font-size:2.4rem}
+.pscore{font-family:Anton;font-size:clamp(2.4rem,9vw,3.4rem);color:var(--navy);line-height:1}
+.pbtns{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.pbtns button{width:36px;height:36px;border-radius:50%;border:0;background:var(--navy);color:#fff;font-size:1.2rem;cursor:pointer}
+.pvs{font-family:Anton;color:var(--gray);font-size:1.4rem}
+.lockbtn{margin-top:18px;border:0;background:var(--red);color:#fff;font-weight:700;font-family:Inter;padding:13px 24px;border-radius:999px;cursor:pointer;font-size:.95rem;transition:transform .12s}
+.lockbtn:active{transform:scale(.96)}
 footer{background:var(--navy);color:#cdd6ef;text-align:center;padding:46px 22px}
 footer a{color:var(--gold)}
 </style></head>
 <body>
 <div id="bar"></div>
-<nav class="nav"><a href="#facts">📋 Facts</a><a href="#getting">🚆 Getting there</a><a href="#bag">🎒 What to bring</a><a href="#day">⏰ Matchday</a><a href="#soccer">⚽ Soccer 101</a><a href="#players">⭐ Players</a><a href="#atmos">📣 Atmosphere</a><a href="#watch">📺 Watch home</a></nav>
+<nav class="nav"><a href="#facts">📋 Facts</a><a href="#getting">🚆 Getting there</a><a href="#bag">🎒 Bring</a><a href="#day">⏰ Matchday</a><a href="#predict">🎯 Predict</a><a href="#soccer">⚽ Soccer 101</a><a href="#players">⭐ Players</a><a href="#opp">🇹🇷 Opponent</a><a href="#chants">📣 Chants</a><a href="#seat">🎟️ Seats</a><a href="#watch">📺 Watch home</a></nav>
 
 <header class="hero">
   <div class="stars"></div>
@@ -169,6 +177,52 @@ footer a{color:var(--gold)}
   </div>
 </div></section>
 
+<section id="predict"><div class="wrap">
+  <div class="eyebrow">Get in the game</div>
+  <h2>Call the score</h2>
+  <p class="sub">Lock your prediction before kickoff. It saves, so you can be smug (or humble) later.</p>
+  <div class="predict">
+    <div class="pteam"><div class="pflag">🇺🇸</div><div>USA</div><div class="pscore" id="us-score">2</div><div class="pbtns"><button onclick="pscore('us',1)">+</button><button onclick="pscore('us',-1)">−</button></div></div>
+    <div class="pvs">vs</div>
+    <div class="pteam"><div class="pflag">🇹🇷</div><div>Türkiye</div><div class="pscore" id="th-score">0</div><div class="pbtns"><button onclick="pscore('th',1)">+</button><button onclick="pscore('th',-1)">−</button></div></div>
+  </div>
+  <button class="lockbtn" id="lockpred">🔒 Lock my prediction</button>
+  <div id="pred-msg" style="margin-top:12px;font-weight:700;color:var(--red)"></div>
+</div></section>
+
+<section id="opp"><div class="wrap">
+  <div class="eyebrow">Know the other side</div>
+  <h2>Türkiye, the opponent</h2>
+  <p class="sub">Already eliminated after two losses, so expect them to play freely, with pride and nothing to lose. Watch these.</p>
+  <div class="grid2">
+    <div class="card"><h3>🇹🇷 Arda Güler</h3><p>21, Real Madrid, the jewel. A left foot that can bend a pass or a free kick into anywhere. Worth the price of admission even in a dead rubber.</p></div>
+    <div class="card"><h3>🇹🇷 Hakan Çalhanoğlu</h3><p>The captain and metronome. Deep-lying playmaker, set-piece weapon. If Türkiye threatens, it runs through him.</p></div>
+  </div>
+</div></section>
+
+<section id="chants"><div class="wrap">
+  <div class="eyebrow">Find your voice</div>
+  <h2>Sing along</h2>
+  <p class="sub">You don't have to know them all. Know one and you're in.</p>
+  <div class="acc" id="chant-acc"></div>
+</div></section>
+
+<section id="seat"><div class="wrap">
+  <div class="eyebrow">Where to be</div>
+  <h2>Seats &amp; snacks</h2>
+  <div class="grid2">
+    <div class="card"><h3>🎟️ Where to sit</h3><ul><li>Behind a goal = the loud, flag-waving supporter end. Best vibe.</li><li>Midfield, higher up = best view of the shape and the tactics.</li><li>Lower corners = closest to the action and the celebrations.</li></ul></div>
+    <div class="card"><h3>🌭 Snacks &amp; lines</h3><ul><li>Eat before kickoff or at halftime's first minute, not the last.</li><li>SoFi is cashless, so have your phone/card ready.</li><li>Hydrate early; the LA evening is warm but the concourse is a trek.</li></ul></div>
+  </div>
+</div></section>
+
+<section id="share"><div class="wrap" style="text-align:center">
+  <h2>Pass it on</h2>
+  <p class="sub" style="margin:8px auto 22px">Know someone who'd love their first match? Send them the guide.</p>
+  <button class="lockbtn" id="sharebtn">📋 Copy the link</button>
+  <div id="share-msg" style="margin-top:12px;font-weight:700;color:var(--red)"></div>
+</div></section>
+
 <footer><div class="wrap">
   <p>A fan guide for anyone, built from the real USA run. Up the USA. 🇺🇸<br><a href="index.html">← back to the personal site</a></p>
 </div></footer>
@@ -203,6 +257,16 @@ const ac=document.getElementById('acc');FAQ.forEach(([q,a])=>{const d=document.c
 /* players */
 const PLAYERS=[['🇺🇸 Christian Pulisic','The captain and talisman. Left wing, cuts inside, makes the moment. If the USA scores, he\'s often in it.'],['🇺🇸 Folarin Balogun','The striker in form, a brace against Paraguay. Watch his runs in behind the last defender.'],['🇺🇸 Weston McKennie','Midfield engine, box-to-box, arrives late for headers. The heartbeat.'],['🇺🇸 Alex Freeman','Young, fearless, scored vs Australia. A name for the future, watch him overlap.']];
 const pg=document.getElementById('players-grid');PLAYERS.forEach(([n,d])=>{const c=document.createElement('div');c.className='card';c.innerHTML=`<h3>${n}</h3><p>${d}</p>`;pg.appendChild(c);});
+/* predict the score */
+let pred={us:2,th:0};
+function pscore(t,d){pred[t]=Math.max(0,Math.min(9,pred[t]+d));document.getElementById(t+'-score').textContent=pred[t];}
+(function(){const s=JSON.parse(localStorage.getItem('wc-pred')||'null');if(s){pred=s;document.getElementById('us-score').textContent=pred.us;document.getElementById('th-score').textContent=pred.th;}})();
+document.getElementById('lockpred').onclick=()=>{localStorage.setItem('wc-pred',JSON.stringify(pred));document.getElementById('pred-msg').textContent=`Locked: USA ${pred.us} – ${pred.th} Türkiye. Come back and see how you did. 🇺🇸`;};
+/* chants */
+const CHANTS=[['I Believe That We Will Win','The one. Call and response that builds until the whole section bounces. Start quiet, end loud: "I believe... I believe that... I believe that we will win!"'],['Olé, Olé, Olé','Universal. When the team is rolling, just ride it: "Olé, olé olé olé."'],['U-S-A!','Three claps, three letters, foolproof. Start it and everyone follows.']];
+const cac=document.getElementById('chant-acc');CHANTS.forEach(([q,a])=>{const d=document.createElement('details');d.innerHTML=`<summary>${q}</summary><div class="a">${a}</div>`;cac.appendChild(d);});
+/* share */
+document.getElementById('sharebtn').onclick=async()=>{try{await navigator.clipboard.writeText('Your matchday, handled, a World Cup fan guide for anyone: '+location.href.split('#')[0]);document.getElementById('share-msg').textContent='Copied! Send it to someone who needs it. 🇺🇸';}catch(e){document.getElementById('share-msg').textContent=location.href;}};
 /* nav active + progress */
 addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;document.getElementById('bar').style.width=(scrollY/h*100)+'%';
   const secs=[...document.querySelectorAll('section')];let act='';secs.forEach(s=>{if(s.getBoundingClientRect().top<120&&!s.classList.contains('hide'))act=s.id;});
