@@ -77,6 +77,8 @@ h1 .r{color:var(--red)}h1 .g{color:var(--gold)}
 .pvs{font-family:Anton;color:var(--gray);font-size:1.4rem}
 .lockbtn{margin-top:18px;border:0;background:var(--red);color:#fff;font-weight:700;font-family:Inter;padding:13px 24px;border-radius:999px;cursor:pointer;font-size:.95rem;transition:transform .12s}
 .lockbtn:active{transform:scale(.96)}
+.cheerbar{height:30px;max-width:520px;margin:0 auto;background:#e7ebf3;border-radius:999px;overflow:hidden}
+.cheerbar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--navy),var(--red));transition:width .12s}
 footer{background:var(--navy);color:#cdd6ef;text-align:center;padding:46px 22px}
 footer a{color:var(--gold)}
 </style></head>
@@ -216,6 +218,41 @@ footer a{color:var(--gold)}
   </div>
 </div></section>
 
+<section id="knockout"><div class="wrap">
+  <div class="eyebrow">From here, it's win or go home</div>
+  <h2>The road to the Final</h2>
+  <p class="sub">48 teams, so the first knockout is the Round of 32. Win and you advance: R32 → R16 → Quarter → Semi → Final (July 19, MetLife). One loss ends it.</p>
+  <div class="acc" id="ko-acc"></div>
+</div></section>
+
+<section id="cheer"><div class="wrap" style="text-align:center">
+  <div class="eyebrow">Warm up your voice</div>
+  <h2>Tap to cheer 📣</h2>
+  <p class="sub" style="margin:8px auto 18px">Tap fast for 5 seconds. Fill the bar. (Yes, it's silly. So is yelling at a TV. Do both.)</p>
+  <div class="cheerbar"><span id="cheerfill"></span></div>
+  <button class="lockbtn" id="cheerbtn">Start cheering</button>
+  <div id="cheer-msg" style="margin-top:12px;font-weight:700;color:var(--red)"></div>
+</div></section>
+
+<section id="tickets"><div class="wrap">
+  <div class="eyebrow">Getting in</div>
+  <h2>Ticket questions</h2>
+  <div class="acc" id="tix-acc"></div>
+</div></section>
+
+<section id="more"><div class="wrap">
+  <div class="eyebrow">Go deeper</div>
+  <h2>The rest of the site</h2>
+  <p class="sub">Built for the people around the table. Dig in.</p>
+  <div class="facts">
+    <a class="fact" style="text-decoration:none" href="group-d.html"><div class="v">Group D</div><div class="k">how the USA won it →</div></a>
+    <a class="fact" style="text-decoration:none" href="roster.html"><div class="v">The 26</div><div class="k">the squad →</div></a>
+    <a class="fact" style="text-decoration:none" href="r32.html"><div class="v">R32</div><div class="k">the bracket →</div></a>
+    <a class="fact" style="text-decoration:none" href="kits.html"><div class="v">Kits</div><div class="k">what they wear →</div></a>
+    <a class="fact" style="text-decoration:none" href="index.html"><div class="v">🏠</div><div class="k">the personal site →</div></a>
+  </div>
+</div></section>
+
 <section id="share"><div class="wrap" style="text-align:center">
   <h2>Pass it on</h2>
   <p class="sub" style="margin:8px auto 22px">Know someone who'd love their first match? Send them the guide.</p>
@@ -267,6 +304,23 @@ const CHANTS=[['I Believe That We Will Win','The one. Call and response that bui
 const cac=document.getElementById('chant-acc');CHANTS.forEach(([q,a])=>{const d=document.createElement('details');d.innerHTML=`<summary>${q}</summary><div class="a">${a}</div>`;cac.appendChild(d);});
 /* share */
 document.getElementById('sharebtn').onclick=async()=>{try{await navigator.clipboard.writeText('Your matchday, handled, a World Cup fan guide for anyone: '+location.href.split('#')[0]);document.getElementById('share-msg').textContent='Copied! Send it to someone who needs it. 🇺🇸';}catch(e){document.getElementById('share-msg').textContent=location.href;}};
+/* knockout + tickets accordions */
+const KO=[['What happens in a tie?','In the knockouts there are no draws. Tied after 90? Two 15-minute extra-time halves. Still tied? Penalty shootout, five kicks each, sudden death after. Pure nerves.'],['How far can the USA go?','Group D winner, so they have a real path. Every round is a one-off: win and survive, lose and it\'s over. The Final is July 19 at MetLife in NY/NJ.'],['When are the USA knockout games?','The Round of 32 begins June 28. Exact USA opponent, date, and venue lock once the group stage fully finishes, check back, and never trust an unconfirmed bracket.']];
+const koa=document.getElementById('ko-acc');if(koa)KO.forEach(([q,a])=>{const d=document.createElement('details');d.innerHTML=`<summary>${q}</summary><div class="a">${a}</div>`;koa.appendChild(d);});
+const TIX=[['Where do tickets come from?','Officially through FIFA\'s ticketing site. Resale exists but verify it\'s a legit transfer, World Cup tickets are often mobile and name-linked.'],['How early should I arrive?','Gates usually open ~2 hours before. For a big match, be through security 60–90 min early, security and the walk in take time.'],['Can I bring kids?','Yes, and it\'s a magic first memory. Everyone needs a ticket, even little ones in most cases. Bring ear protection for toddlers, it gets loud.']];
+const txa=document.getElementById('tix-acc');if(txa)TIX.forEach(([q,a])=>{const d=document.createElement('details');d.innerHTML=`<summary>${q}</summary><div class="a">${a}</div>`;txa.appendChild(d);});
+/* cheer meter */
+(function(){const b=document.getElementById('cheerbtn'),fill=document.getElementById('cheerfill'),msg=document.getElementById('cheer-msg');if(!b)return;
+  let taps=0,active=false,best=+(localStorage.getItem('wc-cheer')||0);
+  function tap(){if(active)taps++;}
+  fill.parentElement.addEventListener('click',tap);fill.parentElement.addEventListener('touchstart',e=>{e.preventDefault();tap();},{passive:false});
+  b.onclick=()=>{if(active)return;taps=0;active=true;b.textContent='TAP THE BAR! 📣';msg.textContent='';
+    const t=setInterval(()=>{fill.style.width=Math.min(100,taps*2.2)+'%';},80);
+    setTimeout(()=>{active=false;clearInterval(t);const pct=Math.min(100,Math.round(taps*2.2));fill.style.width=pct+'%';
+      if(taps>best){best=taps;localStorage.setItem('wc-cheer',taps);}
+      msg.textContent=pct>=100?'DEAFENING. The 12th man. 🇺🇸':pct>=60?'Loud! The keeper heard that.':'Warm up those lungs, the real thing is louder.';
+      b.textContent='Cheer again';},5000);};
+})();
 /* nav active + progress */
 addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;document.getElementById('bar').style.width=(scrollY/h*100)+'%';
   const secs=[...document.querySelectorAll('section')];let act='';secs.forEach(s=>{if(s.getBoundingClientRect().top<120&&!s.classList.contains('hide'))act=s.id;});
