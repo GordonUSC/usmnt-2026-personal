@@ -527,6 +527,25 @@
       /* stadium arc silhouette */
       g2.fillStyle = "rgba(20,26,52," + (mood > 0 ? .8 : .95) + ")";
       g2.beginPath(); g2.ellipse(w / 2, h * .58, w * .62, h * .3, 0, Math.PI, 0); g2.fill();
+      /* the crowd in the bowl: team-color clusters that bob when the day is good */
+      for (var cr5 = 0; cr5 < 3; cr5++) {
+        for (var cd = 0; cd < 90; cd++) {
+          var ca = Math.PI + (cd / 90) * Math.PI;
+          var cxp = w / 2 + Math.cos(ca) * w * (.42 + cr5 * .065), cyp = h * .56 + Math.sin(ca) * h * (.2 + cr5 * .033);
+          if (cyp > h * .17 && cyp < h * .56) {
+            g2.fillStyle = ["#8a1c30", "#d8d8e0", "#26307a", "#c8a028"][((cd / 6) | 0) % 4];
+            g2.globalAlpha = mood < .1 ? .3 : .8;
+            g2.fillRect(cxp, cyp - (mood > .35 ? Math.sin(t * .25 + cd) * 1.5 : 0), 3, 3);
+            g2.globalAlpha = 1;
+          }
+        }
+      }
+      /* Frostbite dusk: a low sun and long raking light when the heart is up */
+      if (mood > .25) {
+        var sun5 = g2.createRadialGradient(w * .12, h * .5, 4, w * .12, h * .5, w * .2);
+        sun5.addColorStop(0, "rgba(255,220,150,.8)"); sun5.addColorStop(1, "rgba(255,220,150,0)");
+        g2.fillStyle = sun5; g2.fillRect(0, h * .3, w * .35, h * .4);
+      }
       /* floodlight glow */
       var glow = g2.createRadialGradient(w / 2, h * .34, 10, w / 2, h * .34, w * .5);
       glow.addColorStop(0, "rgba(255,240,200," + (mood > 0 ? .5 : .16) + ")");
@@ -536,9 +555,29 @@
       pg.addColorStop(0, moodColor([52, 150, 78], [20, 56, 34]));
       pg.addColorStop(1, moodColor([26, 100, 48], [10, 34, 20]));
       g2.fillStyle = pg; g2.fillRect(0, h * .62, w, h);
+      /* mow bands sliding past, and the broadcast sheen on the grass */
+      g2.fillStyle = "rgba(255,255,255,.05)";
+      for (var ms5 = 0; ms5 < 8; ms5 += 2) {
+        var mx5 = ((ms5 * w / 4 - scrollX * .8) % (w * 2) + w * 2) % (w * 2) - w * .5;
+        g2.fillRect(mx5, h * .62, w / 8, h * .38);
+      }
+      var sheen = g2.createRadialGradient(w / 2, h * .8, 10, w / 2, h * .8, w * .55);
+      sheen.addColorStop(0, "rgba(255,255,255,.09)"); sheen.addColorStop(1, "rgba(255,255,255,0)");
+      g2.fillStyle = sheen; g2.fillRect(0, h * .62, w, h * .38);
+      /* the long dusk shadow raking off your feet */
+      if (mood > .25) {
+        g2.fillStyle = "rgba(10,14,30,.28)";
+        g2.beginPath(); g2.ellipse(w * .32 + w * .1, h * .885, w * .12, h * .013, -.05, 0, 6.29); g2.fill();
+      }
       g2.strokeStyle = "rgba(240,240,232,.8)"; g2.lineWidth = 2;
       var cx2 = ((w * 1.2 - scrollX * .8) % (w * 1.6) + w * 1.6) % (w * 1.6) - w * .3;
       g2.beginPath(); g2.arc(cx2, h * .82, 60, 0, 6.29); g2.stroke();
+      /* the slim broadcast scorebug, team-color end caps, very 2019 */
+      g2.fillStyle = "rgba(8,10,20,.78)"; g2.fillRect(w * .72, h * .055, w * .21, h * .048);
+      g2.fillStyle = "#BF0A30"; g2.fillRect(w * .72, h * .055, w * .011, h * .048);
+      g2.fillStyle = "#FFCD00"; g2.fillRect(w * .919, h * .055, w * .011, h * .048);
+      g2.fillStyle = "#f0f0e8"; g2.font = "600 " + Math.round(h * .028) + "px Inter";
+      g2.fillText("USA 26 · LIVE · " + year(p), w * .74, h * .0885);
       if (mood < .1) { /* Frostbite night: phone flashlights twinkling through the dark bowl */
         g2.fillStyle = "rgba(255,255,240,.85)";
         for (var ph = 0; ph < 70; ph++) {
@@ -551,26 +590,35 @@
       return h * .88;
     }
 
-    if (era === 6) { /* THE ANIME ARC 2019-2026: Haikyuu when the heart is up, Blue Lock when it drops */
+    if (era === 6) { /* THE ANIME ARC 2019-2026: Haikyuu when the heart is up, Blue Lock when it drops, violet dusk between */
       var au = (mood + 1) / 2; /* 0 = Blue Lock, 1 = Haikyuu */
+      var L3 = function (c1, c2, u2) { return "rgb(" + Math.round(c1[0] + (c2[0] - c1[0]) * u2) + "," + Math.round(c1[1] + (c2[1] - c1[1]) * u2) + "," + Math.round(c1[2] + (c2[2] - c1[2]) * u2) + ")"; };
+      var tTop = au < .5 ? L3([8, 12, 48], [122, 82, 198], au * 2) : L3([122, 82, 198], [255, 236, 205], (au - .5) * 2);
+      var tBot = au < .5 ? L3([14, 24, 78], [185, 120, 195], au * 2) : L3([185, 120, 195], [255, 205, 140], (au - .5) * 2);
       var sky6 = g2.createLinearGradient(0, 0, 0, h);
-      sky6.addColorStop(0, "rgb(" + Math.round(8 + au * 240) + "," + Math.round(10 + au * 225) + "," + Math.round(30 + au * 185) + ")");
-      sky6.addColorStop(1, "rgb(" + Math.round(16 + au * 235) + "," + Math.round(24 + au * 190) + "," + Math.round(64 + au * 90) + ")");
+      sky6.addColorStop(0, tTop); sky6.addColorStop(1, tBot);
       g2.fillStyle = sky6; g2.fillRect(0, 0, w, h);
-      if (au < .5) { /* the dark facility: neon grid walls, LED light cones, no daylight anywhere */
-        g2.strokeStyle = "rgba(40,120,255," + (.28 * (1 - au * 2)).toFixed(3) + ")"; g2.lineWidth = 1;
+      /* the cel sun-or-moon disc: flat, outlined, unmistakably drawn */
+      g2.beginPath(); g2.arc(w * .78, h * (.4 - au * .18), h * .075, 0, 6.29);
+      g2.fillStyle = au < .5 ? "rgba(195,222,255,.92)" : "rgba(255,214,90,.95)"; g2.fill();
+      g2.lineWidth = 3; g2.strokeStyle = "rgba(255,255,255,.85)"; g2.stroke();
+      var gridA = Math.max(0, .32 * (.62 - au)); /* the facility fades in as the heart drops */
+      if (gridA > .015) {
+        g2.strokeStyle = "rgba(60,140,255," + gridA.toFixed(3) + ")"; g2.lineWidth = 1;
         for (var gx6 = (t * .4) % 48; gx6 < w; gx6 += 48) { g2.beginPath(); g2.moveTo(gx6, 0); g2.lineTo(gx6 - 30, h * .62); g2.stroke(); }
         for (var gy6 = 20; gy6 < h * .6; gy6 += 36) { g2.beginPath(); g2.moveTo(0, gy6); g2.lineTo(w, gy6); g2.stroke(); }
         [w * .25, w * .75].forEach(function (lx6) {
           var cone = g2.createLinearGradient(lx6, 0, lx6, h * .7);
-          cone.addColorStop(0, "rgba(120,200,255,.22)"); cone.addColorStop(1, "rgba(120,200,255,0)");
+          cone.addColorStop(0, "rgba(120,200,255," + (gridA * .9).toFixed(3) + ")"); cone.addColorStop(1, "rgba(120,200,255,0)");
           g2.fillStyle = cone;
           g2.beginPath(); g2.moveTo(lx6 - 8, 0); g2.lineTo(lx6 + 8, 0); g2.lineTo(lx6 + w * .13, h * .68); g2.lineTo(lx6 - w * .13, h * .68); g2.fill();
         });
-      } else { /* the warm gym: crowd as soft bokeh, window light, nothing in focus but the game */
+      }
+      var bokA = Math.max(0, au - .38) * .55; /* and the warm gym fades in as it lifts */
+      if (bokA > .02) {
         for (var bk = 0; bk < 46; bk++) {
           var bkr = 8 + (bk * 37) % 14;
-          g2.fillStyle = "rgba(" + (220 + bk % 30) + "," + (150 + (bk * 13) % 70) + "," + (80 + (bk * 7) % 60) + "," + ((.08 + (au - .5) * .4).toFixed(3)) + ")";
+          g2.fillStyle = "rgba(" + (220 + bk % 30) + "," + (150 + (bk * 13) % 70) + "," + (80 + (bk * 7) % 60) + "," + bokA.toFixed(3) + ")";
           g2.beginPath(); g2.arc(((bk * 149) % w) + Math.sin(t * .02 + bk) * 3, 20 + ((bk * 83) % (h * .38)), bkr, 0, 6.29); g2.fill();
         }
       }
