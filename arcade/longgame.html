@@ -163,6 +163,16 @@
   var animeBlue = new Image(); animeBlue.src = "../assets/art/anime-blue.jpg";
   var animeWarm = new Image(); animeWarm.src = "../assets/art/anime-warm.jpg";
   function imOk(img) { return img.complete && img.naturalWidth > 0; }
+  var cutoutFaded = null;
+  function fadedCutout() { /* the photo crops at the thigh; fade the edge so he emerges from light, not amputation */
+    if (cutoutFaded || !imOk(cutout)) return cutoutFaded;
+    var c = document.createElement("canvas"); c.width = cutout.naturalWidth; c.height = cutout.naturalHeight;
+    var g = c.getContext("2d"); g.drawImage(cutout, 0, 0);
+    var gr = g.createLinearGradient(0, c.height * .78, 0, c.height);
+    gr.addColorStop(0, "rgba(0,0,0,0)"); gr.addColorStop(1, "rgba(0,0,0,1)");
+    g.globalCompositeOperation = "destination-out"; g.fillStyle = gr; g.fillRect(0, c.height * .78, c.width, c.height * .22);
+    cutoutFaded = c; return cutoutFaded;
+  }
   function drawCover(g2, img, w, h) {
     var sc = Math.max(w / img.naturalWidth, h / img.naturalHeight);
     g2.drawImage(img, (w - img.naturalWidth * sc) / 2, (h - img.naturalHeight * sc) / 2, img.naturalWidth * sc, img.naturalHeight * sc);
@@ -250,6 +260,15 @@
   }
 
   /* ---------------- character per era ---------------- */
+  function gait(walkT) { /* one skeleton, every era: thighs swing, knees bend on recovery, arms counter-swing */
+    var c = Math.sin(walkT * .35), s2 = Math.sin(walkT * .35 + Math.PI);
+    return {
+      hipA: c * .55, hipB: s2 * .55,
+      kneeA: Math.max(0, -c) * .9 + .15, kneeB: Math.max(0, -s2) * .9 + .15,
+      armA: s2 * .5, armB: c * .5,
+      bob: Math.abs(Math.sin(walkT * .35)) * 1.2
+    };
+  }
   function drawChar(g2, x, y, era, s, walkT) {
     var bob = Math.sin(walkT * .35) * (mood > 0 ? 2.2 : 1) * s;
     var skin = "#7a4a22", navy = moodColor([40, 60, 160], [22, 28, 60]), white = "#f0f0e8";
@@ -267,21 +286,29 @@
       g2.fillStyle = skin; g2.fillRect(x - 3 * s, y - 4 * s, 2 * s, 4 * s); g2.fillRect(x + 1 * s, y - 4 * s, 2 * s, 4 * s);
       return;
     }
-    if (era === 3) { /* 16-bit hero from behind, digitized Madden 95 style: no outline, proper proportions */
-      var swing3 = Math.sin(walkT * .35) * 2 * s;
+    if (era === 3) { /* 16-bit hero from behind, digitized Madden 95 style: proper proportions, real stride */
+      var G = gait(walkT);
+      y -= G.bob * s * .6;
       g2.fillStyle = "rgba(0,0,0,.35)"; g2.fillRect(x - 4 * s, y - 1, 8 * s, 2);
+      var lA = 6 * s + G.hipA * 2.4 * s, lB = 6 * s + G.hipB * 2.4 * s;
       g2.fillStyle = skin;
-      g2.fillRect(x - 3 * s, y - 5 * s, 2 * s, 5 * s + swing3);
-      g2.fillRect(x + 1 * s, y - 5 * s, 2 * s, 5 * s - swing3);
-      g2.fillStyle = white; g2.fillRect(x - 3.5 * s, y - 8 * s, 7 * s, 3.2 * s); /* shorts */
-      g2.fillStyle = navy; g2.fillRect(x - 3.5 * s, y - 8 * s, Math.max(1, s * .5), 3.2 * s); g2.fillRect(x + 3 * s, y - 8 * s, Math.max(1, s * .5), 3.2 * s); /* the two-pixel stripe down the leg */
-      g2.fillStyle = navy; g2.fillRect(x - 4 * s, y - 15 * s, 8 * s, 7 * s); /* shirt, from behind */
-      g2.fillStyle = skin; g2.fillRect(x - 5.5 * s, y - 14 * s, 1.5 * s, 4 * s); g2.fillRect(x + 4 * s, y - 14 * s, 1.5 * s, 4 * s); /* arms */
+      g2.fillRect(x - 2.6 * s + G.hipB * s, y - lA, 2 * s, lA);
+      g2.fillRect(x + .6 * s + G.hipA * s, y - lB, 2 * s, lB);
+      g2.fillStyle = navy; /* socks */
+      g2.fillRect(x - 2.6 * s + G.hipB * s, y - 2.2 * s, 2 * s, 2.2 * s);
+      g2.fillRect(x + .6 * s + G.hipA * s, y - 2.2 * s, 2 * s, 2.2 * s);
+      g2.fillStyle = white; g2.fillRect(x - 3.2 * s, y - 9.5 * s, 6.4 * s, 3.6 * s); /* shorts */
+      g2.fillStyle = navy; g2.fillRect(x - 3.2 * s, y - 9.5 * s, Math.max(1, s * .5), 3.6 * s); g2.fillRect(x + 2.7 * s, y - 9.5 * s, Math.max(1, s * .5), 3.6 * s);
+      g2.fillStyle = navy; g2.fillRect(x - 3.6 * s, y - 17 * s, 7.2 * s, 7.5 * s); /* shirt from behind */
+      g2.fillStyle = skin; /* arms pumping */
+      g2.fillRect(x - 5 * s, y - 16 * s + G.armA * 2 * s, 1.5 * s, 4.5 * s);
+      g2.fillRect(x + 3.5 * s, y - 16 * s + G.armB * 2 * s, 1.5 * s, 4.5 * s);
       g2.fillStyle = white; /* the big 4 on the back */
-      g2.fillRect(x + .5 * s, y - 14 * s, s, 4 * s);
-      g2.fillRect(x - 1.5 * s, y - 14 * s, s, 2 * s);
-      g2.fillRect(x - 1.5 * s, y - 12 * s, 3.5 * s, s);
-      g2.fillStyle = skin; g2.fillRect(x - 1.5 * s, y - 18 * s, 3 * s, 3 * s); /* head */
+      g2.fillRect(x + .6 * s, y - 16 * s, s, 4.5 * s);
+      g2.fillRect(x - 1.6 * s, y - 16 * s, s, 2.5 * s);
+      g2.fillRect(x - 1.6 * s, y - 13.5 * s, 3.2 * s, s);
+      g2.fillStyle = skin; g2.fillRect(x - 1.4 * s, y - 20.4 * s, 2.8 * s, 3.4 * s); /* head, smaller */
+      g2.fillStyle = "#181820"; g2.fillRect(x - 1.6 * s, y - 21 * s, 3.2 * s, 1.4 * s); /* hair */
       return;
     }
     if (era <= 3) { /* 8-bit sprite */
@@ -295,100 +322,144 @@
       g2.fillRect(x + 1 * s, y - 3 * s, 2 * s, 3 * s - leg);
       return;
     }
-    if (era === 4) { /* polygon: hard-faceted low-poly figure, flat shades, vertex snap and blob shadow */
-      x = Math.round(x) + ((walkT % 47) === 0 ? 1 : 0); y = Math.round(y); /* PS1 vertex jitter */
+    if (era === 4) { /* polygon: the FIFA 97-99 build. Popeye forearms, cylinder limbs, flat shade, vertex snap */
+      var G4 = gait(walkT);
+      x = Math.round(x) + ((walkT % 47) === 0 ? 1 : 0); y = Math.round(y - G4.bob * s * .5);
       var g4 = g2;
       g4.fillStyle = "rgba(0,0,0,.5)";
       g4.beginPath(); g4.ellipse(x, y + 1.2 * s, 4.5 * s, 1.2 * s, 0, 0, 6.29); g4.fill(); /* hard blob shadow */
-      g4.save(); g4.translate(x, y);
-      var sw = Math.sin(walkT * .35) * 4 * s;
-      /* legs as hard quads */
-      g4.fillStyle = skin;
-      g4.beginPath(); g4.moveTo(-2.4 * s, -6 * s); g4.lineTo(-3.4 * s + sw * .4, 0); g4.lineTo(-1 * s + sw * .4, 0); g4.lineTo(-.4 * s, -6 * s); g4.fill();
-      g4.beginPath(); g4.moveTo(2.4 * s, -6 * s); g4.lineTo(3.4 * s - sw * .4, 0); g4.lineTo(1 * s - sw * .4, 0); g4.lineTo(.4 * s, -6 * s); g4.fill();
-      /* torso: two flat facets, light and dark */
-      g4.fillStyle = moodColor([58, 80, 190], [24, 30, 66]);
-      g4.beginPath(); g4.moveTo(0, -16 * s); g4.lineTo(-4 * s, -12 * s); g4.lineTo(-3 * s, -5 * s); g4.lineTo(0, -6 * s); g4.fill();
-      g4.fillStyle = moodColor([36, 52, 140], [16, 20, 48]);
-      g4.beginPath(); g4.moveTo(0, -16 * s); g4.lineTo(4 * s, -12 * s); g4.lineTo(3 * s, -5 * s); g4.lineTo(0, -6 * s); g4.fill();
-      /* the 4, flat */
-      g4.fillStyle = "#f0f0e8"; g4.font = "bold " + (4 * s) + "px Inter"; g4.textAlign = "center"; g4.fillText("4", 0, -9 * s);
-      /* head: octagon-ish */
-      g4.fillStyle = skin;
-      g4.beginPath(); g4.moveTo(-2 * s, -19 * s); g4.lineTo(2 * s, -19 * s); g4.lineTo(3 * s, -17 * s); g4.lineTo(2 * s, -15 * s); g4.lineTo(-2 * s, -15 * s); g4.lineTo(-3 * s, -17 * s); g4.fill();
-      g4.restore();
+      g4.save(); g4.translate(x, y); g4.lineCap = "butt";
+      var hipY = -7.5 * s;
+      var leg4 = function (hipA, knee, lit) {
+        var kx = Math.sin(hipA) * 4 * s, ky = hipY + Math.cos(hipA) * 4 * s;
+        var fx2 = kx + Math.sin(hipA - knee) * 3.6 * s, fy2 = Math.min(ky + Math.cos(hipA - knee) * 3.6 * s, 0);
+        g4.strokeStyle = lit ? "#8a5a2e" : "#5c3a1c"; g4.lineWidth = 2.2 * s;
+        g4.beginPath(); g4.moveTo(0, hipY); g4.lineTo(kx, ky); g4.stroke();
+        g4.beginPath(); g4.moveTo(kx, ky); g4.lineTo(fx2, fy2); g4.stroke();
+        g4.fillStyle = "#101014"; g4.fillRect(fx2 - 1 * s, fy2 - .6 * s, 2.8 * s, 1.2 * s); /* boot */
+      };
+      var arm4 = function (swing, lit) {
+        var sy4 = -15 * s;
+        var ex4 = Math.sin(swing) * 3.2 * s, ey4 = sy4 + Math.cos(swing) * 3.2 * s;
+        g4.strokeStyle = lit ? moodColor([64, 88, 200], [28, 36, 78]) : moodColor([40, 56, 150], [18, 24, 56]);
+        g4.lineWidth = 1.8 * s;
+        g4.beginPath(); g4.moveTo(0, sy4); g4.lineTo(ex4, ey4); g4.stroke();
+        var fx4 = ex4 + Math.sin(swing + .9) * 2.6 * s, fy4 = ey4 - Math.cos(swing + .9) * 1.2 * s;
+        g4.strokeStyle = lit ? "#8a5a2e" : "#5c3a1c"; g4.lineWidth = 2.4 * s; /* the big forearm */
+        g4.beginPath(); g4.moveTo(ex4, ey4); g4.lineTo(fx4, fy4); g4.stroke();
+        g4.fillStyle = lit ? "#8a5a2e" : "#5c3a1c"; g4.fillRect(fx4 - 1.1 * s, fy4 - 1.1 * s, 2.2 * s, 2.2 * s); /* clenched fist */
+      };
+      leg4(G4.hipB, G4.kneeB, false);
+      arm4(G4.armB - .3, false);
+      /* torso: broad chest, two flat shades, elbows-out build */
+      g4.fillStyle = moodColor([54, 74, 180], [24, 30, 66]);
+      g4.beginPath(); g4.moveTo(-4.4 * s, -16.5 * s); g4.lineTo(0, -17 * s); g4.lineTo(0, -7 * s); g4.lineTo(-2.6 * s, -7 * s); g4.closePath(); g4.fill();
+      g4.fillStyle = moodColor([34, 48, 130], [15, 19, 46]);
+      g4.beginPath(); g4.moveTo(4.4 * s, -16.5 * s); g4.lineTo(0, -17 * s); g4.lineTo(0, -7 * s); g4.lineTo(2.6 * s, -7 * s); g4.closePath(); g4.fill();
+      g4.fillStyle = "#e8e8e0"; g4.fillRect(-2.8 * s, -8 * s, 5.6 * s, 2.6 * s); /* shorts */
+      g4.fillStyle = "#f0f0e8"; g4.font = "bold " + (3.6 * s) + "px Inter"; g4.textAlign = "center"; g4.fillText("4", 0, -10.5 * s);
+      /* head box + hair silhouette (identity by hair, as was the law) */
+      g4.fillStyle = "#7a4a22"; g4.fillRect(-1.8 * s, -21.5 * s, 3.6 * s, 4 * s);
+      g4.fillStyle = "#14141c"; g4.fillRect(-2 * s, -22 * s, 4 * s, 1.6 * s);
+      leg4(G4.hipA, G4.kneeA, true);
+      arm4(G4.armA - .3, true);
+      g4.restore(); g4.textAlign = "left";
       return;
     }
-    if (era === 6) { /* the anime years: bold line, cel shade, an aura that knows your heart */
+    if (era === 6) { /* the anime years: tall lean cel hero, bold outline, an aura that knows your heart */
+      var GA = gait(walkT);
       var g6 = g2;
-      g6.save(); g6.translate(x, y);
-      if (mood < -.15) { /* the ego aura, boiling blue flame */
+      g6.save(); g6.translate(x, y - GA.bob * s * .5);
+      if (mood < -.15) { /* the ego aura, boiling blue flame, unmissable now */
         for (var fl = 0; fl < 2; fl++) {
-          g6.fillStyle = fl ? "rgba(60,130,255,.34)" : "rgba(90,180,255,.16)";
+          g6.fillStyle = fl ? "rgba(60,130,255,.5)" : "rgba(90,180,255,.28)";
           g6.beginPath();
           for (var av = 0; av <= 10; av++) {
             var aa = Math.PI + (av / 10) * Math.PI;
-            var ar = (fl ? 9 : 13) * s + Math.sin(t * .35 + av * 2.1 + fl) * 2.4 * s;
-            var axp = Math.cos(aa) * ar * .8, ayp = -10 * s + Math.sin(aa) * ar * 1.5;
+            var ar = (fl ? 11 : 16) * s + Math.sin(t * .35 + av * 2.1 + fl) * 3 * s;
+            var axp = Math.cos(aa) * ar * .85, ayp = -12 * s + Math.sin(aa) * ar * 1.6;
             if (av) g6.lineTo(axp, ayp); else g6.moveTo(axp, ayp);
           }
           g6.closePath(); g6.fill();
         }
       } else if (mood > .3) { /* warm apex glow */
-        var glow6 = g6.createRadialGradient(0, -10 * s, 2, 0, -10 * s, 16 * s);
-        glow6.addColorStop(0, "rgba(255,220,150,.28)"); glow6.addColorStop(1, "rgba(255,220,150,0)");
-        g6.fillStyle = glow6; g6.fillRect(-16 * s, -26 * s, 32 * s, 32 * s);
+        var glow6 = g6.createRadialGradient(0, -12 * s, 2, 0, -12 * s, 18 * s);
+        glow6.addColorStop(0, "rgba(255,220,150,.3)"); glow6.addColorStop(1, "rgba(255,220,150,0)");
+        g6.fillStyle = glow6; g6.fillRect(-18 * s, -30 * s, 36 * s, 36 * s);
       }
-      g6.rotate(Math.sin(walkT * .35) * .05);
-      var swing6 = Math.sin(walkT * .35) * 4 * s;
+      g6.rotate(Math.sin(walkT * .35) * .04 + .06);
       g6.lineCap = "round";
-      g6.strokeStyle = "#101020"; g6.lineWidth = 2.8 * s;
-      g6.beginPath(); g6.moveTo(0, -6 * s); g6.lineTo(-2 * s + swing6 * .4, 0); g6.stroke();
-      g6.beginPath(); g6.moveTo(0, -6 * s); g6.lineTo(2 * s - swing6 * .4, 0); g6.stroke();
-      g6.strokeStyle = skin; g6.lineWidth = 2 * s;
-      g6.beginPath(); g6.moveTo(0, -6.4 * s); g6.lineTo(-2 * s + swing6 * .4, -.6 * s); g6.stroke();
-      g6.beginPath(); g6.moveTo(0, -6.4 * s); g6.lineTo(2 * s - swing6 * .4, -.6 * s); g6.stroke();
-      g6.fillStyle = "#1c2a6e"; g6.strokeStyle = "#101020"; g6.lineWidth = Math.max(1.5, s * .45);
-      g6.beginPath(); g6.ellipse(0, -10 * s, 3.6 * s, 6 * s, 0, 0, 6.29); g6.fill(); g6.stroke();
-      g6.fillStyle = "rgba(0,0,20,.35)"; g6.beginPath(); g6.ellipse(1.4 * s, -9 * s, 2 * s, 5 * s, 0, -1.4, 1.4); g6.fill();
-      g6.fillStyle = "rgba(255,255,255,.5)"; g6.fillRect(-2.4 * s, -14.4 * s, 1.2 * s, 3 * s);
-      g6.fillStyle = "#fff"; g6.font = "bold " + (4.4 * s) + "px Inter"; g6.textAlign = "center"; g6.fillText("4", 0, -8 * s);
-      g6.fillStyle = skin; g6.beginPath(); g6.arc(0, -18.5 * s, 2.8 * s, 0, 6.29); g6.fill(); g6.stroke();
+      var lim = function (x1, y1, a1, l1, a2, l2, wd, col) {
+        var kx = x1 + Math.sin(a1) * l1, ky = y1 + Math.cos(a1) * l1;
+        var ex2 = kx + Math.sin(a2) * l2, ey2 = ky + Math.cos(a2) * l2;
+        g6.strokeStyle = "#101020"; g6.lineWidth = wd + Math.max(1.2, s * .6);
+        g6.beginPath(); g6.moveTo(x1, y1); g6.lineTo(kx, ky); g6.lineTo(ex2, ey2); g6.stroke();
+        g6.strokeStyle = col; g6.lineWidth = wd;
+        g6.beginPath(); g6.moveTo(x1, y1); g6.lineTo(kx, ky); g6.lineTo(ex2, ey2); g6.stroke();
+      };
+      var hip6 = -8.5 * s;
+      lim(0, hip6, GA.hipB, 4.6 * s, GA.hipB - GA.kneeB, 4.2 * s, 1.9 * s, skin);
+      lim(.4 * s, -16 * s, GA.armB + .25, 3.4 * s, GA.armB + 1.1, 3 * s, 1.5 * s, skin);
+      g6.strokeStyle = "#101020"; g6.lineWidth = Math.max(1.5, s * .5);
+      g6.fillStyle = "#1c2a6e";
+      g6.beginPath(); g6.ellipse(0, -12.5 * s, 3.2 * s, 6.4 * s, 0, 0, 6.29); g6.fill(); g6.stroke();
+      g6.fillStyle = "rgba(0,0,20,.35)"; g6.beginPath(); g6.ellipse(1.3 * s, -11.5 * s, 1.8 * s, 5.4 * s, 0, -1.4, 1.4); g6.fill();
+      g6.fillStyle = "rgba(255,255,255,.5)"; g6.fillRect(-2.2 * s, -17.4 * s, 1.1 * s, 3.2 * s);
+      g6.fillStyle = "#fff"; g6.font = "bold " + (4.2 * s) + "px Inter"; g6.textAlign = "center"; g6.fillText("4", 0, -10.5 * s);
+      lim(0, hip6, GA.hipA, 4.6 * s, GA.hipA - GA.kneeA, 4.2 * s, 1.9 * s, skin);
+      lim(-.4 * s, -16 * s, GA.armA + .25, 3.4 * s, GA.armA + 1.1, 3 * s, 1.5 * s, skin);
+      g6.fillStyle = skin; g6.beginPath(); g6.arc(0, -21.5 * s, 2.7 * s, 0, 6.29); g6.fill(); g6.stroke();
       g6.fillStyle = "#14141e";
-      g6.beginPath(); g6.moveTo(-3 * s, -19 * s); g6.lineTo(-1.6 * s, -22.4 * s); g6.lineTo(-.4 * s, -20.4 * s); g6.lineTo(.8 * s, -22.8 * s); g6.lineTo(2 * s, -20 * s); g6.lineTo(3 * s, -21.4 * s); g6.lineTo(3 * s, -18.6 * s); g6.closePath(); g6.fill();
+      g6.beginPath(); g6.moveTo(-3.2 * s, -22 * s); g6.lineTo(-2 * s, -26 * s); g6.lineTo(-.7 * s, -23.4 * s); g6.lineTo(.6 * s, -26.6 * s); g6.lineTo(1.8 * s, -23.2 * s); g6.lineTo(3.1 * s, -25 * s); g6.lineTo(3.2 * s, -21.6 * s); g6.closePath(); g6.fill();
+      if (mood < -.15) { g6.strokeStyle = "rgba(140,200,255,.85)"; g6.lineWidth = Math.max(1, s * .5); g6.beginPath(); g6.arc(0, -21.5 * s, 2.9 * s, 3.4, 5.2); g6.stroke(); }
       g6.restore(); g6.textAlign = "left";
       return;
     }
-    /* HD/real: rounded figure with shading + ground shadow */
+    /* HD/real: athletic broadcast-era figure. Kit, socks, boots, real stride, rim light at night */
+    var GH = gait(walkT);
     var g3 = g2;
     g3.save();
-    g3.translate(x, y);
-    g3.fillStyle = "rgba(0,0,0,.28)";
-    g3.beginPath(); g3.ellipse(0, 1.5 * s, 5.5 * s, 1.6 * s, 0, 0, 6.29); g3.fill();
-    var lean = Math.sin(walkT * .35) * .06;
-    g3.rotate(lean * .6);
-    /* legs */
-    var swing = Math.sin(walkT * .35) * 5 * s;
-    g3.strokeStyle = skin; g3.lineWidth = 2.6 * s; g3.lineCap = "round";
-    g3.beginPath(); g3.moveTo(0, -6 * s); g3.lineTo(-2 * s + swing * .4, 0); g3.stroke();
-    g3.beginPath(); g3.moveTo(0, -6 * s); g3.lineTo(2 * s - swing * .4, 0); g3.stroke();
-    /* torso */
-    var grad = g3.createLinearGradient(0, -16 * s, 0, -4 * s);
+    g3.translate(x, y - GH.bob * s * .5);
+    g3.fillStyle = "rgba(0,0,0,.32)";
+    g3.beginPath(); g3.ellipse(0, 1.5 * s, 5 * s, 1.4 * s, 0, 0, 6.29); g3.fill();
+    g3.rotate(Math.sin(walkT * .35) * .04 + .05);
+    g3.lineCap = "round";
+    var limb = function (x1, y1, a1, l1, a2, l2, wd, c1, c2, cBoot) {
+      var kx = x1 + Math.sin(a1) * l1, ky = y1 + Math.cos(a1) * l1;
+      var ex2 = kx + Math.sin(a2) * l2, ey2 = ky + Math.cos(a2) * l2;
+      g3.strokeStyle = c1; g3.lineWidth = wd;
+      g3.beginPath(); g3.moveTo(x1, y1); g3.lineTo(kx, ky); g3.stroke();
+      g3.strokeStyle = c2; g3.lineWidth = wd * .92;
+      g3.beginPath(); g3.moveTo(kx, ky); g3.lineTo(ex2, ey2); g3.stroke();
+      if (cBoot) { g3.fillStyle = cBoot; g3.beginPath(); g3.ellipse(ex2 + .8 * s, ey2, 1.4 * s, .7 * s, 0, 0, 6.29); g3.fill(); }
+    };
+    var hipH = -8 * s, shH = -15.5 * s;
+    var sockN = moodColor([30, 42, 120], [16, 20, 52]);
+    limb(0, hipH, GH.hipB, 4.4 * s, GH.hipB - GH.kneeB, 4 * s, 2 * s, "#6b4423", sockN, "#0c0c12");
+    limb(.3 * s, shH, GH.armB + .3, 3 * s, GH.armB + 1.2, 2.8 * s, 1.4 * s, moodColor([48, 66, 170], [22, 28, 62]), "#6b4423", null);
+    g3.fillStyle = "#e8e8e2"; /* shorts */
+    g3.beginPath(); g3.moveTo(-2.6 * s, hipH - 1.6 * s); g3.lineTo(2.6 * s, hipH - 1.6 * s); g3.lineTo(2.2 * s, hipH + 2 * s); g3.lineTo(-2.2 * s, hipH + 2 * s); g3.closePath(); g3.fill();
+    var grad = g3.createLinearGradient(0, shH - 3 * s, 0, hipH);
     grad.addColorStop(0, moodColor([60, 84, 200], [26, 32, 70]));
     grad.addColorStop(1, moodColor([28, 40, 120], [14, 18, 42]));
     g3.fillStyle = grad;
-    g3.beginPath(); g3.ellipse(0, -10 * s, 3.4 * s, 6 * s, 0, 0, 6.29); g3.fill();
-    /* the 4 */
-    if (era >= 4) { g3.fillStyle = "#f0f0e8"; g3.font = (4 * s) + "px Inter"; g3.textAlign = "center"; g3.fillText("4", 0, -8.4 * s); }
-    /* head */
-    g3.fillStyle = skin; g3.beginPath(); g3.arc(0, -18 * s, 2.6 * s, 0, 6.29); g3.fill();
-    /* smile / frown */
-    g3.strokeStyle = "#f0f0e8"; g3.lineWidth = .6 * s;
+    g3.beginPath(); g3.ellipse(0, -12 * s, 3.1 * s, 5.4 * s, 0, 0, 6.29); g3.fill();
+    g3.fillStyle = "#f0f0e8"; g3.font = "600 " + (3.4 * s) + "px Inter"; g3.textAlign = "center"; g3.fillText("4", 0, -10.4 * s);
+    limb(0, hipH, GH.hipA, 4.4 * s, GH.hipA - GH.kneeA, 4 * s, 2 * s, "#7a4a22", sockN, "#0c0c12");
+    limb(-.3 * s, shH, GH.armA + .3, 3 * s, GH.armA + 1.2, 2.8 * s, 1.4 * s, moodColor([64, 90, 210], [28, 36, 78]), "#7a4a22", null);
+    g3.fillStyle = "#7a4a22"; g3.beginPath(); g3.arc(0, -18.8 * s, 2.3 * s, 0, 6.29); g3.fill();
+    g3.fillStyle = "#181820"; g3.beginPath(); g3.arc(0, -19.4 * s, 2.3 * s, Math.PI, 0); g3.fill();
+    if (mood < 0 && era === 5) { /* floodlight rim so the night never swallows you again */
+      g3.strokeStyle = "rgba(200,225,255,.75)"; g3.lineWidth = Math.max(1, s * .45);
+      g3.beginPath(); g3.arc(0, -18.8 * s, 2.5 * s, 3.3, 5.1); g3.stroke();
+      g3.beginPath(); g3.moveTo(-3 * s, -15.5 * s); g3.lineTo(-3.3 * s, -9 * s); g3.stroke();
+    }
+    g3.strokeStyle = "#f0f0e8"; g3.lineWidth = .5 * s;
     g3.beginPath();
-    if (mood >= 0) g3.arc(0, -17.6 * s, 1.2 * s, .3, 2.8);
-    else g3.arc(0, -16.4 * s, 1.2 * s, 3.6, 5.8);
+    if (mood >= 0) g3.arc(0, -18.4 * s, 1 * s, .3, 2.8);
+    else g3.arc(0, -17.4 * s, 1 * s, 3.6, 5.8);
     g3.stroke();
-    g3.restore();
+    g3.restore(); g3.textAlign = "left";
   }
 
   /* ---------------- scenes per era ---------------- */
@@ -414,22 +485,29 @@
     g2.fillStyle = moodColor(skyHappy[idx], skySad[idx]);
     g2.fillRect(0, 0, w, h);
 
-    if (era === 1) { /* ATARI: blocky hills + goal blocks */
-      g2.fillStyle = moodColor([200, 120, 60], [50, 36, 40]);
-      for (var i = 0; i < 6; i++) { var hx = ((i * 90 - scrollX * .4) % (w + 90) + w + 90) % (w + 90) - 45; g2.fillRect(hx, groundY - 26, 50, 26); }
-      g2.fillStyle = moodColor([60, 140, 60], [22, 40, 26]); g2.fillRect(0, groundY, w, h - groundY);
-      g2.fillStyle = "#f0f0e8"; var gx = ((900 - scrollX * .9) % (w + 200) + w + 200) % (w + 200) - 100;
-      g2.fillRect(gx, groundY - 22, 3, 22); g2.fillRect(gx + 30, groundY - 22, 3, 22); g2.fillRect(gx, groundY - 24, 33, 3);
+    if (era === 1) { /* ATARI 2600: the field IS the screen, solid bands, one blocky sun */
+      g2.fillStyle = moodColor([88, 132, 220], [24, 30, 60]); g2.fillRect(0, 0, w, h * .5);
+      g2.fillStyle = "#f0f0e8"; g2.fillRect(w * .78, h * .1, 12, 12); /* the sun, a square, obviously */
+      g2.fillStyle = moodColor([150, 100, 60], [60, 40, 30]);
+      for (var hb = 0; hb < 4; hb++) { var hx1 = ((hb * 190 - scrollX * .3) % (w + 80) + w + 80) % (w + 80) - 40; g2.fillRect(hx1, h * .5 - 9, 46, 9); }
+      g2.fillStyle = moodColor([60, 140, 60], [22, 40, 26]); g2.fillRect(0, h * .5, w, h - h * .5);
+      g2.fillStyle = moodColor([50, 122, 52], [18, 34, 22]);
+      var fgap = (h * .5) / 6;
+      for (var fb = 0; fb < 7; fb++) g2.fillRect(0, h * .5 + fb * fgap + ((scrollX * .5) % fgap), w, 2); /* field bands scroll underfoot */
       return groundY;
     }
 
     if (era === 2) { /* 8-BIT: clouds, tiled grass, small stand */
       g2.fillStyle = "#f8f8f8";
       for (var c = 0; c < 4; c++) { var cx = ((c * 160 - scrollX * .25) % (w + 160) + w + 160) % (w + 160) - 60; g2.fillRect(cx, 14 + c * 8, 26, 8); g2.fillRect(cx + 6, 8 + c * 8, 16, 8); }
-      g2.fillStyle = moodColor([170, 60, 60], [50, 26, 30]);
-      var sx = ((300 - scrollX * .5) % (w + 300) + w + 300) % (w + 300) - 150;
-      g2.fillRect(sx, groundY - 40, 130, 40);
-      g2.fillStyle = "#f8d848"; for (var wn = 0; wn < 5; wn++) g2.fillRect(sx + 8 + wn * 25, groundY - 32, 10, 8);
+      g2.fillStyle = "#1a1c30"; g2.fillRect(0, h * .13, w, h * .03); /* the roof line */
+      g2.fillStyle = moodColor([170, 60, 60], [50, 26, 30]); g2.fillRect(0, h * .16, w, h * .17); /* stands always overhead */
+      for (var cw2 = 0; cw2 < w; cw2 += 3) {
+        if (((cw2 * 131) % 17) < 8) {
+          g2.fillStyle = ["#f8d848", "#f0f0e8", "#3040a0", "#c0243c"][(cw2 / 3 | 0) % 4];
+          g2.fillRect(cw2, h * .18 + ((cw2 * 53) % Math.max(4, Math.round(h * .12))), 2, 2);
+        }
+      }
       for (var gx2 = 0; gx2 < w; gx2 += 16) { g2.fillStyle = (gx2 / 16) % 2 ? moodColor([70, 160, 70], [24, 46, 30]) : moodColor([56, 140, 60], [20, 40, 26]); g2.fillRect(gx2, groundY, 16, h - groundY); }
       return groundY;
     }
@@ -497,20 +575,22 @@
     if (era === 4) { /* POLYGON 1997-2010: PS1 broadcast soccer, studied from FIFA 98-99 and ISS Pro Evolution */
       var horizon = h * cam.horizon;
       /* far stand: three stacked flat-shaded trapezoid tiers, crowd as tiled speckle wallpaper */
-      var tierH = [[66, 72, 114], [60, 65, 100], [54, 58, 86]], tierS = [[26, 30, 58], [22, 25, 48], [18, 20, 38]];
+      g2.fillStyle = "#05060f"; g2.fillRect(0, 0, w, horizon); /* the ISS dark void above the bowl */
+      var tierHt = Math.max(14, Math.round(h * .085));
+      var tierH = [[66, 72, 114], [58, 63, 98], [50, 54, 82]], tierS = [[26, 30, 58], [22, 25, 48], [18, 20, 38]];
       for (var tr = 0; tr < 3; tr++) {
-        var ty = horizon - 13 - tr * 11, tw2 = w * (.96 - tr * .09), tx2 = (w - tw2) / 2;
+        var ty = horizon - 6 - (tr + 1) * (tierHt + 2), tw2 = w * (.97 - tr * .08), tx2 = (w - tw2) / 2;
         g2.fillStyle = moodColor(tierH[tr], tierS[tr]);
-        g2.fillRect(tx2, ty, tw2, 11);
+        g2.fillRect(tx2, ty, tw2, tierHt);
         for (var cs = 0; cs < tw2; cs += 2) {
-          if (((cs * 7919 + tr * 104729) % 97) < 42) {
+          if (((cs * 7919 + tr * 104729) % 97) < 55) {
             g2.fillStyle = ["#c0243c", "#e8e8e0", "#3040a0", "#d0a020", "#7a4a22"][((cs / 2 + tr) | 0) % 5];
-            g2.fillRect(tx2 + cs, ty + 2 + ((cs * 31 + tr * 7) % 7), 1, 1);
+            g2.fillRect(tx2 + cs, ty + 2 + ((cs * 31 + tr * 7) % (tierHt - 4)), 1, 1);
           }
         }
       }
-      /* roofline slab + the dark above the bowl */
-      g2.fillStyle = "rgba(6,8,18,.92)"; g2.fillRect(0, horizon - 50, w, 15);
+      /* roofline slab */
+      g2.fillStyle = "rgba(6,8,18,.95)"; g2.fillRect(0, horizon - 6 - 3 * (tierHt + 2) - 9, w, 10);
       /* floodlight pylons, the classic four (two visible), pitch lit like a stage */
       [w * .11, w * .89].forEach(function (fx2) {
         g2.fillStyle = "#10142a"; g2.fillRect(fx2 - 1.5, horizon - 46, 3, 34);
@@ -523,7 +603,7 @@
       var yy = horizon;
       for (var bd = 0; bd < 9; bd++) {
         var bh = 2 + Math.pow(bd, 1.6), wob = Math.sin(t * .11 + bd * 1.3) * (1 + bd * .22);
-        g2.fillStyle = bd % 2 ? moodColor([44, 132, 66], [16, 48, 28]) : moodColor([52, 148, 76], [20, 58, 34]);
+        g2.fillStyle = bd % 2 ? moodColor([38, 116, 56], [14, 42, 24]) : moodColor([58, 162, 84], [24, 64, 38]);
         g2.fillRect(wob, yy, w, bh + 1);
         yy += bh;
       }
@@ -537,6 +617,7 @@
       var hwx = ((w * 1.1 - scrollX * .7) % (w * 1.8) + w * 1.8) % (w * 1.8) - w * .4;
       g2.beginPath(); g2.moveTo(hwx + Math.sin(t * .17) * 2, h); g2.lineTo(vx + (hwx - vx) * .16, horizon); g2.stroke();
       g2.beginPath(); g2.ellipse(hwx, h * .93, w * .085, h * .024, 0, 0, 6.29); g2.stroke();
+      g2.beginPath(); g2.ellipse(hwx, h * .93, w * .012, h * .004, 0, 0, 6.29); g2.stroke(); /* the spot */
       return h * (.63 + cam.horizon * .5);
     }
 
@@ -708,15 +789,15 @@
       g2.drawImage(stadiumPhoto, (w - stadiumPhoto.naturalWidth * s1) / 2, (h - stadiumPhoto.naturalHeight * s1) / 2, stadiumPhoto.naturalWidth * s1, stadiumPhoto.naturalHeight * s1);
       g2.globalAlpha = 1;
     }
-    if (u > .45 && photo.complete && photo.naturalWidth) {
-      var a = Math.min(1, (u - .45) / .5);
+    if (u > .55 && photo.complete && photo.naturalWidth) {
+      var a = Math.min(1, (u - .55) / .4);
       g2.globalAlpha = a;
-      var s2 = Math.max((w * .42) / photo.naturalWidth, (h * .8) / photo.naturalHeight);
+      var s2 = Math.max((w * .26) / photo.naturalWidth, (h * .5) / photo.naturalHeight);
       var pw = photo.naturalWidth * s2, ph2 = photo.naturalHeight * s2;
-      g2.drawImage(photo, w - pw - w * .04, h * .1, pw, ph2);
+      g2.drawImage(photo, w - pw - w * .03, h * .08, pw, ph2);
       g2.globalAlpha = 1;
       g2.strokeStyle = "rgba(245,241,232," + a * .9 + ")"; g2.lineWidth = 3;
-      g2.strokeRect(w - pw - w * .04, h * .1, pw, ph2);
+      g2.strokeRect(w - pw - w * .03, h * .08, pw, ph2);
     }
     /* mood grade over the photo world */
     if (mood < 0) { g2.fillStyle = "rgba(10,14,30," + (-mood * .45) + ")"; g2.fillRect(0, 0, w, h); }
@@ -830,7 +911,7 @@
     /* character holds ~1/3 of frame height in every era so the upgrades read */
     var PSCALE = [2, 2, 2, 3];
     var charScale = PSCALE[idx] || 3;
-    var vecScale = era.rh / 65;
+    var vecScale = era.rh / 72;
     if (idx === 7) {
       var u = Math.min(1, (p - ERAS[6].until) / (1 - ERAS[6].until));
       var a = Math.min(1, u / .2); /* the anime figure dissolves, the real man walks in */
@@ -848,7 +929,7 @@
         og.rotate(Math.sin(t * .35) * .02 + (mood < -.3 ? .05 : 0));
         og.fillStyle = "rgba(0,0,0,.3)";
         og.beginPath(); og.ellipse(0, 4, cwid * .4, 7, 0, 0, 6.29); og.fill();
-        og.drawImage(cutout, -cwid / 2, -ch, cwid, ch);
+        og.drawImage(fadedCutout() || cutout, -cwid / 2, -ch, cwid, ch);
         og.restore();
         og.globalAlpha = 1;
       } else if (a >= 1) {
