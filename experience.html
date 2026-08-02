@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Enjoy the Match — A World Cup Fan Guide</title>
+<title>Enjoy the Match · A World Cup Fan Guide</title>
 <meta name="description" content="Everything anyone needs to enjoy a USA World Cup match, at SoFi or on the couch. Logistics, what to bring, soccer 101, and the moments to watch for.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap">
@@ -81,9 +81,11 @@ h1 .r{color:var(--red)}h1 .g{color:var(--gold)}
 .cheerbar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--navy),var(--red));transition:width .12s}
 footer{background:var(--navy);color:#cdd6ef;text-align:center;padding:46px 22px}
 footer a{color:var(--gold)}
+.archived{background:var(--navy);color:var(--gold);font-weight:700;font-size:.85rem;text-align:center;padding:10px 18px;border-bottom:1px solid var(--line)}
 </style></head>
 <body>
 <div id="bar"></div>
+<div class="archived">⏸️ Time capsule · This guide was built for the USA's run at SoFi, June 2026. It worked. Kept as it stood at the final whistle, with two updates below.</div>
 <nav class="nav"><a href="#facts">📋 Facts</a><a href="#getting">🚆 Getting there</a><a href="#bag">🎒 Bring</a><a href="#day">⏰ Matchday</a><a href="#predict">🎯 Predict</a><a href="#soccer">⚽ Soccer 101</a><a href="#players">⭐ Players</a><a href="#opp">🇹🇷 Opponent</a><a href="#chants">📣 Chants</a><a href="#seat">🎟️ Seats</a><a href="#watch">📺 Watch home</a></nav>
 
 <header class="hero">
@@ -94,8 +96,7 @@ footer a{color:var(--gold)}
     <p class="htag">First match or fiftieth, at the stadium or on the couch, this gets you ready to actually enjoy it. Built from the real USA run at SoFi.</p>
     <div class="modeswitch"><button id="m-going" class="on">I'm going 🏟️</button><button id="m-watch">I'm watching 📺</button></div>
     <div class="next">
-      <div><div class="lbl">Next up for the USA</div><div class="big" id="next-match">USA vs Türkiye · SoFi · today</div><div style="font-size:.8rem;color:#cdd6ef">Group D finale · 7:00pm PT / 10:00pm ET · FOX</div></div>
-      <div class="cd" id="cd"><div class="u"><div class="n" id="cd-d">--</div><div class="t">days</div></div><div class="u"><div class="n" id="cd-h">--</div><div class="t">hrs</div></div><div class="u"><div class="n" id="cd-m">--</div><div class="t">min</div></div></div>
+      <div><div class="lbl">The run, final</div><div class="big" id="next-match">Paraguay 4-1 · Australia 2-0 · Türkiye 2-3 · Bosnia 2-0 · Belgium 1-4</div><div style="font-size:.8rem;color:#cdd6ef">Group D won, Round of 16, first knockout win since 2002.</div></div>
     </div>
   </div>
 </header>
@@ -108,9 +109,9 @@ footer a{color:var(--gold)}
     <div class="fact win"><div class="v">4-1</div><div class="k">USA beat Paraguay (Jun 12, SoFi)</div></div>
     <div class="fact win"><div class="v">2-0</div><div class="k">USA beat Australia (Jun 19, Seattle)</div></div>
     <div class="fact win"><div class="v">Group D</div><div class="k">USA won it, first group win since 2010</div></div>
-    <div class="fact"><div class="v">R32</div><div class="k">First knockout round (48-team format)</div></div>
-    <div class="fact"><div class="v">Jul 19</div><div class="k">Final · 3pm ET · MetLife, NY/NJ</div></div>
-    <div class="fact"><div class="v">Balogun</div><div class="k">Brace vs Paraguay, the man in form</div></div>
+    <div class="fact win"><div class="v">2-0</div><div class="k">Beat Bosnia with 10 men (Jul 1, Levi's)</div></div>
+    <div class="fact"><div class="v">Spain 1-0</div><div class="k">Argentina · The Final at MetLife, extra time</div></div>
+    <div class="fact"><div class="v">Balogun</div><div class="k">3 goals, one red card, one reprieve</div></div>
   </div>
 </div></section>
 
@@ -181,20 +182,20 @@ footer a{color:var(--gold)}
 
 <section id="predict"><div class="wrap">
   <div class="eyebrow">Get in the game</div>
-  <h2>Call the score</h2>
-  <p class="sub">Lock your prediction before kickoff. It saves, so you can be smug (or humble) later.</p>
+  <h2>How we called it</h2>
+  <p class="sub">Predictions locked before kickoff on June 25. The envelope, opened.</p>
   <div class="predict">
-    <div class="pteam"><div class="pflag">🇺🇸</div><div>USA</div><div class="pscore" id="us-score">2</div><div class="pbtns"><button onclick="pscore('us',1)">+</button><button onclick="pscore('us',-1)">−</button></div></div>
+    <div class="pteam"><div class="pflag">🇺🇸</div><div>USA</div><div class="pscore" id="us-score">2</div></div>
     <div class="pvs">vs</div>
-    <div class="pteam"><div class="pflag">🇹🇷</div><div>Türkiye</div><div class="pscore" id="th-score">0</div><div class="pbtns"><button onclick="pscore('th',1)">+</button><button onclick="pscore('th',-1)">−</button></div></div>
+    <div class="pteam"><div class="pflag">🇹🇷</div><div>Türkiye</div><div class="pscore" id="th-score">3</div></div>
   </div>
-  <button class="lockbtn" id="lockpred">🔒 Lock my prediction</button>
   <div id="pred-msg" style="margin-top:12px;font-weight:700;color:var(--red)"></div>
 </div></section>
 
 <section id="opp"><div class="wrap">
   <div class="eyebrow">Know the other side</div>
   <h2>Türkiye, the opponent</h2>
+  <p style="font-weight:700;color:var(--red);margin-bottom:10px">As it happened: Türkiye took it 3-2 with the last touch of the night, and the group was already ours.</p>
   <p class="sub">Already eliminated after two losses, so expect them to play freely, with pride and nothing to lose. Watch these.</p>
   <div class="grid2">
     <div class="card"><h3>🇹🇷 Arda Güler</h3><p>21, Real Madrid, the jewel. A left foot that can bend a pass or a free kick into anywhere. Worth the price of admission even in a dead rubber.</p></div>
@@ -261,13 +262,10 @@ footer a{color:var(--gold)}
 </div></section>
 
 <footer><div class="wrap">
-  <p>A fan guide for anyone, built from the real USA run. Up the USA. 🇺🇸<br><a href="index.html">← back to the personal site</a></p>
+  <p>A fan guide for anyone, built from the real USA run. Up the USA. 🇺🇸<br>Archived August 1, 2026 · the tournament ended July 19<br><a href="index.html">← back to the personal site</a></p>
 </div></footer>
 
 <script>
-const KICK=new Date('2026-06-26T02:00:00Z'); // USA-Türkiye 7pm PT
-(function(){function tick(){let d=KICK-Date.now();if(d<0)d=0;const D=Math.floor(d/864e5),H=Math.floor(d/36e5)%24,M=Math.floor(d/6e4)%60;
-  const s=id=>document.getElementById(id);if(s('cd-d')){s('cd-d').textContent=D;s('cd-h').textContent=H;s('cd-m').textContent=M;}}tick();setInterval(tick,1000);})();
 /* mode switch */
 let going=true;
 function setMode(g){going=g;document.getElementById('m-going').classList.toggle('on',g);document.getElementById('m-watch').classList.toggle('on',!g);
@@ -294,20 +292,27 @@ const ac=document.getElementById('acc');FAQ.forEach(([q,a])=>{const d=document.c
 /* players */
 const PLAYERS=[['🇺🇸 Christian Pulisic','The captain and talisman. Left wing, cuts inside, makes the moment. If the USA scores, he\'s often in it.'],['🇺🇸 Folarin Balogun','The striker in form, a brace against Paraguay. Watch his runs in behind the last defender.'],['🇺🇸 Weston McKennie','Midfield engine, box-to-box, arrives late for headers. The heartbeat.'],['🇺🇸 Alex Freeman','Young, fearless, scored vs Australia. A name for the future, watch him overlap.']];
 const pg=document.getElementById('players-grid');PLAYERS.forEach(([n,d])=>{const c=document.createElement('div');c.className='card';c.innerHTML=`<h3>${n}</h3><p>${d}</p>`;pg.appendChild(c);});
-/* predict the score */
-let pred={us:2,th:0};
-function pscore(t,d){pred[t]=Math.max(0,Math.min(9,pred[t]+d));document.getElementById(t+'-score').textContent=pred[t];}
-(function(){const s=JSON.parse(localStorage.getItem('wc-pred')||'null');if(s){pred=s;document.getElementById('us-score').textContent=pred.us;document.getElementById('th-score').textContent=pred.th;}})();
-document.getElementById('lockpred').onclick=()=>{localStorage.setItem('wc-pred',JSON.stringify(pred));document.getElementById('pred-msg').textContent=`Locked: USA ${pred.us} – ${pred.th} Türkiye. Come back and see how you did. 🇺🇸`;};
+/* how we called it (archived: final score USA 2 - 3 Türkiye) */
+(function(){const msg=document.getElementById('pred-msg');if(!msg)return;
+  const p=JSON.parse(localStorage.getItem('wc-pred')||'null');
+  if(p&&typeof p.us==='number'&&typeof p.th==='number'){
+    let grade;
+    if(p.us===2&&p.th===3)grade='Legend status.';
+    else if(p.th>p.us||p.us===2||p.th===3)grade='So close it hurts.';
+    else grade='Hope is a strategy. Keep it.';
+    msg.textContent=`You called USA ${p.us} - ${p.th} Türkiye. It finished USA 2 - 3 Türkiye. ${grade}`;
+  }else{
+    msg.textContent='It finished USA 2 - 3 Türkiye. You had to be there. Next cycle, lock one in.';
+  }})();
 /* chants */
 const CHANTS=[['I Believe That We Will Win','The one. Call and response that builds until the whole section bounces. Start quiet, end loud: "I believe... I believe that... I believe that we will win!"'],['Olé, Olé, Olé','Universal. When the team is rolling, just ride it: "Olé, olé olé olé."'],['U-S-A!','Three claps, three letters, foolproof. Start it and everyone follows.']];
 const cac=document.getElementById('chant-acc');CHANTS.forEach(([q,a])=>{const d=document.createElement('details');d.innerHTML=`<summary>${q}</summary><div class="a">${a}</div>`;cac.appendChild(d);});
 /* share */
-document.getElementById('sharebtn').onclick=async()=>{try{await navigator.clipboard.writeText('Your matchday, handled, a World Cup fan guide for anyone: '+location.href.split('#')[0]);document.getElementById('share-msg').textContent='Copied! Send it to someone who needs it. 🇺🇸';}catch(e){document.getElementById('share-msg').textContent=location.href;}};
+document.getElementById('sharebtn').onclick=async()=>{try{await navigator.clipboard.writeText('The guide that got us through the USA\'s home World Cup run: '+location.href.split('#')[0]);document.getElementById('share-msg').textContent='Copied! Send it to someone who needs it. 🇺🇸';}catch(e){document.getElementById('share-msg').textContent=location.href;}};
 /* knockout + tickets accordions */
-const KO=[['What happens in a tie?','In the knockouts there are no draws. Tied after 90? Two 15-minute extra-time halves. Still tied? Penalty shootout, five kicks each, sudden death after. Pure nerves.'],['How far can the USA go?','Group D winner, so they have a real path. Every round is a one-off: win and survive, lose and it\'s over. The Final is July 19 at MetLife in NY/NJ.'],['When are the USA knockout games?','The Round of 32 begins June 28. Exact USA opponent, date, and venue lock once the group stage fully finishes, check back, and never trust an unconfirmed bracket.']];
+const KO=[['What happens in a tie?','In the knockouts there are no draws. Tied after 90? Two 15-minute extra-time halves. Still tied? Penalty shootout, five kicks each, sudden death after. Pure nerves.'],['How far can the USA go?','Group D winner, so they have a real path. Every round is a one-off: win and survive, lose and it\'s over. The Final is July 19 at MetLife in NY/NJ.'],['When are the USA knockout games?','They happened. Round of 32: USA 2-0 Bosnia and Herzegovina, July 1 at Levi\'s Stadium, ten men for the last half hour and still won it. Round of 16: Belgium 4-1 USA, July 6 at Lumen Field, and the run ended there.']];
 const koa=document.getElementById('ko-acc');if(koa)KO.forEach(([q,a])=>{const d=document.createElement('details');d.innerHTML=`<summary>${q}</summary><div class="a">${a}</div>`;koa.appendChild(d);});
-const TIX=[['Where do tickets come from?','Officially through FIFA\'s ticketing site. Resale exists but verify it\'s a legit transfer, World Cup tickets are often mobile and name-linked.'],['How early should I arrive?','Gates usually open ~2 hours before. For a big match, be through security 60–90 min early, security and the walk in take time.'],['Can I bring kids?','Yes, and it\'s a magic first memory. Everyone needs a ticket, even little ones in most cases. Bring ear protection for toddlers, it gets loud.']];
+const TIX=[['Where do tickets come from?','Officially through FIFA\'s ticketing site. Resale exists but verify it\'s a legit transfer, World Cup tickets are often mobile and name-linked.'],['How early should I arrive?','Gates usually open ~2 hours before. For a big match, be through security 60 to 90 min early, security and the walk in take time.'],['Can I bring kids?','Yes, and it\'s a magic first memory. Everyone needs a ticket, even little ones in most cases. Bring ear protection for toddlers, it gets loud.']];
 const txa=document.getElementById('tix-acc');if(txa)TIX.forEach(([q,a])=>{const d=document.createElement('details');d.innerHTML=`<summary>${q}</summary><div class="a">${a}</div>`;txa.appendChild(d);});
 /* cheer meter */
 (function(){const b=document.getElementById('cheerbtn'),fill=document.getElementById('cheerfill'),msg=document.getElementById('cheer-msg');if(!b)return;
