@@ -70,6 +70,18 @@
   function eraIndex(p) { for (var i = 0; i < ERAS.length; i++) if (p < ERAS[i].until) return i; return ERAS.length - 1; }
   function year(p) { return Math.round(1974 + p * 52); }
 
+  /* deep links: ?p=0.5, ?era=ANIME&mood=-1 jump the walk to an exact moment */
+  try {
+    var q = new URLSearchParams(location.search);
+    if (q.get("p")) px = Math.max(60, Math.min(WORLD, parseFloat(q.get("p")) * WORLD));
+    if (q.get("era")) {
+      var en = q.get("era").toUpperCase();
+      ERAS.forEach(function (e2, ei) { if (e2.name === en) { var lo = ei ? ERAS[ei - 1].until : 0; px = WORLD * (lo + e2.until) / 2; } });
+    }
+    if (q.get("mood")) mood = Math.max(-1, Math.min(1, parseFloat(q.get("mood"))));
+    if (q.get("p") || q.get("era")) walked = true;
+  } catch (e) { }
+
   /* ---------------- milestones (all receipts-true) ---------------- */
   var MILES = [
     { y: 1974, txt: "AGE 4. NUMBER 4. THE GREEN KIT. RESTON RATTLERS." },
