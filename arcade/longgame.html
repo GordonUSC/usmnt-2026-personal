@@ -48,6 +48,8 @@
   var px = 120, mood = 0, t = 0;      /* player world-x, mood -1..1 */
   var keys = { left: false, right: false, up: false, down: false };
   var walked = false, reachedEnd = false;
+  var cam = { horizon: .47, charMult: 1, mode: 0, t: 0 }; /* PS1-era broadcast cameras: Tele and Wide */
+  var replayT = 0;
   var couva = false;
   try { couva = localStorage.getItem("longgame_couva") === "1"; } catch (e) { }
 
@@ -155,7 +157,7 @@
   function updateBalls() {
     BALLS.forEach(function (b) {
       if (b.kicked) {
-        b.kt++;
+        if (!(replayT > 0 && (t % 2))) b.kt++; /* replays run at half speed, as is right and proper */
         if (b.kt === 40) { /* the ball finds the net */
           [523, 659, 784].forEach(function (f, i) { beep(f, .1, "square", .05, i * .06); });
           b.netFlash = 16;
@@ -168,6 +170,7 @@
         var d = b.wx - px;
         if (d > -4 && d < 30 && keys.right) {
           b.kicked = true; b.kt = 0;
+          if (eraIndex(progress()) === 4) replayT = 140; /* Konami rule: every strike earns a replay */
           kickFlash = { msg: b.msg, t: 80 };
           beep(196, .1, "square", .09);
           [392, 494, 587].forEach(function (f, i) { beep(f, .12, "square", .05, .06 + i * .07); });
@@ -229,8 +232,11 @@
       g2.fillRect(x + 1 * s, y - 3 * s, 2 * s, 3 * s - leg);
       return;
     }
-    if (era === 4) { /* polygon: hard-faceted low-poly figure, flat shades, no curves */
+    if (era === 4) { /* polygon: hard-faceted low-poly figure, flat shades, vertex snap and blob shadow */
+      x = Math.round(x) + ((walkT % 47) === 0 ? 1 : 0); y = Math.round(y); /* PS1 vertex jitter */
       var g4 = g2;
+      g4.fillStyle = "rgba(0,0,0,.5)";
+      g4.beginPath(); g4.ellipse(x, y + 1.2 * s, 4.5 * s, 1.2 * s, 0, 0, 6.29); g4.fill(); /* hard blob shadow */
       g4.save(); g4.translate(x, y);
       var sw = Math.sin(walkT * .35) * 4 * s;
       /* legs as hard quads */
@@ -343,21 +349,50 @@
       return groundY;
     }
 
-    if (era === 4) { /* POLYGON: perspective pitch, flat shading */
-      var horizon = h * .45;
-      g2.fillStyle = moodColor([50, 60, 120], [16, 18, 40]); g2.fillRect(0, horizon - 34, w, 34);
-      for (var st = 0; st < 30; st++) { g2.fillStyle = "rgba(240,240,232," + (mood > 0 ? .5 : .2) + ")"; g2.fillRect((st * 37 + Math.sin(st) * 9 - scrollX * .2) % w, horizon - 30 + (st % 4) * 6, 2, 2); }
-      var grd = g2.createLinearGradient(0, horizon, 0, h);
-      grd.addColorStop(0, moodColor([46, 140, 70], [18, 52, 30]));
-      grd.addColorStop(1, moodColor([24, 96, 44], [8, 30, 16]));
-      g2.fillStyle = grd; g2.fillRect(0, horizon, w, h - horizon);
-      g2.strokeStyle = "rgba(240,240,232,.75)"; g2.lineWidth = 1.4;
-      for (var ln = 0; ln < 9; ln++) {
-        var lx = ((ln * 130 - scrollX * .9) % (w + 260) + w + 260) % (w + 260) - 130;
-        g2.beginPath(); g2.moveTo(lx, h); g2.lineTo(w / 2 + (lx - w / 2) * .22, horizon); g2.stroke();
+    if (era === 4) { /* POLYGON 1997-2010: PS1 broadcast soccer, studied from FIFA 98-99 and ISS Pro Evolution */
+      var horizon = h * cam.horizon;
+      /* far stand: three stacked flat-shaded trapezoid tiers, crowd as tiled speckle wallpaper */
+      var tierH = [[66, 72, 114], [60, 65, 100], [54, 58, 86]], tierS = [[26, 30, 58], [22, 25, 48], [18, 20, 38]];
+      for (var tr = 0; tr < 3; tr++) {
+        var ty = horizon - 13 - tr * 11, tw2 = w * (.96 - tr * .09), tx2 = (w - tw2) / 2;
+        g2.fillStyle = moodColor(tierH[tr], tierS[tr]);
+        g2.fillRect(tx2, ty, tw2, 11);
+        for (var cs = 0; cs < tw2; cs += 2) {
+          if (((cs * 7919 + tr * 104729) % 97) < 42) {
+            g2.fillStyle = ["#c0243c", "#e8e8e0", "#3040a0", "#d0a020", "#7a4a22"][((cs / 2 + tr) | 0) % 5];
+            g2.fillRect(tx2 + cs, ty + 2 + ((cs * 31 + tr * 7) % 7), 1, 1);
+          }
+        }
       }
-      g2.beginPath(); g2.moveTo(0, horizon + 26); g2.lineTo(w, horizon + 26); g2.stroke();
-      return h * .86;
+      /* roofline slab + the dark above the bowl */
+      g2.fillStyle = "rgba(6,8,18,.92)"; g2.fillRect(0, horizon - 50, w, 15);
+      /* floodlight pylons, the classic four (two visible), pitch lit like a stage */
+      [w * .11, w * .89].forEach(function (fx2) {
+        g2.fillStyle = "#10142a"; g2.fillRect(fx2 - 1.5, horizon - 46, 3, 34);
+        var gl = g2.createRadialGradient(fx2, horizon - 48, 1, fx2, horizon - 48, 15);
+        gl.addColorStop(0, "rgba(255,250,220," + (mood < 0 ? .95 : .8) + ")"); gl.addColorStop(1, "rgba(255,250,220,0)");
+        g2.fillStyle = gl; g2.fillRect(fx2 - 15, horizon - 63, 30, 30);
+        g2.fillStyle = "#fff8dc"; g2.fillRect(fx2 - 5, horizon - 51, 10, 5);
+      });
+      /* mowing stripes, perspective-spaced, with affine texture warble */
+      var yy = horizon;
+      for (var bd = 0; bd < 9; bd++) {
+        var bh = 2 + Math.pow(bd, 1.6), wob = Math.sin(t * .11 + bd * 1.3) * (1 + bd * .22);
+        g2.fillStyle = bd % 2 ? moodColor([44, 132, 66], [16, 48, 28]) : moodColor([52, 148, 76], [20, 58, 34]);
+        g2.fillRect(wob, yy, w, bh + 1);
+        yy += bh;
+      }
+      g2.fillStyle = moodColor([48, 140, 70], [18, 52, 30]); g2.fillRect(0, yy, w, h - yy);
+      /* touchlines + a passing halfway line converging on the vanishing point, swimming slightly */
+      g2.strokeStyle = "rgba(240,240,232,.8)"; g2.lineWidth = Math.max(1, h / 210);
+      var vx = w / 2;
+      [.05, .95].forEach(function (fx3) {
+        g2.beginPath(); g2.moveTo(w * fx3 + Math.sin(t * .13) * 1.5, h); g2.lineTo(vx + (w * fx3 - vx) * .16, horizon); g2.stroke();
+      });
+      var hwx = ((w * 1.1 - scrollX * .7) % (w * 1.8) + w * 1.8) % (w * 1.8) - w * .4;
+      g2.beginPath(); g2.moveTo(hwx + Math.sin(t * .17) * 2, h); g2.lineTo(vx + (hwx - vx) * .16, horizon); g2.stroke();
+      g2.beginPath(); g2.ellipse(hwx, h * .93, w * .085, h * .024, 0, 0, 6.29); g2.stroke();
+      return h * (.63 + cam.horizon * .5);
     }
 
     if (era === 5) { /* HD: soft gradients, glow, vignette */
@@ -481,6 +516,12 @@
     if (keys.up) mood = Math.min(1, mood + .02);
     if (keys.down) mood = Math.max(-1, mood - .02);
     if (!keys.up && !keys.down) mood *= .998;
+    /* the PS1 broadcast truck cuts between cameras */
+    cam.t++;
+    if (cam.t > 300) { cam.t = 0; cam.mode = 1 - cam.mode; }
+    cam.horizon += ((cam.mode ? .36 : .47) - cam.horizon) * .03;
+    cam.charMult += ((cam.mode ? .72 : 1) - cam.charMult) * .03;
+    if (replayT > 0) replayT--;
     var p = progress(), era = eraIndex(p);
     if (moved) { walked = true; stepSound(era); }
     reachedEnd = p > .985;
@@ -531,9 +572,18 @@
         drawChar(og, era.rw * .32, groundY, 5, vecScale, t);
       }
     } else {
-      drawChar(og, era.rw * .32, groundY, idx, idx >= 4 ? vecScale : charScale, t);
+      var cs2 = idx >= 4 ? vecScale : charScale;
+      if (idx === 4) cs2 *= cam.charMult; /* the Wide cam sees a smaller you */
+      drawChar(og, era.rw * .32, groundY, idx, cs2, t);
     }
     drawParticles(og);
+    if (idx === 4 && replayT > 0) { /* the Konami letterboxed replay */
+      og.fillStyle = "#000";
+      og.fillRect(0, 0, era.rw, era.rh * .1); og.fillRect(0, era.rh * .9, era.rw, era.rh * .1);
+      og.fillStyle = "#f0c020"; og.font = "8px 'Press Start 2P'"; og.textAlign = "right";
+      og.fillText("● REPLAY", era.rw - 8, era.rh * .1 + 12);
+      og.textAlign = "left";
+    }
   }
 
   function frame() {
