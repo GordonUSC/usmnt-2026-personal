@@ -56,10 +56,10 @@
     { name: "PONG",     sub: "1974",       until: .10, rw: 96,  rh: 54,  smooth: false },
     { name: "2600",     sub: "1982",       until: .22, rw: 128, rh: 72,  smooth: false },
     { name: "8-BIT",    sub: "1988",       until: .36, rw: 192, rh: 108, smooth: false },
-    { name: "16-BIT",   sub: "1994",       until: .55, rw: 320, rh: 180, smooth: false },
-    { name: "POLYGON",  sub: "2002",       until: .72, rw: 480, rh: 270, smooth: true  },
-    { name: "HD",       sub: "2010",       until: .88, rw: 960, rh: 540, smooth: true  },
-    { name: "REAL",     sub: "2022-2026",  until: 1.01, rw: 960, rh: 540, smooth: true }
+    { name: "16-BIT",   sub: "1994",       until: .44, rw: 320, rh: 180, smooth: false },
+    { name: "POLYGON",  sub: "1997",       until: .69, rw: 480, rh: 270, smooth: true  },
+    { name: "HD",       sub: "2010",       until: .89, rw: 960, rh: 540, smooth: true  },
+    { name: "REAL",     sub: "the 2020s",  until: 1.01, rw: 960, rh: 540, smooth: true }
   ];
   function progress() { return Math.max(0, Math.min(1, px / WORLD)); }
   function eraIndex(p) { for (var i = 0; i < ERAS.length; i++) if (p < ERAS[i].until) return i; return ERAS.length - 1; }
@@ -67,13 +67,13 @@
 
   /* ---------------- milestones (all receipts-true) ---------------- */
   var MILES = [
-    { y: 1974, txt: "AGE 4. NUMBER 4. RESTON RATTLERS." },
+    { y: 1974, txt: "AGE 4. NUMBER 4. THE GREEN KIT. RESTON RATTLERS." },
     { y: 1980, txt: "THE WHITECAPS YEARS." },
-    { y: 1986, txt: "JV WING AT ST. PAUL'S. RAIN IN OCTOBER." },
+    { y: 1986, txt: "JV WING AT ST. PAUL'S. THE RED JERSEY. RAIN IN OCTOBER." },
     { y: 1993, txt: "FIFA ON GENESIS. A TESTER NAMED GORDIO BELAMINI." },
     { y: 1994, txt: "THE DRAW IN VEGAS, WITH MIKE." },
     { y: 1996, txt: "FIRST MLS MATCH. SPARTAN STADIUM." },
-    { y: 1997, txt: "STADIO OLIMPICO. INCE'S BANDAGE." },
+    { y: 1997, txt: "OLIMPICO NIGHTS, BUILDING THREE LIONS. THE GAME GOES 3D." },
     { y: 2002, txt: "THE QUARTERFINAL GENERATION." },
     { y: 2009, txt: "SPAIN FALLS IN BLOEMFONTEIN." },
     { y: 2010, txt: "DONOVAN. ALGERIA. 91st MINUTE." },
@@ -89,6 +89,7 @@
 
   /* ---------------- offscreen render target ---------------- */
   var off = document.createElement("canvas"), og = off.getContext("2d");
+  var off2 = document.createElement("canvas"), og2 = off2.getContext("2d");
 
   /* ---------------- audio: era + mood ---------------- */
   var AC = null, padOsc = null, padGain = null, lastStep = 0;
@@ -146,8 +147,8 @@
     { wx: 950,  msg: "FIRST TOUCH!" },
     { wx: 2300, msg: "SCHOOLYARD DAYS!" },
     { wx: 3350, msg: "BELAMINI!" },
-    { wx: 5300, msg: "THE 2002 RUN!" },
-    { wx: 6700, msg: "DONOVAN ENERGY!" }
+    { wx: 4450, msg: "THE 2002 RUN!" },
+    { wx: 5600, msg: "DONOVAN ENERGY!" }
   ];
   BALLS.forEach(function (b) { b.kicked = false; b.kt = 0; b.respawn = 0; });
   var kickFlash = null;
@@ -204,21 +205,23 @@
   function drawChar(g2, x, y, era, s, walkT) {
     var bob = Math.sin(walkT * .35) * (mood > 0 ? 2.2 : 1) * s;
     var skin = "#7a4a22", navy = moodColor([40, 60, 160], [22, 28, 60]), white = "#f0f0e8";
+    var green = moodColor([52, 150, 70], [20, 60, 30]); /* the Reston Rattlers kit was green */
     y += (mood < -.3 ? 1.5 * s : 0) - bob;
-    if (era === 0) { /* pong: a paddle-square being */
-      g2.fillStyle = "#f0f0e8"; g2.fillRect(x - 3 * s, y - 10 * s, 6 * s, 10 * s);
+    if (era === 0) { /* pong: a paddle-square being, already wearing green */
+      g2.fillStyle = green; g2.fillRect(x - 3 * s, y - 10 * s, 6 * s, 10 * s);
+      g2.fillStyle = white; g2.fillRect(x - 1 * s, y - 7 * s, 2 * s, 3 * s); /* the 4, abstracted to a block */
       return;
     }
-    if (era === 1) { /* atari: chunky biped */
+    if (era === 1) { /* atari: chunky biped, the red St. Paul's jersey years */
       g2.fillStyle = skin; g2.fillRect(x - 2 * s, y - 12 * s, 4 * s, 3 * s);
-      g2.fillStyle = "#d0d0d0"; g2.fillRect(x - 3 * s, y - 9 * s, 6 * s, 5 * s);
+      g2.fillStyle = moodColor([190, 40, 60], [70, 20, 28]); g2.fillRect(x - 3 * s, y - 9 * s, 6 * s, 5 * s);
       g2.fillStyle = skin; g2.fillRect(x - 3 * s, y - 4 * s, 2 * s, 4 * s); g2.fillRect(x + 1 * s, y - 4 * s, 2 * s, 4 * s);
       return;
     }
     if (era <= 3) { /* 8/16-bit sprite */
       g2.fillStyle = skin; g2.fillRect(x - 2 * s, y - 15 * s, 4 * s, 4 * s);
-      g2.fillStyle = navy; g2.fillRect(x - 3 * s, y - 11 * s, 6 * s, 6 * s);
-      if (era === 3) { g2.fillStyle = white; g2.fillRect(x - 1 * s, y - 10 * s, 2 * s, 3 * s); } /* the 4 patch */
+      g2.fillStyle = era === 3 ? navy : "#e0e0d8"; g2.fillRect(x - 3 * s, y - 11 * s, 6 * s, 6 * s); /* white pickup years, then the USA navy */
+      g2.fillStyle = era === 3 ? white : navy; g2.fillRect(x - 1 * s, y - 10 * s, 2 * s, 3 * s); /* the 4 patch, always */
       g2.fillStyle = white; g2.fillRect(x - 3 * s, y - 5 * s, 6 * s, 2 * s);
       var leg = Math.sin(walkT * .35) * 2 * s;
       g2.fillStyle = skin;
@@ -285,18 +288,15 @@
     var groundY = h * .82;
     var scrollX = px * (w / 640);
 
-    if (era === 0) { /* PONG */
+    if (era === 0) { /* PONG-minimal, but it was always soccer */
       g2.fillStyle = mood < -.3 ? "#000000" : "#04040a"; g2.fillRect(0, 0, w, h);
       g2.fillStyle = "#f0f0f0";
-      for (var y0 = 4; y0 < h; y0 += 8) g2.fillRect(w / 2 - 1, y0, 2, 4); /* center line */
-      /* two paddles rallying, the primordial soccer */
-      var by = h / 2 + Math.sin(t * .05) * h * .3;
-      g2.fillRect(8, by - 8, 3, 16);
-      g2.fillRect(w - 11, h - by - 8, 3, 16);
-      var bx = w / 2 + Math.sin(t * .08) * (w / 2 - 20);
-      g2.fillRect(bx, (by + (h - by)) / 2, 3, 3);
-      g2.fillRect(0, groundY + 8, w, 1);
-      return groundY + 8;
+      var gy = groundY + 8;
+      g2.fillRect(0, gy, w, 1); /* the ground, one perfect line */
+      for (var tk = 0; tk < w + 20; tk += 20) g2.fillRect(tk - (scrollX % 20), gy + 3, 6, 1); /* pitch ticks scroll as you walk */
+      var hx = ((600 - scrollX) % (w + 300) + w + 300) % (w + 300) - 150; /* a dashed halfway line drifts past */
+      for (var y0 = gy - 34; y0 < gy; y0 += 8) g2.fillRect(hx, y0, 2, 4);
+      return gy;
     }
 
     var skyHappy = [[70, 110, 200], [110, 150, 230], [140, 190, 250], [110, 160, 250], [120, 170, 250], [110, 165, 245]];
@@ -497,22 +497,19 @@
     return { p: p, era: era, moved: moved };
   }
 
-  function frame() {
-    var s = update();
-    var era = ERAS[s.era];
+  function renderCore(idx, p) {
+    var era = ERAS[idx];
     off.width = era.rw; off.height = era.rh;
     og.imageSmoothingEnabled = era.smooth;
-    var groundY = drawScene(s.era, era.rw, era.rh, s.p);
-    updateBalls();
-    drawBalls(og, s.era, era.rw, groundY);
-    /* character stands at 30% across screen, and keeps evolving to the very end.
-       Scale targets ~1/3 of frame height in EVERY era, so the upgrades actually read. */
+    var groundY = drawScene(idx, era.rw, era.rh, p);
+    drawBalls(og, idx, era.rw, groundY);
+    /* character holds ~1/3 of frame height in every era so the upgrades read */
     var PSCALE = [2, 2, 2, 3];
-    var charScale = PSCALE[s.era] || 3;
+    var charScale = PSCALE[idx] || 3;
     var vecScale = era.rh / 65;
-    if (s.era === 6) {
-      var u = Math.min(1, (s.p - ERAS[5].until) / (1 - ERAS[5].until));
-      var a = Math.min(1, u / .2); /* crossfade: HD figure dissolves, the real man walks in */
+    if (idx === 6) {
+      var u = Math.min(1, (p - ERAS[5].until) / (1 - ERAS[5].until));
+      var a = Math.min(1, u / .2); /* the HD figure dissolves, the real man walks in */
       if (a < 1) {
         og.globalAlpha = 1 - a;
         drawChar(og, era.rw * .32, groundY, 5, vecScale, t);
@@ -534,14 +531,36 @@
         drawChar(og, era.rw * .32, groundY, 5, vecScale, t);
       }
     } else {
-      drawChar(og, era.rw * .32, groundY, s.era, s.era >= 4 ? vecScale : charScale, t);
+      drawChar(og, era.rw * .32, groundY, idx, idx >= 4 ? vecScale : charScale, t);
     }
-    emitParticles(era.rw, era.rh);
     drawParticles(og);
-    /* blit up */
-    ctx.imageSmoothingEnabled = era.smooth;
+  }
+
+  function frame() {
+    var s = update();
+    updateBalls();
+    emitParticles(ERAS[s.era].rw, ERAS[s.era].rh);
+    /* smoother transitions: near every era boundary, render BOTH worlds and dissolve */
+    var T = .018, i = s.era, i2 = -1, blend = 0, p = s.p;
+    if (i < ERAS.length - 1 && ERAS[i].until - p < T / 2) {
+      i2 = i + 1; blend = (p - (ERAS[i].until - T / 2)) / T;
+    } else if (i > 0 && p - ERAS[i - 1].until < T / 2) {
+      i2 = i; i = i - 1; blend = (p - (ERAS[i].until - T / 2)) / T;
+    }
+    renderCore(i, p);
     ctx.clearRect(0, 0, VW, VH);
+    ctx.imageSmoothingEnabled = ERAS[i].smooth;
     ctx.drawImage(off, 0, 0, VW, VH);
+    if (i2 >= 0 && blend > 0) {
+      var keepOff = off, keepOg = og;
+      off = off2; og = og2;
+      renderCore(i2, p);
+      off = keepOff; og = keepOg;
+      ctx.globalAlpha = Math.min(1, Math.max(0, blend));
+      ctx.imageSmoothingEnabled = ERAS[i2].smooth;
+      ctx.drawImage(off2, 0, 0, VW, VH);
+      ctx.globalAlpha = 1;
+    }
     drawHUD(s.era, s.p);
     requestAnimationFrame(frame);
   }
