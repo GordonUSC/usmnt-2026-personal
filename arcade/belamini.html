@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>BELAMINI '26 · demo moment</title>
+<meta name="description" content="A 16-bit style playable demo moment: the number 4 steps up to a free kick at a home World Cup. Every pixel placed by code. No AI imagery. Built by Darby for Gordon." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" />
+<style>
+  :root { --navy: #0B0E1A; --gold: #FFCD00; --red: #BF0A30; --paper: #F5F1E8; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--navy); color: var(--paper); font-family: 'Press Start 2P', monospace; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 18px; }
+  h1 { font-size: clamp(.9rem, 4vw, 1.4rem); color: var(--gold); text-align: center; line-height: 1.6; }
+  h1 small { display: block; font-size: .55em; color: var(--paper); opacity: .75; margin-top: 8px; }
+  .frame { position: relative; width: min(96vw, 640px); aspect-ratio: 320/224; background: #000; border: 4px solid #2a2f4a; border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; image-rendering: crisp-edges; touch-action: manipulation; }
+  .note { font-size: .5rem; line-height: 1.9; opacity: .8; max-width: 640px; text-align: center; }
+  .note a { color: var(--gold); }
+  .keys { font-size: .55rem; color: var(--gold); text-align: center; line-height: 1.9; }
+</style>
+</head>
+<body>
+<h1>BELAMINI '26<small>a demo moment · every pixel placed by code · zero AI imagery</small></h1>
+<div class="frame"><canvas id="g" width="320" height="224" aria-label="Belamini 26 pixel game demo: tap or press space to strike the free kick"></canvas></div>
+<p class="keys">TAP / SPACE = strike · the arrow sets your corner</p>
+<p class="note">This is a hand-built taste of the real thing: Genesis-spec 320x224, sixteen-bit palette, chiptune sounds synthesized live. A full game (chapters from the real run, high scores, the works) builds from exactly this. <a href="../meta.html">Back to The Making Of</a></p>
+
+<script>
+(function () {
+  "use strict";
+  var cv = document.getElementById("g"), g = cv.getContext("2d");
+  var W = 320, H = 224;
+  var state = "title", t = 0, score = 0, tries = 0;
+  var aim = 0, aimDir = 1;               // -1..1 oscillating
+  var ball, keeper, result = "", resultT = 0, confetti = [];
+  var flash = 0, shake = 0;
+
+  /* ---------- palette (Genesis-ish, few colors) ---------- */
+  var P = {
+    grassA: "#1e7a2e", grassB: "#176524", line: "#e8f0e0",
+    sky: "#101430", band: "#1a2044", bandLit: "#2a3468",
+    skin: "#7a4a22", navy: "#1c2560", white: "#f0f0e8",
+    red: "#c0243c", gold: "#f0c020", net: "#c8d0c8",
+    ballW: "#f8f8f0", ballK: "#202020", boardBg: "#05070f"
+  };
+  var crowdCols = ["#c0243c", "#f0f0e8", "#3040a0", "#f0c020", "#7a4a22", "#d88850"];
+
+  /* ---------- audio: tiny YM-flavored beeps ---------- */
+  var AC = null;
+  function ac() { if (!AC) { var A = window.AudioContext || window.webkitAudioContext; if (A) AC = new A(); } return AC; }
+  function beep(freq, dur, type, vol, when) {
+    var c = ac(); if (!c) return;
+    var o = c.createOscillator(), gn = c.createGain(), t0 = c.currentTime + (when || 0);
+    o.type = type || "square"; o.frequency.value = freq;
+    gn.gain.setValueAtTime(vol || .08, t0);
+    gn.gain.exponentialRampToValueAtTime(.001, t0 + dur);
+    o.connect(gn); gn.connect(c.destination); o.start(t0); o.stop(t0 + dur + .02);
+  }
+  function sfxKick() { beep(160, .12, "square", .1); beep(90, .1, "triangle", .12, .02); }
+  function sfxGoal() { [523, 659, 784, 1047].forEach(function (f, i) { beep(f, .16, "square", .07, i * .09); }); beep(1319, .4, "square", .06, .38); }
+  function sfxSave() { beep(120, .25, "sawtooth", .09); beep(80, .3, "sawtooth", .08, .08); }
+  function sfxBlip() { beep(880, .05, "square", .05); }
+
+  /* ---------- sprites as pixel maps ---------- */
+  /* key: . transparent, s skin, n navy, w white, r red, g gold, k black */
+  var COL = { s: P.skin, n: P.navy, w: P.white, r: P.red, g: P.gold, k: "#101010" };
+  var SPR_PLAYER = [ // 12 x 18, our number 4, arms up variant drawn separately
+    "....ssss....",
+    "....ssss....",
+    "....ssss....",
+    ".....ss.....",
+    "..nnnnnnnn..",
+    ".nnnnnnnnnn.",
+    ".nnwnnnnwnn.",
+    "s.nnnwwnnn.s",
+    "s.nnnwwnnn.s",
+    "..nnnnnnnn..",
+    "..wwwwwwww..",
+    "..www..www..",
+    "..ss....ss..",
+    "..ss....ss..",
+    "..ss....ss..",
+    "..kk....kk..",
+    ".kkk....kkk.",
+    "............"
+  ];
+  var SPR_KEEPER = [ // 12 x 18 green kit
+    "....ssss....",
+    "....ssss....",
+    "....ssss....",
+    ".....ss.....",
+    "..gggggggg..",
+    ".gggggggggg.",
+    "s.gggggggg.s",
+    "s.gggggggg.s",
+    "..gggggggg..",
+    "..kkkkkkkk..",
+    "..kkk..kkk..",
+    "..ss....ss..",
+    "..ss....ss..",
+    "..kk....kk..",
+    ".kkk....kkk.",
+    "............",
+    "............",
+    "............"
+  ];
+  function drawSprite(map, x, y, scale, flipDive) {
+    scale = scale || 1;
+    for (var r = 0; r < map.length; r++) {
+      for (var c = 0; c < map[r].length; c++) {
+        var ch = map[r][c];
+        if (ch === ".") continue;
+        g.fillStyle = COL[ch] || ch;
+        var cc = flipDive ? r : c, rr = flipDive ? c : r; // crude 90° rotate for dive
+        g.fillRect(x + cc * scale, y + rr * scale, scale, scale);
+      }
+    }
+  }
+
+  /* ---------- scene pieces ---------- */
+  var crowd = [];
+  for (var i = 0; i < 640; i++) crowd.push({ x: (i * 7) % W, y: 18 + ((i / 46) | 0) * 5, c: crowdCols[i % crowdCols.length], ph: Math.random() * 6.28 });
+
+  function drawScene() {
+    // sky + stadium band
+    g.fillStyle = P.sky; g.fillRect(0, 0, W, 16);
+    g.fillStyle = P.band; g.fillRect(0, 16, W, 46);
+    // ribbon board
+    g.fillStyle = P.boardBg; g.fillRect(0, 58, W, 10);
+    g.fillStyle = P.gold;
+    g.font = "8px 'Press Start 2P'";
+    var msg = "GORDON BELLAMY   PETE HINES   SUPER SUPPORTERS   ";
+    var off = (t * .6) % 300;
+    g.save(); g.beginPath(); g.rect(0, 58, W, 10); g.clip();
+    g.fillText(msg + msg, -off, 66);
+    g.restore();
+    // crowd (bouncing on goal)
+    for (var i = 0; i < crowd.length; i++) {
+      var p = crowd[i];
+      var bounce = (state === "goal") ? Math.round(Math.sin(t * .3 + p.ph)) : 0;
+      g.fillStyle = p.c; g.fillRect(p.x, p.y - bounce, 3, 3);
+    }
+    // pitch stripes
+    for (var y = 68; y < H; y += 20) {
+      g.fillStyle = ((y / 20) | 0) % 2 ? P.grassA : P.grassB;
+      g.fillRect(0, y, W, 20);
+    }
+    // goal
+    g.fillStyle = P.white;
+    g.fillRect(90, 78, 140, 3);   // bar
+    g.fillRect(90, 78, 3, 40);    // posts
+    g.fillRect(227, 78, 3, 40);
+    g.fillStyle = P.net;
+    for (var nx = 93; nx < 227; nx += 7) g.fillRect(nx, 81, 1, 36);
+    for (var ny = 84; ny < 117; ny += 6) g.fillRect(93, ny, 134, 1);
+    // box lines
+    g.fillStyle = P.line;
+    g.fillRect(60, 130, 200, 2);
+    g.fillRect(60, 118, 2, 14); g.fillRect(258, 118, 2, 14);
+  }
+
+  function drawScoreboard() {
+    g.fillStyle = P.boardBg; g.fillRect(4, 2, 150, 12);
+    g.fillStyle = P.gold; g.font = "8px 'Press Start 2P'";
+    g.fillText("GOALS " + score + "/" + tries, 8, 12);
+    g.fillStyle = P.white;
+    g.fillText("BELAMINI 4", 158, 12);
+  }
+
+  function drawBall(x, y, r) {
+    g.fillStyle = P.ballW; g.beginPath ? g.fillRect(x - r, y - r, r * 2, r * 2) : 0;
+    g.fillStyle = P.ballK; g.fillRect(x - 1, y - 1, 2, 2);
+  }
+
+  /* ---------- states ---------- */
+  function resetKick() {
+    ball = { x: 160, y: 178, fx: 160, fy: 178, tx: 160, ty: 100, p: 0 };
+    keeper = { x: 154, y: 96, dive: 0, dir: 0 };
+    result = ""; resultT = 0; state = "ready";
+  }
+
+  function strike() {
+    if (state === "title") { resetKick(); sfxBlip(); return; }
+    if (state !== "ready") return;
+    tries++;
+    var side = aim; // -1..1
+    ball.tx = 160 + side * 58;
+    ball.ty = 92 + Math.random() * 14;
+    ball.p = 0;
+    keeper.dir = Math.random() < .5 ? -1 : 1;
+    // keeper reads well sometimes
+    if (Math.random() < .35) keeper.dir = side >= 0 ? 1 : -1;
+    state = "flight";
+    sfxKick();
+  }
+
+  function update() {
+    t++;
+    if (state === "ready") {
+      aim += aimDir * .035;
+      if (aim > 1 || aim < -1) { aimDir *= -1; aim = Math.max(-1, Math.min(1, aim)); }
+    }
+    if (state === "flight") {
+      ball.p += .06;
+      var p = ball.p;
+      ball.x = ball.fx + (ball.tx - ball.fx) * p;
+      ball.y = ball.fy + (ball.ty - ball.fy) * p - Math.sin(p * Math.PI) * 34;
+      keeper.dive = Math.min(1, keeper.dive + .07);
+      keeper.x = 154 + keeper.dir * keeper.dive * 44;
+      if (p >= 1) {
+        var keeperReach = Math.abs(keeper.x + 6 - ball.tx) < 16;
+        if (keeperReach) { state = "save"; result = "SAVED!"; sfxSave(); shake = 10; }
+        else { state = "goal"; result = "GOOOAL!"; score++; sfxGoal(); flash = 8;
+          for (var i = 0; i < 90; i++) confetti.push({ x: ball.tx, y: ball.ty, vx: (Math.random() - .5) * 3, vy: -Math.random() * 2.5, c: crowdCols[i % crowdCols.length], l: 60 + Math.random() * 30 });
+        }
+        resultT = 0;
+      }
+    }
+    if (state === "goal" || state === "save") {
+      resultT++;
+      if (resultT > 110) resetKick();
+    }
+    confetti.forEach(function (c) { c.vy += .06; c.x += c.vx; c.y += c.vy; c.l--; });
+    confetti = confetti.filter(function (c) { return c.l > 0 && c.y < H; });
+    if (flash > 0) flash--;
+    if (shake > 0) shake--;
+  }
+
+  function render() {
+    g.save();
+    if (shake > 0) g.translate((Math.random() - .5) * 4, (Math.random() - .5) * 3);
+    drawScene();
+    drawScoreboard();
+
+    if (state === "title") {
+      g.fillStyle = "rgba(5,7,15,.75)"; g.fillRect(0, 0, W, H);
+      g.fillStyle = P.gold; g.font = "16px 'Press Start 2P'"; g.textAlign = "center";
+      g.fillText("BELAMINI '26", W / 2, 92);
+      g.fillStyle = P.white; g.font = "8px 'Press Start 2P'";
+      g.fillText("THE NUMBER 4 RETURNS", W / 2, 112);
+      g.fillText("33 YEARS AFTER HIS", W / 2, 126);
+      g.fillText("SEGA GENESIS DEBUT", W / 2, 138);
+      if ((t / 30 | 0) % 2) { g.fillStyle = P.gold; g.fillText("TAP TO KICK OFF", W / 2, 170); }
+      g.textAlign = "left";
+      g.restore(); return;
+    }
+
+    // keeper
+    drawSprite(SPR_KEEPER, keeper.x, keeper.dive > .55 ? 100 : 96, 1, keeper.dive > .55);
+    // player by the ball (runs up during flight start)
+    var px = 148, py = 176;
+    if (state === "flight" && ball.p < .2) px = 148 + ball.p * 30;
+    drawSprite(SPR_PLAYER, px, py - 16, 1, false);
+    // number 4 tag above our hero
+    g.fillStyle = P.gold; g.font = "8px 'Press Start 2P'";
+    g.fillText("4", px + 4, py - 20);
+
+    // aim arrow
+    if (state === "ready") {
+      var ax = 160 + aim * 58;
+      g.fillStyle = P.gold;
+      g.fillRect(ax - 1, 84, 2, 8);
+      g.fillRect(ax - 4, 92, 8, 2);
+    }
+
+    // ball
+    if (state !== "goal" || resultT < 4) drawBall(ball.x, ball.y, 3);
+
+    // confetti
+    confetti.forEach(function (c) { g.fillStyle = c.c; g.fillRect(c.x, c.y, 2, 2); });
+
+    // result text
+    if (result && resultT < 90) {
+      g.font = "16px 'Press Start 2P'"; g.textAlign = "center";
+      g.fillStyle = state === "goal" ? P.gold : P.red;
+      var wob = state === "goal" ? Math.sin(t * .4) * 2 : 0;
+      g.fillText(result, W / 2, 150 + wob);
+      if (state === "goal") { g.font = "8px 'Press Start 2P'"; g.fillStyle = P.white; g.fillText("GOR-DI-O! GOR-DI-O!", W / 2, 168); }
+      g.textAlign = "left";
+    }
+
+    if (flash > 0) { g.fillStyle = "rgba(240,240,232," + (flash / 20) + ")"; g.fillRect(0, 0, W, H); }
+    g.restore();
+  }
+
+  function loop() { update(); render(); requestAnimationFrame(loop); }
+
+  cv.addEventListener("pointerdown", function (e) { e.preventDefault(); strike(); });
+  document.addEventListener("keydown", function (e) { if (e.key === " " || e.key === "Enter") { e.preventDefault(); strike(); } });
+
+  document.fonts && document.fonts.ready.then(function () { loop(); }) || loop();
+})();
+</script>
+</body>
+</html>
