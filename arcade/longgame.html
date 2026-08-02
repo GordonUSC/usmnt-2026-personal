@@ -50,6 +50,7 @@
   var walked = false, reachedEnd = false;
   var cam = { horizon: .47, charMult: 1, mode: 0, t: 0 }; /* PS1-era broadcast cameras: Tele and Wide */
   var replayT = 0;
+  var win3 = null, bandFlash = 0; /* the Madden passing windows, and the crowd erupting */
   var couva = false;
   try { couva = localStorage.getItem("longgame_couva") === "1"; } catch (e) { }
 
@@ -161,6 +162,7 @@
         if (b.kt === 40) { /* the ball finds the net */
           [523, 659, 784].forEach(function (f, i) { beep(f, .1, "square", .05, i * .06); });
           b.netFlash = 16;
+          if (eraIndex(progress()) === 3) bandFlash = 20; /* big-play crowd, 1993 style */
         }
         if (b.netFlash) b.netFlash--;
         if (b.kt > 70) { b.kicked = false; b.respawn = 260; b.kt = 0; b.netFlash = 0; }
@@ -171,6 +173,7 @@
         if (d > -4 && d < 30 && keys.right) {
           b.kicked = true; b.kt = 0;
           if (eraIndex(progress()) === 4) replayT = 140; /* Konami rule: every strike earns a replay */
+          if (eraIndex(progress()) === 3) win3 = { t: 55, pick: (Math.random() * 3) | 0 }; /* Madden rule: the windows pop */
           kickFlash = { msg: b.msg, t: 80 };
           beep(196, .1, "square", .09);
           [392, 494, 587].forEach(function (f, i) { beep(f, .12, "square", .05, .06 + i * .07); });
@@ -182,6 +185,21 @@
   function drawBalls(g2, era, w, groundY) {
     var k = w / 640;
     BALLS.forEach(function (b) {
+      if (era === 3) { /* Madden view: the ball waits ahead, up-field, and soars with a detached shadow */
+        if (b.respawn > 0) return;
+        var hh = groundY / .9, topY2 = hh * .31;
+        var d3 = (b.wx - px) + (b.kicked ? b.kt * 8 : 0);
+        if (d3 < -30 || d3 > 560) return;
+        var u4 = Math.max(0, Math.min(1, d3 / 520));
+        var byG = hh * .88 - (hh * .88 - (topY2 + hh * .1)) * (1 - Math.pow(1 - u4, 1.55));
+        var arcH = b.kicked ? Math.sin(Math.min(1, b.kt / 55) * Math.PI) * hh * .13 * (1 - .5 * u4) : 0;
+        var r3 = Math.max(2, 5 * (1 - .6 * u4) * (w / 320));
+        var bx3 = w / 2 + w * .05 * (1 - u4);
+        g2.fillStyle = "rgba(0,0,0,.4)"; g2.beginPath(); g2.ellipse(bx3, byG, r3, r3 * .45, 0, 0, 6.29); g2.fill();
+        g2.fillStyle = "#f8f8f0"; g2.fillRect(bx3 - r3, byG - arcH - r3 * 2, r3 * 2, r3 * 2);
+        g2.fillStyle = "#202020"; g2.fillRect(bx3 - 1, byG - arcH - r3 - 1, 2, 2);
+        return;
+      }
       /* the waiting goal, ~200 world units past each ball */
       var gx = w * .32 + (b.wx + 200 - px) * k;
       if (gx > -60 && gx < w + 60 && b.respawn <= 0) {
@@ -221,7 +239,24 @@
       g2.fillStyle = skin; g2.fillRect(x - 3 * s, y - 4 * s, 2 * s, 4 * s); g2.fillRect(x + 1 * s, y - 4 * s, 2 * s, 4 * s);
       return;
     }
-    if (era <= 3) { /* 8/16-bit sprite */
+    if (era === 3) { /* 16-bit hero from behind, digitized Madden 95 style: no outline, proper proportions */
+      var swing3 = Math.sin(walkT * .35) * 2 * s;
+      g2.fillStyle = "rgba(0,0,0,.35)"; g2.fillRect(x - 4 * s, y - 1, 8 * s, 2);
+      g2.fillStyle = skin;
+      g2.fillRect(x - 3 * s, y - 5 * s, 2 * s, 5 * s + swing3);
+      g2.fillRect(x + 1 * s, y - 5 * s, 2 * s, 5 * s - swing3);
+      g2.fillStyle = white; g2.fillRect(x - 3.5 * s, y - 8 * s, 7 * s, 3.2 * s); /* shorts */
+      g2.fillStyle = navy; g2.fillRect(x - 3.5 * s, y - 8 * s, Math.max(1, s * .5), 3.2 * s); g2.fillRect(x + 3 * s, y - 8 * s, Math.max(1, s * .5), 3.2 * s); /* the two-pixel stripe down the leg */
+      g2.fillStyle = navy; g2.fillRect(x - 4 * s, y - 15 * s, 8 * s, 7 * s); /* shirt, from behind */
+      g2.fillStyle = skin; g2.fillRect(x - 5.5 * s, y - 14 * s, 1.5 * s, 4 * s); g2.fillRect(x + 4 * s, y - 14 * s, 1.5 * s, 4 * s); /* arms */
+      g2.fillStyle = white; /* the big 4 on the back */
+      g2.fillRect(x + .5 * s, y - 14 * s, s, 4 * s);
+      g2.fillRect(x - 1.5 * s, y - 14 * s, s, 2 * s);
+      g2.fillRect(x - 1.5 * s, y - 12 * s, 3.5 * s, s);
+      g2.fillStyle = skin; g2.fillRect(x - 1.5 * s, y - 18 * s, 3 * s, 3 * s); /* head */
+      return;
+    }
+    if (era <= 3) { /* 8-bit sprite */
       g2.fillStyle = skin; g2.fillRect(x - 2 * s, y - 15 * s, 4 * s, 4 * s);
       g2.fillStyle = era === 3 ? navy : "#e0e0d8"; g2.fillRect(x - 3 * s, y - 11 * s, 6 * s, 6 * s); /* white pickup years, then the USA navy */
       g2.fillStyle = era === 3 ? white : navy; g2.fillRect(x - 1 * s, y - 10 * s, 2 * s, 3 * s); /* the 4 patch, always */
@@ -331,22 +366,64 @@
       return groundY;
     }
 
-    if (era === 3) { /* 16-BIT: parallax crowd, ribbon */
-      g2.fillStyle = moodColor([26, 32, 68], [12, 14, 30]); g2.fillRect(0, h * .18, w, h * .3);
-      for (var r = 0; r < 5; r++) for (var cc2 = 0; cc2 < 40; cc2++) {
-        var fx = ((cc2 * 18 - scrollX * (.3 + r * .06)) % (w + 18) + w + 18) % (w + 18) - 9;
-        g2.fillStyle = ["#c0243c", "#f0f0e8", "#3040a0", "#f0c020"][(cc2 + r) % 4];
-        var bounce = mood > .4 ? Math.round(Math.sin(t * .3 + cc2)) * 1 : 0;
-        g2.fillRect(fx, h * .2 + r * 9 - bounce, 3, 3);
+    if (era === 3) { /* 16-BIT 1994: the Madden view, brought home to soccer */
+      var topY = h * .31, topW = w * .78;
+      /* the dark beyond, then the crowd confetti band past the goal */
+      g2.fillStyle = "#0a0c1c"; g2.fillRect(0, 0, w, topY);
+      for (var cf = 0; cf < w; cf += 2) {
+        var rr2 = (cf * 2654435761) % 100;
+        if (rr2 < 78) {
+          g2.fillStyle = ["#c0243c", "#e8e8e0", "#3040a0", "#d0a020", "#7a4a22", "#508050"][(cf / 2 | 0) % 6];
+          if (bandFlash > 0 && ((cf + t) % 4) < 2) g2.fillStyle = "#fff8dc"; /* big-play crowd, erupting */
+          g2.fillRect(cf, 4 + ((cf * 37) % (topY - 24)), 2, 2);
+        }
       }
-      g2.fillStyle = "#05070f"; g2.fillRect(0, h * .5, w, 8);
+      /* hoardings behind the goal, with a familiar name on the boards */
+      g2.fillStyle = "#05070f"; g2.fillRect(0, topY - 12, w, 10);
       g2.fillStyle = "#f0c020"; g2.font = "7px 'Press Start 2P'";
-      var msg = "GORDIO BELAMINI ON SPAIN   1993   ";
-      g2.save(); g2.beginPath(); g2.rect(0, h * .5, w, 8); g2.clip();
-      g2.fillText(msg + msg, -(t * .5 % 240), h * .5 + 7); g2.restore();
-      for (var y2 = groundY; y2 < h; y2 += 10) { g2.fillStyle = ((y2 / 10) | 0) % 2 ? moodColor([30, 122, 46], [14, 50, 22]) : moodColor([23, 101, 36], [10, 42, 18]); g2.fillRect(0, y2, w, 10); }
-      g2.fillStyle = "#e8f0e0"; g2.fillRect(0, groundY, w, 2);
-      return groundY;
+      var msg3 = "GORDIO BELAMINI ON SPAIN · 1993 · EA ROOKIE OF THE YEAR 1994 · ";
+      g2.save(); g2.beginPath(); g2.rect(0, topY - 12, w, 10); g2.clip();
+      g2.fillText(msg3 + msg3, -(t * .5 % 480), topY - 4); g2.restore();
+      /* the pitch trapezoid: full width at your feet, narrowing toward the goal */
+      g2.fillStyle = moodColor([20, 70, 34], [10, 34, 18]); g2.fillRect(0, topY, w, h - topY);
+      var yy3 = h + ((scrollX * .9) % 64) * (34 / 64) * (h / 224), band = 0;
+      while (yy3 > topY + 1) {
+        var u3 = Math.max(0, (h - yy3) / (h - topY));
+        var gap3 = Math.max(6, (34 - 16 * u3) * (h / 224));
+        g2.fillStyle = band % 2 ? moodColor([46, 138, 66], [16, 50, 26]) : moodColor([56, 156, 78], [22, 62, 34]);
+        var wHere = w - (w - topW) * u3, xHere = (w - wHere) / 2;
+        g2.fillRect(xHere, Math.max(topY, yy3 - gap3), wHere, Math.min(gap3 + 1, yy3 - topY));
+        yy3 -= gap3; band++;
+      }
+      /* touchlines converging on the goal */
+      g2.strokeStyle = "#e8f0e0"; g2.lineWidth = Math.max(1, h / 180);
+      g2.beginPath(); g2.moveTo(0, h); g2.lineTo((w - topW) / 2, topY); g2.stroke();
+      g2.beginPath(); g2.moveTo(w, h); g2.lineTo(w - (w - topW) / 2, topY); g2.stroke();
+      /* distance-to-goal markers, sideways white bitmap digits, the loving transplant */
+      g2.fillStyle = "rgba(232,240,224,.85)"; g2.font = "7px 'Press Start 2P'";
+      for (var dm = 0; dm < 3; dm++) {
+        var dY = h * (.84 - dm * .19), lbl3 = ["30", "20", "10"][dm];
+        g2.save(); g2.translate(w * .105 + dm * w * .014, dY); g2.rotate(-Math.PI / 2); g2.fillText(lbl3, 0, 0); g2.restore();
+        g2.save(); g2.translate(w * .895 - dm * w * .014, dY); g2.rotate(Math.PI / 2); g2.fillText(lbl3, 0, 0); g2.restore();
+      }
+      /* the far goal: posts, bar, crosshatch net, the box */
+      var gw3 = w * .2, gx3 = (w - gw3) / 2, gy3 = topY + h * .09, gh3 = h * .075;
+      g2.strokeStyle = "rgba(232,240,224,.9)"; g2.lineWidth = 1;
+      g2.strokeRect(w * .33, topY + 1, w * .34, h * .055);
+      g2.fillStyle = "#f0f0e8";
+      g2.fillRect(gx3, gy3 - gh3, 2, gh3); g2.fillRect(gx3 + gw3 - 2, gy3 - gh3, 2, gh3); g2.fillRect(gx3, gy3 - gh3, gw3, 2);
+      g2.strokeStyle = bandFlash > 0 ? "#f0c020" : "rgba(200,208,200,.5)";
+      for (var nx3 = gx3 + 4; nx3 < gx3 + gw3 - 3; nx3 += 4) { g2.beginPath(); g2.moveTo(nx3, gy3 - gh3 + 2); g2.lineTo(nx3, gy3); g2.stroke(); }
+      for (var ny3 = gy3 - gh3 + 3; ny3 < gy3; ny3 += 3) { g2.beginPath(); g2.moveTo(gx3 + 2, ny3); g2.lineTo(gx3 + gw3 - 2, ny3); g2.stroke(); }
+      /* halfway line and center circle sail past underfoot as you advance */
+      var hwy = h - ((scrollX * .9 + 300) % (h * 1.6));
+      if (hwy > topY + h * .06 && hwy < h) {
+        var uH = (h - hwy) / (h - topY), wH = w - (w - topW) * uH;
+        g2.strokeStyle = "rgba(232,240,224,.8)";
+        g2.beginPath(); g2.moveTo((w - wH) / 2, hwy); g2.lineTo((w + wH) / 2, hwy); g2.stroke();
+        g2.beginPath(); g2.ellipse(w / 2, hwy, w * .11 * (1 - .3 * uH), h * .028 * (1 - .5 * uH), 0, 0, 6.29); g2.stroke();
+      }
+      return h * .9;
     }
 
     if (era === 4) { /* POLYGON 1997-2010: PS1 broadcast soccer, studied from FIFA 98-99 and ISS Pro Evolution */
@@ -522,6 +599,8 @@
     cam.horizon += ((cam.mode ? .36 : .47) - cam.horizon) * .03;
     cam.charMult += ((cam.mode ? .72 : 1) - cam.charMult) * .03;
     if (replayT > 0) replayT--;
+    if (bandFlash > 0) bandFlash--;
+    if (win3) { win3.t--; if (win3.t <= 0) win3 = null; }
     var p = progress(), era = eraIndex(p);
     if (moved) { walked = true; stepSound(era); }
     reachedEnd = p > .985;
@@ -574,9 +653,32 @@
     } else {
       var cs2 = idx >= 4 ? vecScale : charScale;
       if (idx === 4) cs2 *= cam.charMult; /* the Wide cam sees a smaller you */
-      drawChar(og, era.rw * .32, groundY, idx, cs2, t);
+      var cx3 = idx === 3 ? era.rw * .5 : era.rw * .32; /* Madden view: hero center-bottom */
+      drawChar(og, cx3, groundY, idx, cs2, t);
     }
     drawParticles(og);
+    if (idx === 3 && win3) { /* the passing windows, reborn as shot windows, lovingly in the way */
+      var bw = era.rw * .3, bh2 = era.rh * .26, gp3 = era.rw * .025;
+      for (var wi = 0; wi < 3; wi++) {
+        var wx3 = gp3 + wi * (bw + gp3), wy3 = 4;
+        og.fillStyle = "#05070f"; og.fillRect(wx3 - 2, wy3 - 2, bw + 4, bh2 + 4);
+        og.strokeStyle = (wi === win3.pick && (t % 14) < 8) ? "#f0c020" : "#e8f0e0";
+        og.lineWidth = 2; og.strokeRect(wx3 - 1, wy3 - 1, bw + 2, bh2 + 2);
+        og.fillStyle = "#2a7a3e"; og.fillRect(wx3, wy3, bw, bh2);
+        og.fillStyle = "#f0f0e8";
+        og.fillRect(wx3 + bw * .1, wy3 + bh2 * .2, 2, bh2 * .5);
+        og.fillRect(wx3 + bw * .9 - 2, wy3 + bh2 * .2, 2, bh2 * .5);
+        og.fillRect(wx3 + bw * .1, wy3 + bh2 * .2, bw * .8, 2);
+        og.fillStyle = "#d0a020"; /* the keeper, guarding the wrong zone if you picked well */
+        og.fillRect(wx3 + bw * (wi === 0 ? .66 : wi === 1 ? .44 : .2), wy3 + bh2 * .34, bw * .12, bh2 * .36);
+        og.fillStyle = "#05070f"; og.fillRect(wx3, wy3, 13, 12);
+        og.fillStyle = "#f0c020"; og.font = "8px 'Press Start 2P'"; og.fillText(["A", "B", "C"][wi], wx3 + 3, wy3 + 10);
+        if (wi === win3.pick) {
+          var bp = 1 - win3.t / 55;
+          og.fillStyle = "#f8f8f0"; og.fillRect(wx3 + bw * .5 - 1, wy3 + bh2 * (.92 - .6 * bp), 3, 3);
+        }
+      }
+    }
     if (idx === 4 && replayT > 0) { /* the Konami letterboxed replay */
       og.fillStyle = "#000";
       og.fillRect(0, 0, era.rw, era.rh * .1); og.fillRect(0, era.rh * .9, era.rw, era.rh * .1);
