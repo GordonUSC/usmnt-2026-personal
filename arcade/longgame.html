@@ -35,7 +35,7 @@
   <button class="dn" data-k="down">▼</button>
   <button class="rt" data-k="right">▶</button>
 </div>
-<p class="note">Arrow keys on desktop, pad on phone. One character, fifty-two years, eight graphics engines from Pong to anime. The HD and anime worlds stand on commissioned AI environment art; the final era is a real photograph, because that's the most realistic renderer there is. <a href="belamini.html">Belamini '26 demo</a> · <a href="../meta.html">The Making Of</a></p>
+<p class="note">Arrows walk, up and down move the heart. And every other key on the keyboard does something, different in every era: SPACE cheers, M is for Matt, H is for hearts, 1-9 warps time, and each decade hides its own toys (try R in 1988, the Z X C windows in 1994, V in 1997, N in 2014, E in the anime years, P and T in 2026). Eight graphics engines from Pong to anime; the HD and anime worlds stand on commissioned AI environment art; the final era is a real photograph, because that's the most realistic renderer there is. <a href="belamini.html">Belamini '26 demo</a> · <a href="../meta.html">The Making Of</a></p>
 
 <script>
 (function () {
@@ -52,6 +52,18 @@
   var replayT = 0;
   var win3 = null, bandFlash = 0; /* the Madden passing windows, and the crowd erupting */
   var animeFx = null; /* the anime kick: ego eye-band when sad, apex time-stop when happy */
+  /* ---------------- the playful keys: every era answers differently ---------------- */
+  var fx2 = [], rain8 = false, forceNight = false, photoI = -1, quoteI = -1;
+  var extra1 = new Image(); extra1.src = "../assets/board-0625.jpg";
+  var extra2 = new Image(); extra2.src = "../assets/g-pete-bowl-0625.jpg";
+  var extra3 = new Image(); extra3.src = "../assets/quinn-soccerhouse-0611.jpg";
+  var REAL_QUOTES = [
+    '"Not me crying in an uber on the way to a soccer game." · Jun 25',
+    '"GO TO THE WORLD CUP?!?!" · Pete, Jun 25',
+    '"Maybe the World Cup was the friends we made along the way." · Jul 6',
+    '"MATCHDAY!!!" · Matt, every matchday'
+  ];
+  function pushFX(o) { o.t0 = o.t; fx2.push(o); if (fx2.length > 12) fx2.shift(); }
   var couva = false;
   try { couva = localStorage.getItem("longgame_couva") === "1"; } catch (e) { }
 
@@ -135,6 +147,12 @@
     var seq = minor ? [392, 466, 587] : [392, 494, 587, 784];
     seq.forEach(function (f, i) { beep(f, .12, era < 4 ? "square" : "triangle", .05, i * .08); });
   }
+  function sfxKick() { beep(160, .12, "square", .1); beep(90, .1, "triangle", .12, .02); }
+  function sfxGoal() { [523, 659, 784, 1047].forEach(function (f, i) { beep(f, .16, "square", .07, i * .09); }); beep(1319, .4, "square", .06, .38); }
+  function sfxSave() { beep(120, .25, "sawtooth", .09); beep(80, .3, "sawtooth", .08, .08); }
+  function whistle() { var c = ac(); if (!c) return; var o = c.createOscillator(), g = c.createGain(), n = c.currentTime; o.type = "square"; o.frequency.setValueAtTime(2200, n); o.frequency.linearRampToValueAtTime(2600, n + .08); o.frequency.linearRampToValueAtTime(2100, n + .22); g.gain.setValueAtTime(.05, n); g.gain.exponentialRampToValueAtTime(.001, n + .3); o.connect(g); g.connect(c.destination); o.start(n); o.stop(n + .32); }
+  function whoosh(up) { var c = ac(); if (!c) return; var o = c.createOscillator(), g = c.createGain(), n = c.currentTime; o.type = "sawtooth"; o.frequency.setValueAtTime(up ? 120 : 900, n); o.frequency.exponentialRampToValueAtTime(up ? 900 : 120, n + .35); g.gain.setValueAtTime(.04, n); g.gain.exponentialRampToValueAtTime(.001, n + .4); o.connect(g); g.connect(c.destination); o.start(n); o.stop(n + .42); }
+  function thunder() { beep(70, .6, "triangle", .12); beep(50, .9, "sine", .1, .1); }
 
   /* ---------------- palettes with mood ---------------- */
   function lerp(a, b, u) { return a + (b - a) * u; }
@@ -623,7 +641,7 @@
 
     if (era === 5 && imOk(hdDusk) && imOk(hdNight)) { /* HD: the FIFA-2010s environment plates, live layers on top */
       drawCover(g2, hdDusk, w, h);
-      var nA = Math.max(0, Math.min(1, .25 - mood * 1.2));
+      var nA = forceNight ? 1 : Math.max(0, Math.min(1, .25 - mood * 1.2));
       if (nA > .02) { g2.globalAlpha = nA; drawCover(g2, hdNight, w, h); g2.globalAlpha = 1; }
       if (mood < -.2) { g2.fillStyle = "rgba(6,10,26," + (-mood * .3).toFixed(3) + ")"; g2.fillRect(0, 0, w, h); }
       var sheen2 = g2.createRadialGradient(w / 2, h * .8, 10, w / 2, h * .8, w * .55);
@@ -823,6 +841,11 @@
     ctx.fillStyle = mood >= 0 ? "#FFCD00" : "#6080c0";
     var mh = mood * 56;
     ctx.fillRect(VW - 38, VH / 2 - (mh > 0 ? mh : 0), 10, Math.abs(mh) || 2);
+    /* era key hints */
+    var HINTS = ["B · R", "U · V · J", "R = RAIN · O · P", "Z X C · Q · E · T", "R · C · V · L", "F · G · N", "E · T · I · K", "P · T · C"];
+    ctx.fillStyle = "rgba(245,241,232,.55)";
+    ctx.font = era <= 3 ? "9px 'Press Start 2P'" : "600 13px Inter";
+    ctx.fillText("KEYS · " + (HINTS[era] || "") + " · SPACE · M · H · 1-9 WARP", 20, era <= 3 ? 62 : 70);
     /* milestone caption */
     var m = milestoneFor(yr);
     if (m) {
@@ -902,7 +925,7 @@
     return { p: p, era: era, moved: moved };
   }
 
-  function renderCore(idx, p) {
+  function renderCore(idx, p, tickFx) { /* tickFx: only the first render of a blended frame advances effect clocks */
     var era = ERAS[idx];
     off.width = era.rw; off.height = era.rh;
     og.imageSmoothingEnabled = era.smooth;
@@ -1008,6 +1031,125 @@
       og.fillText("● REPLAY", era.rw - 8, era.rh * .1 + 12);
       og.textAlign = "left";
     }
+    if (idx === 2 && rain8) { /* rain in October, St. Paul's */
+      og.fillStyle = "rgba(40,50,70,.28)"; og.fillRect(0, 0, era.rw, era.rh);
+      og.strokeStyle = "rgba(200,220,240,.55)"; og.lineWidth = 1;
+      for (var rn = 0; rn < 26; rn++) {
+        var rx = ((rn * 83 + t * 7) % era.rw), ry = ((rn * 47 + t * 11) % era.rh);
+        og.beginPath(); og.moveTo(rx, ry); og.lineTo(rx - 2, ry + 7); og.stroke();
+      }
+    }
+    /* the playful keys, rendered in the era's own hand */
+    var w2 = era.rw, h2 = era.rh, pix = idx <= 3;
+    for (var fi = fx2.length - 1; fi >= 0; fi--) {
+      var F = fx2[fi];
+      if (tickFx) { F.t--; if (F.t <= 0) { fx2.splice(fi, 1); continue; } }
+      else if (F.t <= 0) continue;
+      var pgs = F.t / F.t0;
+      og.textAlign = "center";
+      if (F.type === "glyph") {
+        og.fillStyle = "rgba(240,240,232," + Math.min(1, pgs * 2).toFixed(2) + ")";
+        og.font = pix ? Math.round(h2 * .12) + "px 'Press Start 2P'" : "italic 700 " + Math.round(h2 * .12) + "px Fraunces";
+        og.fillText(F.ch, F.x * w2, h2 * .4 - (1 - pgs) * h2 * .18);
+      } else if (F.type === "slam") {
+        og.save(); og.translate(w2 / 2, h2 * .3); og.rotate(-.06);
+        var sc3 = 1 + Math.max(0, 1 - (F.t0 - F.t) / 6) * .8; og.scale(sc3, sc3);
+        og.fillStyle = idx === 6 ? "#7ab8ff" : "#f0c020";
+        og.font = pix ? Math.round(h2 * .08) + "px 'Press Start 2P'" : "italic 800 " + Math.round(h2 * .1) + "px Fraunces";
+        og.fillText(F.msg, 0, 0); og.restore();
+      } else if (F.type === "cheer") {
+        for (var ci2 = 0; ci2 < 24; ci2++) {
+          og.fillStyle = ["#c0243c", "#f0f0e8", "#3040a0", "#f0c020"][ci2 % 4];
+          og.fillRect((ci2 / 24) * w2 + Math.sin(t * .3 + ci2) * 4, h2 * .08 + ((ci2 * 37) % (h2 * .22)) + (1 - pgs) * h2 * .3, pix ? 3 : 5, pix ? 3 : 8);
+        }
+      } else if (F.type === "hearts") {
+        og.fillStyle = "rgba(240,80,110," + (pgs * .9).toFixed(2) + ")";
+        for (var hi = 0; hi < 10; hi++) {
+          og.font = Math.round(h2 * (.04 + (hi % 3) * .02)) + "px Inter";
+          og.fillText("♥", (hi / 10) * w2 + w2 * .05, h2 * .8 - (1 - pgs) * h2 * (.4 + (hi % 4) * .1));
+        }
+      } else if (F.type === "pongball") {
+        if (tickFx) {
+          F.x += F.vx * .004; F.vy += .09; F.py += F.vy;
+          if (F.py > h2 * .88) { F.py = h2 * .88; F.vy = -Math.abs(F.vy) * .95; beep(880, .04, "square", .04); }
+          if (F.x < .02 || F.x > .98) F.vx *= -1;
+        }
+        og.fillStyle = "#f0f0e8"; og.fillRect(F.x * w2, F.py, 4, 4);
+      } else if (F.type === "sunhop") {
+        og.fillStyle = "#f0f0e8"; og.fillRect(w2 * .78, h2 * .1 - Math.sin(pgs * Math.PI) * 12, 12, 12);
+      } else if (F.type === "wave1") {
+        og.fillStyle = "rgba(240,240,232,.16)";
+        for (var wv = 0; wv < 6; wv++) og.fillRect(0, h2 * .52 + wv * h2 * .08 + Math.sin(t * .3 + wv) * 3, w2, 2);
+      } else if (F.type === "juggle") {
+        og.fillStyle = "#f0f0e8";
+        og.fillRect(w2 * .32 - 2, h2 * .55 - Math.abs(Math.sin(pgs * Math.PI * 3)) * h2 * .16, 5, 5);
+      } else if (F.type === "ole") {
+        og.fillStyle = "#f0f0e8"; og.font = Math.round(h2 * .05) + "px 'Press Start 2P'";
+        for (var oi = 0; oi < 3; oi++) og.fillText("OLE!", w2 * (.25 + oi * .25), h2 * .24 - (1 - pgs) * 10 - oi * 4);
+      } else if (F.type === "ea") {
+        og.fillStyle = "rgba(5,7,15," + Math.min(.85, pgs * 2).toFixed(2) + ")"; og.fillRect(0, h2 * .36, w2, h2 * .18);
+        og.fillStyle = "#f0c020"; og.font = Math.round(h2 * .05) + "px 'Press Start 2P'";
+        og.fillText("GORDIO. IT'S IN HIS GAME.", w2 / 2, h2 * .47);
+      } else if (F.type === "cart") {
+        if (tickFx) { F.x += .008; if ((F.t % 26) === 0) beep(220, .08, "square", .04); }
+        var cx4 = F.x * w2;
+        og.fillStyle = "#e8e8e0"; og.fillRect(cx4, h2 * .78, w2 * .1, h2 * .055);
+        og.fillStyle = "#c0243c"; og.fillRect(cx4 + w2 * .062, h2 * .755, w2 * .038, h2 * .028);
+        og.fillStyle = "#101014";
+        og.beginPath(); og.arc(cx4 + w2 * .02, h2 * .845, h2 * .014, 0, 6.29); og.arc(cx4 + w2 * .08, h2 * .845, h2 * .014, 0, 6.29); og.fill();
+      } else if (F.type === "vcr") {
+        og.fillStyle = "rgba(0,0,0,.25)"; og.fillRect(0, 0, w2, h2);
+        og.fillStyle = "#f0f0e8"; og.font = Math.round(h2 * .055) + "px 'Press Start 2P'";
+        og.fillText("▌▌ PAUSE", w2 * .8, h2 * .13);
+      } else if (F.type === "flare") {
+        og.strokeStyle = "rgba(255,250,220," + (pgs * .8).toFixed(2) + ")"; og.lineWidth = 2;
+        [[1, 0], [-1, 0], [0, 1], [0, -1], [.7, .7], [-.7, .7], [.7, -.7], [-.7, -.7]].forEach(function (dxy) {
+          og.beginPath(); og.moveTo(w2 * .5, h2 * .3); og.lineTo(w2 * .5 + dxy[0] * w2 * .2 * pgs, h2 * .3 + dxy[1] * w2 * .2 * pgs); og.stroke();
+        });
+      } else if (F.type === "flashwave") {
+        og.fillStyle = "#fff";
+        for (var fw = 0; fw < 40; fw++) {
+          if (((fw * 7 + F.t) % 5) < 2) og.fillRect((fw / 40) * w2, h2 * (.12 + (fw % 5) * .05), 2, 2);
+        }
+        if (F.t >= F.t0 - 2) { og.fillStyle = "rgba(255,255,255,.5)"; og.fillRect(0, 0, w2, h2); }
+      } else if (F.type === "banner") {
+        var bx5 = w2 * (pgs > .85 ? .06 + (pgs - .85) * 6 : .06);
+        og.fillStyle = "rgba(8,10,20,.9)"; og.fillRect(bx5, h2 * .8, w2 * .5, h2 * .09);
+        og.fillStyle = "#BF0A30"; og.fillRect(bx5, h2 * .8, w2 * .012, h2 * .09);
+        og.fillStyle = "#f0f0e8"; og.font = "700 " + Math.round(h2 * .042) + "px Inter"; og.textAlign = "left";
+        og.fillText(F.msg, bx5 + w2 * .03, h2 * .862);
+      } else if (F.type === "impact") {
+        og.fillStyle = F.t % 2 ? "#fff" : "#04060f"; og.fillRect(0, 0, w2, h2);
+      } else if (F.type === "flash") {
+        og.fillStyle = "rgba(255,255,255," + (pgs * .8).toFixed(2) + ")"; og.fillRect(0, 0, w2, h2);
+      } else if (F.type === "warp") {
+        og.strokeStyle = "rgba(255,205,0," + (pgs * .7).toFixed(2) + ")"; og.lineWidth = 2;
+        for (var wr = 0; wr < 10; wr++) {
+          var wa = wr * .63;
+          og.beginPath(); og.moveTo(w2 / 2, h2 / 2);
+          og.lineTo(w2 / 2 + Math.cos(wa) * w2 * (1 - pgs), h2 / 2 + Math.sin(wa) * w2 * (1 - pgs)); og.stroke();
+        }
+      } else if (F.type === "photo") {
+        var pim = [extra1, extra2, extra3][F.i];
+        if (pim && pim.complete && pim.naturalWidth) {
+          var ps5 = Math.min((w2 * .28) / pim.naturalWidth, (h2 * .5) / pim.naturalHeight);
+          var pw5 = pim.naturalWidth * ps5, ph5 = pim.naturalHeight * ps5;
+          var py5 = h2 * .12 - Math.max(0, 1 - (F.t0 - F.t) / 12) * h2 * .3;
+          og.save(); og.translate(w2 * .07 + pw5 / 2, py5 + ph5 / 2); og.rotate(-.05);
+          og.fillStyle = "#F5F1E8"; og.fillRect(-pw5 / 2 - 6, -ph5 / 2 - 6, pw5 + 12, ph5 + 26);
+          og.drawImage(pim, -pw5 / 2, -ph5 / 2, pw5, ph5);
+          og.restore();
+        }
+      } else if (F.type === "quote") {
+        var qmsg = REAL_QUOTES[F.i];
+        og.fillStyle = "rgba(30,120,240,.92)";
+        var qw = Math.min(w2 * .62, qmsg.length * h2 * .016 + 30);
+        og.fillRect(w2 * .06, h2 * .66, qw, h2 * .12);
+        og.fillStyle = "#fff"; og.font = "500 " + Math.round(h2 * .028) + "px Inter"; og.textAlign = "left";
+        og.fillText(qmsg, w2 * .08, h2 * .735);
+      }
+      og.textAlign = "left";
+    }
   }
 
   function frame() {
@@ -1021,14 +1163,14 @@
     } else if (i > 0 && p - ERAS[i - 1].until < T / 2) {
       i2 = i; i = i - 1; blend = (p - (ERAS[i].until - T / 2)) / T;
     }
-    renderCore(i, p);
+    renderCore(i, p, true);
     ctx.clearRect(0, 0, VW, VH);
     ctx.imageSmoothingEnabled = ERAS[i].smooth;
     ctx.drawImage(off, 0, 0, VW, VH);
     if (i2 >= 0 && blend > 0) {
       var keepOff = off, keepOg = og;
       off = off2; og = og2;
-      renderCore(i2, p);
+      renderCore(i2, p, false);
       off = keepOff; og = keepOg;
       ctx.globalAlpha = Math.min(1, Math.max(0, blend));
       ctx.imageSmoothingEnabled = ERAS[i2].smooth;
@@ -1039,9 +1181,88 @@
     requestAnimationFrame(frame);
   }
 
+  /* ---------------- the era keys: a playground on the keyboard ---------------- */
+  function eraKey(k) {
+    ac();
+    var e = eraIndex(progress());
+    if (k >= "1" && k <= "9") { /* time warp across the decades */
+      var d = +k;
+      px = Math.max(60, Math.min(WORLD, WORLD * (d === 9 ? .999 : (d - 1) / 8 + .02)));
+      walked = true; whoosh(d > 5); pushFX({ type: "warp", t: 30 });
+      return;
+    }
+    if (k === " ") { /* the cheer, answered in every era's own style */
+      pushFX({ type: "cheer", t: 45 });
+      if (e === 3) bandFlash = 20;
+      [523, 659, 784].forEach(function (f, i) { beep(f, .12, e <= 3 ? "square" : "triangle", .05, i * .06); });
+      return;
+    }
+    if (k === "m") { pushFX({ type: "slam", msg: "MATCHDAY!!!", t: 70 }); [392, 494, 587, 784].forEach(function (f, i) { beep(f, .12, "square", .05, i * .07); }); return; }
+    if (k === "h") { pushFX({ type: "hearts", t: 80 }); beep(659, .25, "sine", .05); beep(784, .3, "sine", .05, .12); return; }
+    var handled = true;
+    if (e === 0) {
+      if (k === "b") { pushFX({ type: "pongball", x: .2 + Math.random() * .6, py: 0, vy: 1 + Math.random() * 2, vx: (Math.random() - .5) * 3, t: 300 }); beep(880, .06, "square", .06); }
+      else if (k === "r") { pushFX({ type: "flash", t: 10 }); [523, 659, 880].forEach(function (f, i) { beep(f, .08, "square", .06, i * .06); }); }
+      else handled = false;
+    } else if (e === 1) {
+      if (k === "u") { pushFX({ type: "sunhop", t: 40 }); beep(330, .1, "square", .07); beep(440, .1, "square", .07, .1); }
+      else if (k === "v") { pushFX({ type: "wave1", t: 60 }); whoosh(true); }
+      else if (k === "j") { pushFX({ type: "juggle", t: 90 }); beep(700, .05, "square", .05); }
+      else handled = false;
+    } else if (e === 2) {
+      if (k === "r") { rain8 = !rain8; rain8 ? thunder() : beep(660, .15, "square", .05); }
+      else if (k === "o") { pushFX({ type: "ole", t: 70 }); [440, 440, 494].forEach(function (f, i) { beep(f, .1, "square", .05, i * .12); }); }
+      else if (k === "p") { var gg = Math.random() < .6; pushFX({ type: "slam", msg: gg ? "GOAL!" : "SAVED!", t: 60 }); gg ? sfxGoal() : sfxSave(); }
+      else handled = false;
+    } else if (e === 3) {
+      if (k === "z" || k === "x" || k === "c") { /* Genesis A/B/C, as the emulators taught us */
+        win3 = { t: 55, pick: k === "z" ? 0 : k === "x" ? 1 : 2 };
+        var nb = null;
+        BALLS.forEach(function (b) { if (!nb && !b.kicked && b.respawn <= 0 && Math.abs(b.wx - px) < 500) nb = b; });
+        if (nb) { nb.kicked = true; nb.kt = 0; kickFlash = { msg: "CALLED IT!", t: 60 }; sfxKick(); }
+        beep(660, .08, "square", .06);
+      }
+      else if (k === "q") { pushFX({ type: "slam", msg: "SWITCH!", t: 50 }); whistle(); }
+      else if (k === "e") { pushFX({ type: "ea", t: 110 }); [262, 330, 392, 523].forEach(function (f, i) { beep(f, .14, "square", .06, i * .12); }); }
+      else if (k === "t") { pushFX({ type: "cart", x: -0.12, t: 170 }); beep(196, .3, "square", .06); beep(196, .3, "square", .06, .35); }
+      else handled = false;
+    } else if (e === 4) {
+      if (k === "r") { replayT = 140; beep(494, .1, "square", .05); }
+      else if (k === "c") { cam.t = 0; cam.mode = 1 - cam.mode; beep(880, .05, "square", .06); }
+      else if (k === "v") { pushFX({ type: "vcr", t: 80 }); beep(220, .1, "square", .06); }
+      else if (k === "l") { pushFX({ type: "flare", t: 50 }); beep(1320, .2, "sine", .04); }
+      else handled = false;
+    } else if (e === 5) {
+      if (k === "f") { pushFX({ type: "flashwave", t: 70 }); beep(1047, .06, "sine", .05); beep(1319, .06, "sine", .05, .08); }
+      else if (k === "g") { pushFX({ type: "banner", msg: "GOOOAL · BELAMINI 4'", t: 130 }); sfxGoal(); }
+      else if (k === "n") { forceNight = !forceNight; pushFX({ type: "flash", t: 12 }); whoosh(!forceNight); }
+      else handled = false;
+    } else if (e === 6) {
+      if (k === "e") { animeFx = { t: 56, mode: "ego" }; beep(147, .3, "sawtooth", .08); }
+      else if (k === "t") { animeFx = { t: 56, mode: "apex" }; beep(784, .3, "sine", .05); }
+      else if (k === "i") { pushFX({ type: "impact", t: 3 }); beep(98, .15, "sawtooth", .1); }
+      else if (k === "k") { pushFX({ type: "slam", msg: ["WHAM!!", "DOOM!!", "ZOOM!!", "THOOM!!"][(Math.random() * 4) | 0], t: 55 }); beep(147, .2, "sawtooth", .09); }
+      else handled = false;
+    } else {
+      if (k === "p") { photoI = (photoI + 1) % 3; pushFX({ type: "photo", i: photoI, t: 220 }); beep(659, .12, "sine", .05); beep(880, .15, "sine", .05, .1); }
+      else if (k === "t") { quoteI = (quoteI + 1) % REAL_QUOTES.length; pushFX({ type: "quote", i: quoteI, t: 260 }); beep(880, .08, "sine", .05); }
+      else if (k === "c") { pushFX({ type: "hearts", t: 90 }); pushFX({ type: "slam", msg: "50 YEARS.", t: 80 }); sfxGoal(); }
+      else handled = false;
+    }
+    if (!handled && /^[a-z]$/.test(k)) {
+      pushFX({ type: "glyph", ch: k.toUpperCase(), x: .2 + Math.random() * .6, t: 60 });
+      beep(300 + (k.charCodeAt(0) % 26) * 40, .12, e <= 3 ? "square" : "triangle", .05);
+    }
+  }
+
   /* ---------------- input ---------------- */
   var KEYMAP = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", d: "right", w: "up", s: "down" };
-  document.addEventListener("keydown", function (e) { var k = KEYMAP[e.key]; if (k) { e.preventDefault(); keys[k] = true; ac(); } });
+  document.addEventListener("keydown", function (e) {
+    var k = KEYMAP[e.key];
+    if (k) { e.preventDefault(); keys[k] = true; ac(); return; }
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === " " || e.key.length === 1) { e.preventDefault(); eraKey(e.key === " " ? " " : e.key.toLowerCase()); }
+  });
   document.addEventListener("keyup", function (e) { var k = KEYMAP[e.key]; if (k) keys[k] = false; });
   document.querySelectorAll(".pad button").forEach(function (b) {
     var k = b.dataset.k;
