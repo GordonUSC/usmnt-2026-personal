@@ -51,6 +51,7 @@
   var cam = { horizon: .47, charMult: 1, mode: 0, t: 0 }; /* PS1-era broadcast cameras: Tele and Wide */
   var replayT = 0;
   var win3 = null, bandFlash = 0; /* the Madden passing windows, and the crowd erupting */
+  var animeFx = null; /* the anime kick: ego eye-band when sad, apex time-stop when happy */
   var couva = false;
   try { couva = localStorage.getItem("longgame_couva") === "1"; } catch (e) { }
 
@@ -61,8 +62,9 @@
     { name: "8-BIT",    sub: "1988",       until: .36, rw: 192, rh: 108, smooth: false },
     { name: "16-BIT",   sub: "1994",       until: .44, rw: 320, rh: 180, smooth: false },
     { name: "POLYGON",  sub: "1997",       until: .69, rw: 480, rh: 270, smooth: true  },
-    { name: "HD",       sub: "2010",       until: .89, rw: 960, rh: 540, smooth: true  },
-    { name: "REAL",     sub: "the 2020s",  until: 1.01, rw: 960, rh: 540, smooth: true }
+    { name: "HD",       sub: "2010",       until: .865, rw: 960, rh: 540, smooth: true },
+    { name: "ANIME",    sub: "the anime arc", until: .975, rw: 960, rh: 540, smooth: true },
+    { name: "REAL",     sub: "2026",       until: 1.01, rw: 960, rh: 540, smooth: true }
   ];
   function progress() { return Math.max(0, Math.min(1, px / WORLD)); }
   function eraIndex(p) { for (var i = 0; i < ERAS.length; i++) if (p < ERAS[i].until) return i; return ERAS.length - 1; }
@@ -81,6 +83,7 @@
     { y: 2009, txt: "SPAIN FALLS IN BLOEMFONTEIN." },
     { y: 2010, txt: "DONOVAN. ALGERIA. 91st MINUTE." },
     { y: 2017, txt: "TRINIDAD. THE NIGHT THE PROGRAM BROKE." },
+    { y: 2020, txt: "THE ANIME ARC. HAIKYUU HEARTS, BLUE LOCK NIGHTS." },
     { y: 2022, txt: "PULISIC. IRAN. THE RETURN." },
     { y: 2026, txt: "SOFI. PETE. THE SEAT. FIFTY YEARS." }
   ];
@@ -151,14 +154,16 @@
     { wx: 2300, msg: "SCHOOLYARD DAYS!" },
     { wx: 3350, msg: "BELAMINI!" },
     { wx: 4450, msg: "THE 2002 RUN!" },
-    { wx: 5600, msg: "DONOVAN ENERGY!" }
+    { wx: 5600, msg: "DONOVAN ENERGY!" },
+    { wx: 7350, msg: "DEVOUR!" }
   ];
   BALLS.forEach(function (b) { b.kicked = false; b.kt = 0; b.respawn = 0; });
   var kickFlash = null;
   function updateBalls() {
     BALLS.forEach(function (b) {
       if (b.kicked) {
-        if (!(replayT > 0 && (t % 2))) b.kt++; /* replays run at half speed, as is right and proper */
+        var slowmo = replayT > 0 || (animeFx && animeFx.mode === "apex");
+        if (!(slowmo && (t % 2))) b.kt++; /* replays and apex time-stops run at half speed, as is right and proper */
         if (b.kt === 40) { /* the ball finds the net */
           [523, 659, 784].forEach(function (f, i) { beep(f, .1, "square", .05, i * .06); });
           b.netFlash = 16;
@@ -174,6 +179,7 @@
           b.kicked = true; b.kt = 0;
           if (eraIndex(progress()) === 4) replayT = 140; /* Konami rule: every strike earns a replay */
           if (eraIndex(progress()) === 3) win3 = { t: 55, pick: (Math.random() * 3) | 0 }; /* Madden rule: the windows pop */
+          if (eraIndex(progress()) === 6) animeFx = { t: 56, mode: mood < -.15 ? "ego" : "apex" };
           kickFlash = { msg: b.msg, t: 80 };
           beep(196, .1, "square", .09);
           [392, 494, 587].forEach(function (f, i) { beep(f, .12, "square", .05, .06 + i * .07); });
@@ -233,9 +239,10 @@
       g2.fillStyle = white; g2.fillRect(x - 1 * s, y - 7 * s, 2 * s, 3 * s); /* the 4, abstracted to a block */
       return;
     }
-    if (era === 1) { /* atari: chunky biped, the red St. Paul's jersey years */
+    if (era === 1) { /* atari: chunky biped in white and blue */
       g2.fillStyle = skin; g2.fillRect(x - 2 * s, y - 12 * s, 4 * s, 3 * s);
-      g2.fillStyle = moodColor([190, 40, 60], [70, 20, 28]); g2.fillRect(x - 3 * s, y - 9 * s, 6 * s, 5 * s);
+      g2.fillStyle = white; g2.fillRect(x - 3 * s, y - 9 * s, 6 * s, 5 * s);
+      g2.fillStyle = moodColor([50, 80, 200], [24, 32, 80]); g2.fillRect(x - 3 * s, y - 7.6 * s, 6 * s, 1.6 * s); /* the blue hoop */
       g2.fillStyle = skin; g2.fillRect(x - 3 * s, y - 4 * s, 2 * s, 4 * s); g2.fillRect(x + 1 * s, y - 4 * s, 2 * s, 4 * s);
       return;
     }
@@ -258,8 +265,8 @@
     }
     if (era <= 3) { /* 8-bit sprite */
       g2.fillStyle = skin; g2.fillRect(x - 2 * s, y - 15 * s, 4 * s, 4 * s);
-      g2.fillStyle = era === 3 ? navy : "#e0e0d8"; g2.fillRect(x - 3 * s, y - 11 * s, 6 * s, 6 * s); /* white pickup years, then the USA navy */
-      g2.fillStyle = era === 3 ? white : navy; g2.fillRect(x - 1 * s, y - 10 * s, 2 * s, 3 * s); /* the 4 patch, always */
+      g2.fillStyle = era === 3 ? navy : moodColor([190, 40, 60], [70, 20, 28]); g2.fillRect(x - 3 * s, y - 11 * s, 6 * s, 6 * s); /* the red 1988 years, then the USA navy */
+      g2.fillStyle = white; g2.fillRect(x - 1 * s, y - 10 * s, 2 * s, 3 * s); /* the 4 patch, always */
       g2.fillStyle = white; g2.fillRect(x - 3 * s, y - 5 * s, 6 * s, 2 * s);
       var leg = Math.sin(walkT * .35) * 2 * s;
       g2.fillStyle = skin;
@@ -289,6 +296,46 @@
       g4.fillStyle = skin;
       g4.beginPath(); g4.moveTo(-2 * s, -19 * s); g4.lineTo(2 * s, -19 * s); g4.lineTo(3 * s, -17 * s); g4.lineTo(2 * s, -15 * s); g4.lineTo(-2 * s, -15 * s); g4.lineTo(-3 * s, -17 * s); g4.fill();
       g4.restore();
+      return;
+    }
+    if (era === 6) { /* the anime years: bold line, cel shade, an aura that knows your heart */
+      var g6 = g2;
+      g6.save(); g6.translate(x, y);
+      if (mood < -.15) { /* the ego aura, boiling blue flame */
+        for (var fl = 0; fl < 2; fl++) {
+          g6.fillStyle = fl ? "rgba(60,130,255,.34)" : "rgba(90,180,255,.16)";
+          g6.beginPath();
+          for (var av = 0; av <= 10; av++) {
+            var aa = Math.PI + (av / 10) * Math.PI;
+            var ar = (fl ? 9 : 13) * s + Math.sin(t * .35 + av * 2.1 + fl) * 2.4 * s;
+            var axp = Math.cos(aa) * ar * .8, ayp = -10 * s + Math.sin(aa) * ar * 1.5;
+            if (av) g6.lineTo(axp, ayp); else g6.moveTo(axp, ayp);
+          }
+          g6.closePath(); g6.fill();
+        }
+      } else if (mood > .3) { /* warm apex glow */
+        var glow6 = g6.createRadialGradient(0, -10 * s, 2, 0, -10 * s, 16 * s);
+        glow6.addColorStop(0, "rgba(255,220,150,.28)"); glow6.addColorStop(1, "rgba(255,220,150,0)");
+        g6.fillStyle = glow6; g6.fillRect(-16 * s, -26 * s, 32 * s, 32 * s);
+      }
+      g6.rotate(Math.sin(walkT * .35) * .05);
+      var swing6 = Math.sin(walkT * .35) * 4 * s;
+      g6.lineCap = "round";
+      g6.strokeStyle = "#101020"; g6.lineWidth = 2.8 * s;
+      g6.beginPath(); g6.moveTo(0, -6 * s); g6.lineTo(-2 * s + swing6 * .4, 0); g6.stroke();
+      g6.beginPath(); g6.moveTo(0, -6 * s); g6.lineTo(2 * s - swing6 * .4, 0); g6.stroke();
+      g6.strokeStyle = skin; g6.lineWidth = 2 * s;
+      g6.beginPath(); g6.moveTo(0, -6.4 * s); g6.lineTo(-2 * s + swing6 * .4, -.6 * s); g6.stroke();
+      g6.beginPath(); g6.moveTo(0, -6.4 * s); g6.lineTo(2 * s - swing6 * .4, -.6 * s); g6.stroke();
+      g6.fillStyle = "#1c2a6e"; g6.strokeStyle = "#101020"; g6.lineWidth = Math.max(1.5, s * .45);
+      g6.beginPath(); g6.ellipse(0, -10 * s, 3.6 * s, 6 * s, 0, 0, 6.29); g6.fill(); g6.stroke();
+      g6.fillStyle = "rgba(0,0,20,.35)"; g6.beginPath(); g6.ellipse(1.4 * s, -9 * s, 2 * s, 5 * s, 0, -1.4, 1.4); g6.fill();
+      g6.fillStyle = "rgba(255,255,255,.5)"; g6.fillRect(-2.4 * s, -14.4 * s, 1.2 * s, 3 * s);
+      g6.fillStyle = "#fff"; g6.font = "bold " + (4.4 * s) + "px Inter"; g6.textAlign = "center"; g6.fillText("4", 0, -8 * s);
+      g6.fillStyle = skin; g6.beginPath(); g6.arc(0, -18.5 * s, 2.8 * s, 0, 6.29); g6.fill(); g6.stroke();
+      g6.fillStyle = "#14141e";
+      g6.beginPath(); g6.moveTo(-3 * s, -19 * s); g6.lineTo(-1.6 * s, -22.4 * s); g6.lineTo(-.4 * s, -20.4 * s); g6.lineTo(.8 * s, -22.8 * s); g6.lineTo(2 * s, -20 * s); g6.lineTo(3 * s, -21.4 * s); g6.lineTo(3 * s, -18.6 * s); g6.closePath(); g6.fill();
+      g6.restore(); g6.textAlign = "left";
       return;
     }
     /* HD/real: rounded figure with shading + ground shadow */
@@ -492,11 +539,63 @@
       g2.strokeStyle = "rgba(240,240,232,.8)"; g2.lineWidth = 2;
       var cx2 = ((w * 1.2 - scrollX * .8) % (w * 1.6) + w * 1.6) % (w * 1.6) - w * .3;
       g2.beginPath(); g2.arc(cx2, h * .82, 60, 0, 6.29); g2.stroke();
+      if (mood < .1) { /* Frostbite night: phone flashlights twinkling through the dark bowl */
+        g2.fillStyle = "rgba(255,255,240,.85)";
+        for (var ph = 0; ph < 70; ph++) {
+          if (((ph * 7 + (t >> 3)) % 11) < 4) {
+            var pa = Math.PI + (ph / 70) * Math.PI, pr5 = (.72 + ((ph * 29) % 22) / 100);
+            g2.fillRect(w / 2 + Math.cos(pa) * w * .58 * pr5, h * .58 + Math.sin(pa) * h * .27 * pr5, 1.5, 1.5);
+          }
+        }
+      }
       return h * .88;
     }
 
-    /* era 6 REAL: the photograph takes over */
-    var pr = ERAS[5].until, u = Math.min(1, (p - pr) / (1 - pr)); /* 0..1 inside final era */
+    if (era === 6) { /* THE ANIME ARC 2019-2026: Haikyuu when the heart is up, Blue Lock when it drops */
+      var au = (mood + 1) / 2; /* 0 = Blue Lock, 1 = Haikyuu */
+      var sky6 = g2.createLinearGradient(0, 0, 0, h);
+      sky6.addColorStop(0, "rgb(" + Math.round(8 + au * 240) + "," + Math.round(10 + au * 225) + "," + Math.round(30 + au * 185) + ")");
+      sky6.addColorStop(1, "rgb(" + Math.round(16 + au * 235) + "," + Math.round(24 + au * 190) + "," + Math.round(64 + au * 90) + ")");
+      g2.fillStyle = sky6; g2.fillRect(0, 0, w, h);
+      if (au < .5) { /* the dark facility: neon grid walls, LED light cones, no daylight anywhere */
+        g2.strokeStyle = "rgba(40,120,255," + (.28 * (1 - au * 2)).toFixed(3) + ")"; g2.lineWidth = 1;
+        for (var gx6 = (t * .4) % 48; gx6 < w; gx6 += 48) { g2.beginPath(); g2.moveTo(gx6, 0); g2.lineTo(gx6 - 30, h * .62); g2.stroke(); }
+        for (var gy6 = 20; gy6 < h * .6; gy6 += 36) { g2.beginPath(); g2.moveTo(0, gy6); g2.lineTo(w, gy6); g2.stroke(); }
+        [w * .25, w * .75].forEach(function (lx6) {
+          var cone = g2.createLinearGradient(lx6, 0, lx6, h * .7);
+          cone.addColorStop(0, "rgba(120,200,255,.22)"); cone.addColorStop(1, "rgba(120,200,255,0)");
+          g2.fillStyle = cone;
+          g2.beginPath(); g2.moveTo(lx6 - 8, 0); g2.lineTo(lx6 + 8, 0); g2.lineTo(lx6 + w * .13, h * .68); g2.lineTo(lx6 - w * .13, h * .68); g2.fill();
+        });
+      } else { /* the warm gym: crowd as soft bokeh, window light, nothing in focus but the game */
+        for (var bk = 0; bk < 46; bk++) {
+          var bkr = 8 + (bk * 37) % 14;
+          g2.fillStyle = "rgba(" + (220 + bk % 30) + "," + (150 + (bk * 13) % 70) + "," + (80 + (bk * 7) % 60) + "," + ((.08 + (au - .5) * .4).toFixed(3)) + ")";
+          g2.beginPath(); g2.arc(((bk * 149) % w) + Math.sin(t * .02 + bk) * 3, 20 + ((bk * 83) % (h * .38)), bkr, 0, 6.29); g2.fill();
+        }
+      }
+      var pitchY6 = h * .62;
+      g2.fillStyle = "rgb(" + Math.round(20 + au * 60) + "," + Math.round(70 + au * 85) + "," + Math.round(90 - au * 24) + ")";
+      g2.fillRect(0, pitchY6, w, h - pitchY6);
+      g2.fillStyle = au < .5 ? "#9fd8ff" : "#fff6e0"; g2.fillRect(0, pitchY6, w, 3); /* the bold cel line */
+      g2.strokeStyle = "rgba(255,255,255,.85)"; g2.lineWidth = 2;
+      var hw6 = ((w * 1.2 - scrollX * .8) % (w * 1.7) + w * 1.7) % (w * 1.7) - w * .35;
+      g2.beginPath(); g2.moveTo(hw6, h); g2.lineTo(hw6 + 14, pitchY6); g2.stroke();
+      g2.beginPath(); g2.ellipse(hw6, h * .86, w * .1, h * .03, 0, 0, 6.29); g2.stroke();
+      if (keys.left || keys.right) { /* directional streak background while running */
+        for (var st6 = 0; st6 < 14; st6++) {
+          var sw6 = 60 + (st6 * 53) % 200, sx6 = ((st6 * 211 + t * 26) % (w + sw6)) - sw6;
+          g2.fillStyle = au < .5 ? "rgba(90,170,255," + (.05 + (st6 % 3) * .04).toFixed(3) + ")" : "rgba(255,230,180," + (.06 + (st6 % 3) * .04).toFixed(3) + ")";
+          g2.fillRect(keys.right ? w - sx6 - sw6 : sx6, (st6 * 79) % h, sw6, 1 + st6 % 3);
+        }
+      }
+      g2.fillStyle = au < .5 ? "rgba(80,140,255,.05)" : "rgba(180,120,60,.05)"; /* a breath of screen-tone */
+      for (var htx = 0; htx < w; htx += 16) for (var hty = ((htx / 16) % 2) * 8; hty < h; hty += 16) g2.fillRect(htx, hty, 2, 2);
+      return h * .9;
+    }
+
+    /* era 7 REAL: the photograph takes over */
+    var pr = ERAS[6].until, u = Math.min(1, (p - pr) / (1 - pr)); /* 0..1 inside final era */
     /* base: hd-ish dark room */
     g2.fillStyle = "#0b0e1a"; g2.fillRect(0, 0, w, h);
     if (stadiumPhoto.complete && stadiumPhoto.naturalWidth) {
@@ -601,6 +700,7 @@
     if (replayT > 0) replayT--;
     if (bandFlash > 0) bandFlash--;
     if (win3) { win3.t--; if (win3.t <= 0) win3 = null; }
+    if (animeFx) { animeFx.t--; if (animeFx.t <= 0) animeFx = null; }
     var p = progress(), era = eraIndex(p);
     if (moved) { walked = true; stepSound(era); }
     reachedEnd = p > .985;
@@ -627,12 +727,12 @@
     var PSCALE = [2, 2, 2, 3];
     var charScale = PSCALE[idx] || 3;
     var vecScale = era.rh / 65;
-    if (idx === 6) {
-      var u = Math.min(1, (p - ERAS[5].until) / (1 - ERAS[5].until));
-      var a = Math.min(1, u / .2); /* the HD figure dissolves, the real man walks in */
+    if (idx === 7) {
+      var u = Math.min(1, (p - ERAS[6].until) / (1 - ERAS[6].until));
+      var a = Math.min(1, u / .2); /* the anime figure dissolves, the real man walks in */
       if (a < 1) {
         og.globalAlpha = 1 - a;
-        drawChar(og, era.rw * .32, groundY, 5, vecScale, t);
+        drawChar(og, era.rw * .32, groundY, 6, vecScale, t);
         og.globalAlpha = 1;
       }
       if (cutout.complete && cutout.naturalWidth) {
@@ -648,7 +748,7 @@
         og.restore();
         og.globalAlpha = 1;
       } else if (a >= 1) {
-        drawChar(og, era.rw * .32, groundY, 5, vecScale, t);
+        drawChar(og, era.rw * .32, groundY, 6, vecScale, t);
       }
     } else {
       var cs2 = idx >= 4 ? vecScale : charScale;
@@ -676,6 +776,43 @@
         if (wi === win3.pick) {
           var bp = 1 - win3.t / 55;
           og.fillStyle = "#f8f8f0"; og.fillRect(wx3 + bw * .5 - 1, wy3 + bh2 * (.92 - .6 * bp), 3, 3);
+        }
+      }
+    }
+    if (idx === 6 && animeFx) { /* the anime kick: impact frames, then the ego eye or the apex time-stop */
+      if (animeFx.t > 52) { /* 1-3 inversion impact frames */
+        og.fillStyle = animeFx.mode === "ego" ? "#04060f" : "#ffffff";
+        og.fillRect(0, 0, era.rw, era.rh);
+        og.strokeStyle = animeFx.mode === "ego" ? "#7ab8ff" : "#101020"; og.lineWidth = 2;
+        for (var rb = 0; rb < 46; rb++) {
+          var ra = rb * 2.39996, r0 = 60 + (rb * 37) % 80, r1 = r0 + 120 + (rb * 53) % 300;
+          og.beginPath(); og.moveTo(era.rw / 2 + Math.cos(ra) * r0, era.rh / 2 + Math.sin(ra) * r0);
+          og.lineTo(era.rw / 2 + Math.cos(ra) * r1, era.rh / 2 + Math.sin(ra) * r1); og.stroke();
+        }
+      } else if (animeFx.mode === "ego") { /* the letterboxed glowing eye, iris ignited */
+        var by6 = era.rh * .26, bh6 = era.rh * .3;
+        og.fillStyle = "rgba(2,4,12,.92)"; og.fillRect(0, by6, era.rw, bh6);
+        for (var sl = 0; sl < 20; sl++) {
+          og.fillStyle = "rgba(80,150,255," + (.06 + (sl % 3) * .05).toFixed(3) + ")";
+          og.fillRect(((sl * 173 + t * 30) % (era.rw + 200)) - 200, by6 + (sl * 29) % bh6, 120 + (sl * 31) % 160, 2);
+        }
+        [era.rw * .36, era.rw * .64].forEach(function (ex) {
+          var ey = by6 + bh6 / 2;
+          og.fillStyle = "#e8f4ff"; og.beginPath(); og.ellipse(ex, ey, era.rw * .07, bh6 * .3, 0, 0, 6.29); og.fill();
+          var ir = og.createRadialGradient(ex, ey, 2, ex, ey, bh6 * .26);
+          ir.addColorStop(0, "#0a1030"); ir.addColorStop(.5, "#2f7cff"); ir.addColorStop(1, "#0a1030");
+          og.fillStyle = ir; og.beginPath(); og.arc(ex, ey, bh6 * .26, 0, 6.29); og.fill();
+          og.fillStyle = "#04060f"; og.fillRect(ex - 1.5, ey - bh6 * .2, 3, bh6 * .4);
+        });
+        og.fillStyle = "#7ab8ff"; og.font = "italic 700 26px Inter"; og.textAlign = "center";
+        og.fillText("DEVOUR.", era.rw / 2, by6 + bh6 + 34); og.textAlign = "left";
+      } else { /* the apex: background falls away warm, dust motes hang, time floats */
+        var wash = og.createRadialGradient(era.rw / 2, era.rh * .4, 40, era.rw / 2, era.rh * .4, era.rw * .6);
+        wash.addColorStop(0, "rgba(255,240,210,.32)"); wash.addColorStop(1, "rgba(255,200,130,.12)");
+        og.fillStyle = wash; og.fillRect(0, 0, era.rw, era.rh);
+        for (var mt = 0; mt < 16; mt++) {
+          og.fillStyle = "rgba(255,250,230," + (.25 + (mt % 4) * .1).toFixed(3) + ")";
+          og.beginPath(); og.arc((mt * 199) % era.rw, ((mt * 131) % era.rh) + Math.sin(t * .04 + mt) * 4, 1.6 + mt % 3, 0, 6.29); og.fill();
         }
       }
     }
