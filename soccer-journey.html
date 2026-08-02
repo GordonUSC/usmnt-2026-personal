@@ -4,25 +4,37 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>Gordon's Soccer Journey · USA 26 with Gordon</title>
-<meta name="description" content="Fifty years of soccer in one life. From the Reston Rattlers at age 4 to the 3252 with LAFC. From the 1994 World Cup Draw to a 2026 USMNT kit. Number 4." />
+<meta name="description" content="Fifty years of soccer in one life. From the Reston Rattlers at age 4 to the 3252 with LAFC. From the 1994 World Cup Draw in Vegas to two home World Cup matches inside SoFi. Number 4. The game finally got to love me back." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" />
 <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="effects.css" />
+<style>
+/* page-only: scroll-drawn timeline rail (decorative, progressive) */
+.rail { position: relative; }
+.rail::before { content: ""; position: absolute; top: 0; bottom: 0; left: 14px; width: 2px; border-radius: 2px; background: linear-gradient(180deg, #FFCD00, #BF0A30); opacity: .28; pointer-events: none; }
+@media (max-width: 899px) { .rail::before { display: none; } }
+@keyframes growY { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@supports (animation-timeline: scroll()) {
+  .rail::before { animation: growY linear both; animation-timeline: scroll(root); transform-origin: top; }
+}
+@media (prefers-reduced-motion: reduce) { .rail::before { animation: none; } }
+</style>
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="USA 26 with Gordon · Friends &amp; Family Edition" />
 <meta property="og:title" content="Gordon&#x27;s Soccer Journey · USA 26 with Gordon" />
-<meta property="og:description" content="Fifty years of soccer in one life. From the Reston Rattlers at age 4 to the 3252 with LAFC. From the 1994 World Cup Draw to a 2026 USMNT kit. Number 4." />
+<meta property="og:description" content="Fifty years of soccer in one life. From the Reston Rattlers at age 4 to the 3252 with LAFC. From the 1994 World Cup Draw in Vegas to two home World Cup matches inside SoFi. Number 4. The game finally got to love me back." />
 <meta property="og:url" content="https://gordonusc.github.io/usmnt-2026-personal/soccer-journey.html" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Gordon&#x27;s Soccer Journey · USA 26 with Gordon" />
-<meta name="twitter:description" content="Fifty years of soccer in one life. From the Reston Rattlers at age 4 to the 3252 with LAFC. From the 1994 World Cup Draw to a 2026 USMNT kit. Number 4." />
+<meta name="twitter:description" content="Fifty years of soccer in one life. From the Reston Rattlers at age 4 to the 3252 with LAFC. From the 1994 World Cup Draw in Vegas to two home World Cup matches inside SoFi. Number 4. The game finally got to love me back." />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="USA 26 · Gordon" />
 <meta name="format-detection" content="telephone=no" />
 </head>
-<body>
+<body data-page="journey">
 
 <header class="nav">
   <a href="index.html" class="nav__brand"><strong>USA</strong> · 26 · Friends &amp; Family</a>
@@ -39,21 +51,50 @@
     <a href="lore.html">Lore</a>
     <a href="kits.html">Kits</a>
   </nav>
+  <button id="sound-toggle" class="sound-toggle" aria-pressed="false">♪ off</button>
 </header>
 
 <main>
 
-<section class="hero hero--photo" style="--hero-img:url('assets/olimpico.jpg')">
+<section class="hero hero--photo hero-drift" style="--hero-img:url('assets/olimpico.jpg')">
   <div class="container">
     <div class="hero__kicker">Why this matters to me</div>
-    <h1 class="display display--xl">Number 4.</h1>
+    <h1 class="display display--xl kinetic vt-hero"><span>Number</span> <span>4.</span></h1>
     <p class="hero__sub">I kicked my first ball at age 4, wearing #4 on the Reston Rattlers. That number has followed me ever since. With the World Cup coming home this summer, I got myself a proper USMNT kit. Number 4. Because some things just stay with you.</p>
     <p class="hero__signoff">This page is partly for me, partly for the people I love who have walked some part of this with me.<br/>G</p>
       <p class="hero__credit">Stadio Olimpico, Roma v Juventus 2014 · photo romazone · CC BY 2.0 · Wikimedia Commons</p>
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="then-now">
+  <div class="container">
+    <div class="section__kicker">Fifty years in one blend</div>
+    <p data-reveal="fade">The retro shirt and the June 25 face, fifty years apart in spirit, four miles apart in Los Angeles.</p>
+
+    <figure class="figure" data-reveal="scale" style="margin-top:24px">
+      <div class="compare">
+        <img src="assets/g-mural-0611.jpg" alt="Gordon in a retro USA jersey in front of a red, white, and blue smoke mural at US Soccer House" width="1350" height="1800" loading="lazy" decoding="async" />
+        <div class="compare__top">
+          <img src="assets/g-sofi-0625.jpg" alt="Gordon beaming inside SoFi Stadium under the USA ribbon board" width="1350" height="1800" loading="lazy" decoding="async" />
+        </div>
+        <input class="compare__range" type="range" min="0" max="100" value="50" aria-label="Blend between the Soccer House portrait and the SoFi selfie" />
+        <div class="compare__hint">Drag · 50 years in one blend</div>
+      </div>
+      <figcaption>Under the line: me in the retro kit at US Soccer House, June 11, the kid who never stopped. Over it: June 25, the man inside a home World Cup. Both photos by G.</figcaption>
+    </figure>
+
+    <figure class="polaroid polaroid--tall" data-reveal style="max-width:340px;margin:40px auto 0">
+      <a href="assets/art/number4-poster.jpg" data-lightbox data-caption="Number 4, the poster Darby made for the ending. Commissioned art.">
+        <img src="assets/art/number4-poster.jpg" alt="Vintage style poster of a man wearing the number 4 in a stadium tunnel" width="1045" height="1400" loading="lazy" decoding="async" />
+      </a>
+      <figcaption><span class="badge-art">Commissioned art</span> Number 4, the poster Darby made for the ending.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<div class="rail">
+
+<section class="section" data-reveal>
   <div class="container">
     <div class="section__kicker">The beginning</div>
     <h2 class="display display--l section__title">Age 4. The Reston Rattlers. Then the Whitecaps.</h2>
@@ -69,7 +110,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" data-reveal>
   <div class="container">
     <div class="section__kicker">The big brother chapter</div>
     <h2 class="display display--l section__title">Following Werten.</h2>
@@ -83,7 +124,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" data-reveal>
   <div class="container">
     <div class="section__kicker">St. Paul's School</div>
     <h2 class="display display--l section__title">Illustrious JV life on the wing.</h2>
@@ -97,7 +138,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" data-reveal>
   <div class="container">
     <div class="section__kicker">The 1994 World Cup Draw</div>
     <h2 class="display display--l section__title">Las Vegas. The moment soccer in America actually changed.</h2>
@@ -112,7 +153,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" data-reveal>
   <div class="container">
     <div class="section__kicker">The EA Sports chapter</div>
     <h2 class="display display--l section__title">FIFA. The cameo. The friends who became Rockstar.</h2>
@@ -129,7 +170,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" data-reveal>
   <div class="container">
     <div class="section__kicker">Italy vs England, Rome, 1997</div>
     <h2 class="display display--l section__title">Stadio Olimpico. Working on Three Lions. In the stands.</h2>
@@ -144,7 +185,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" data-reveal>
   <div class="container">
     <div class="section__kicker">MLS, from the very beginning</div>
     <h2 class="display display--l section__title">Spartan Stadium. Man United tours. The 3252.</h2>
@@ -159,7 +200,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" data-reveal>
   <div class="container">
     <div class="section__kicker">The supporter communities</div>
     <h2 class="display display--l section__title">Sam's Army. Wheeler's MLS Fantasy. PAX. AO weddings.</h2>
@@ -176,7 +217,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" data-reveal>
   <div class="container">
     <div class="section__kicker">Why this World Cup, specifically, matters</div>
     <h2 class="display display--l section__title">A thread through every chapter.</h2>
@@ -193,12 +234,31 @@
   </div>
 </section>
 
-<section class="section" id="then-i-was-there">
+<section class="section" id="then-i-was-there" data-reveal>
   <div class="container">
     <div class="section__kicker">Added August 1, 2026 · The chapter the first fifty years were waiting for</div>
     <h2 class="display display--l section__title">And then <span class="italic">I was there.</span></h2>
 
-    <figure class="figure"><img src="assets/g-sofi-0625.jpg" alt="Gordon beaming inside SoFi Stadium under the USA ribbon board" loading="lazy"><figcaption>June 25, 2026. Inside SoFi. This face is fifty years in the making.<span class="cr">Photo by G.</span></figcaption></figure>
+    <div class="polaroid-wall" data-reveal-group>
+      <figure class="polaroid polaroid--tall">
+        <a href="assets/g-sofi-0625.jpg" data-lightbox data-caption="June 25, 2026. Inside SoFi. This face is fifty years in the making. Photo by G.">
+          <img src="assets/g-sofi-0625.jpg" alt="Gordon beaming inside SoFi Stadium under the USA ribbon board" width="1350" height="1800" loading="lazy" decoding="async" />
+        </a>
+        <figcaption>Inside SoFi. This face is fifty years in the making. <em>Jun 25.</em> Photo by G.</figcaption>
+      </figure>
+      <figure class="polaroid polaroid--tall">
+        <a href="assets/entry12-0618.jpg" data-lightbox data-caption="Entry 12, June 18, 2026. Walking into the first World Cup match of my life wearing the number 4.">
+          <img src="assets/entry12-0618.jpg" alt="Gordon selfie at the Entry 12 hospitality entrance sign at SoFi Stadium" width="1350" height="1800" loading="lazy" decoding="async" />
+        </a>
+        <figcaption>Entry 12. Walking into my first World Cup match in the number 4. <em>Jun 18.</em></figcaption>
+      </figure>
+      <figure class="polaroid polaroid--tall">
+        <a href="assets/g-pete-pitch-0625.jpg" data-lightbox data-caption="Me and Pete above the pitch, June 25, 2026, the FIFA World Cup 2026 mark on the frame.">
+          <img src="assets/g-pete-pitch-0625.jpg" alt="Gordon and Pete selfie from the upper deck with the pitch behind and a FIFA World Cup 2026 overlay" width="1350" height="1800" loading="lazy" decoding="async" />
+        </a>
+        <figcaption>Me and Pete above the pitch, the World Cup mark on the frame. <em>Jun 25.</em></figcaption>
+      </figure>
+    </div>
 
     <div class="profile-card">
       <div class="profile-card__detail">
@@ -208,17 +268,27 @@
       </div>
     </div>
 
-    <div class="callout">
+    <div class="stat-row" data-reveal-group>
+      <div class="stat"><div class="stat__num" data-count="50">0</div><div class="stat__label">years loving this game</div></div>
+      <div class="stat"><div class="stat__num" data-count="2">0</div><div class="stat__label">World Cup matches in person</div></div>
+      <div class="stat"><div class="stat__num" data-count="4">0</div><div class="stat__label">the number that stayed</div></div>
+    </div>
+
+    <div class="callout" data-reveal>
       <p><strong>🎧 The chapter, read aloud.</strong> Darby reads this ending for the record, because a fifty-year love story deserves a voice. (One minute, twenty seconds.)</p>
-      <audio controls preload="none" style="width:100%;margin-top:10px">
-        <source src="assets/journey-finale.mp3" type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio>
+      <div class="wave-player" style="margin-top:10px">
+        <button class="wave-player__btn" aria-label="Play">▶</button>
+        <div class="wave"></div>
+        <span class="wave-player__time">0:00</span>
+        <audio preload="none" src="assets/journey-finale.mp3"></audio>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="section">
+</div>
+
+<section class="section" data-reveal>
   <div class="container">
     <div class="section__kicker">The full thread</div>
     <h2 class="display display--l section__title">Every chapter in one line.</h2>
@@ -229,7 +299,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" data-reveal>
   <div class="container">
     <div class="section__kicker">Matches I've actually been at</div>
     <h2 class="display display--l section__title">The receipts.</h2>
@@ -239,9 +309,24 @@
         <p><strong>Most of the matches I have actually seen in person have been club matches.</strong> MLS home games, Manchester United US tours, LAFC nights at BMO. National-team matches in person are the rarer chapter, but the ones I have been at are the ones I remember kick-for-kick.</p>
 
         <h4>The big national-team and event moments (in person)</h4>
+
+        <div data-reveal-group>
+          <div class="ticket">
+            <div class="ticket__meta">FIFA World Cup · SoFi Stadium · June 18, 2026</div>
+            <div class="ticket__match">Switzerland v Bosnia and Herzegovina</div>
+            <p class="ticket__note"><strong>My first World Cup match.</strong> Delphi hospitality box, guest of Andy Kleinman. Jersey #4, Entry 12. Receipted by FIFA ticket emails and my own giddy texts.</p>
+            <div class="ticket__barcode"></div>
+          </div>
+          <div class="ticket">
+            <div class="ticket__meta">FIFA World Cup · SoFi Stadium · June 25, 2026</div>
+            <div class="ticket__match">USA v Türkiye</div>
+            <div class="ticket__score">USA 2 · Türkiye 3</div>
+            <p class="ticket__note"><strong>My first USMNT World Cup match,</strong> guest of Pete Hines. Names on the videoboard. Ticket transferred June 7. The crying-in-the-uber game.</p>
+            <div class="ticket__barcode"></div>
+          </div>
+        </div>
+
         <ul>
-          <li><strong>Switzerland v Bosnia and Herzegovina, FIFA World Cup, SoFi Stadium, June 18, 2026.</strong> My first World Cup match. Delphi hospitality box, guest of Andy Kleinman. Jersey #4, Entry 12. Receipted by FIFA ticket emails and my own giddy texts.</li>
-          <li><strong>USA v Türkiye, FIFA World Cup, SoFi Stadium, June 25, 2026.</strong> My first USMNT World Cup match, guest of Pete Hines. Names on the videoboard. Ticket transferred June 7. The crying-in-the-uber game.</li>
           <li><strong>The 1994 World Cup Draw in Las Vegas with Mike Morrow.</strong> Confirmed by my own words.</li>
           <li><strong>USA 2-2 Mexico, US Cup, Rose Bowl, June 16, 1996. 92,216 in attendance.</strong> USA in the light blue kit, the only time they wore it. <em>Locked in by Gordon, 2026-05-27.</em> Wynalda 34', Dooley 90'; Mexico through Rafael García 45' and Cuauhtémoc Blanco 89'.</li>
           <li><strong>Italy vs England, World Cup '98 qualifier, Stadio Olimpico, Rome, October 11, 1997.</strong> Working on Three Lions at BMG Interactive at the time. 0-0 draw. Paul Ince in the head-bandage. 81,200 in attendance. England qualifies for France '98 on the draw.</li>
@@ -291,7 +376,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" data-reveal>
   <div class="container">
     <div class="section__kicker">The FIFA confession</div>
     <h2 class="display display--l section__title">I was a tester on the very first one.</h2>
@@ -306,7 +391,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" data-reveal>
   <div class="container">
     <div class="section__kicker">If you were there</div>
     <h2 class="display display--l section__title">Tell me which moment.</h2>
@@ -314,6 +399,12 @@
     <div class="callout">
       <p>If you were with me at any of the chapters above, or you have a story that fits the thread, email me (cc Darby on <a href="mailto:gbellamy@gmail.com?cc=gbellamyAI@gmail.com&amp;subject=Soccer%20Journey">gbellamyAI@gmail.com</a>) and I'll add it to the page. This is a living document. The thread keeps going.</p>
     </div>
+
+    <a class="door" href="run.html" data-reveal>
+      <img src="assets/g-pete-bowl-0625.jpg" alt="" loading="lazy" decoding="async" />
+      <div class="door__scrim"></div>
+      <div class="door__label"><div class="door__kicker">Next · Chapter 3 · The Run</div><div class="door__title">The Run</div></div>
+    </a>
   </div>
 </section>
 
@@ -323,9 +414,23 @@
   <div class="container">
     <p>Friends &amp; Family Edition · Gordon's Soccer Journey · Updated August 1, 2026, with the ending.</p>
     <p style="margin-top: 12px;">All chapters in Gordon's own words from his May 27 Instagram-and-email post. Background context (Spartan Stadium first MLS match, San Francisco Spikes history) cross-referenced against public records.</p>
+        <p style="margin-top:10px;font-size:.85rem"><a href="meta.html">⚙ The Making Of · how we built this site, and the others →</a></p>
+    <ul class="passport"></ul>
   </div>
 </footer>
 
 <script src="site.js" defer></script>
+<script src="effects.js" defer></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var finale = document.querySelector(".wave-player audio");
+  if (!finale || !window.FX) return;
+  finale.addEventListener("play", function () {
+    if (FX.store.get("journeyFinaleConfetti")) return;
+    FX.store.set("journeyFinaleConfetti", 1);
+    FX.confetti(0.5, 0.35);
+  });
+});
+</script>
 </body>
 </html>

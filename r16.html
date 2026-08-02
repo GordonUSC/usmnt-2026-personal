@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" />
 <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="effects.css" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="USA 26 with Gordon · Friends &amp; Family Edition" />
 <meta property="og:title" content="Round of 16 · USA 26 with Gordon" />
@@ -21,8 +22,21 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="USA 26 · Gordon" />
 <meta name="format-detection" content="telephone=no" />
+<style>
+  /* r16 page layout only: layered duotone hero + inline scoreline sizing */
+  .hero--photo { position: relative; overflow: hidden; background-image: none; }
+  .hero--photo .hero-media { position: absolute; inset: 0; }
+  .hero--photo .hero-media img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,14,26,.84) 0%, rgba(11,14,26,.68) 50%, rgba(11,14,26,.97) 100%); pointer-events: none; }
+  .hero--photo .container { position: relative; }
+  .scoreline { margin: 40px 0 0; text-align: left; }
+  .scoreline .scoreline__line { font-variant-numeric: tabular-nums; margin: 0; }
+  .scoreline .stat__num { font-size: inherit; line-height: inherit; }
+  .stat__num--inline { font-size: 1.15em; color: var(--gold, #FFCD00); font-variant-numeric: tabular-nums; }
+  .figure--tillman { max-width: 440px; }
+</style>
 </head>
-<body>
+<body data-page="r16">
 
 <header class="nav">
   <a href="index.html" class="nav__brand"><strong>USA</strong> · 26 · Friends &amp; Family</a>
@@ -39,28 +53,41 @@
     <a href="lore.html">Lore</a>
     <a href="kits.html">Kits</a>
   </nav>
+  <button id="sound-toggle" class="sound-toggle" aria-pressed="false">♪ off</button>
 </header>
 
 <main>
 
-<section class="hero hero--photo" style="--hero-img:url('assets/lumen.jpg')">
+<section class="hero hero--photo vt-hero">
+  <div class="duotone hero-media" aria-hidden="true">
+    <img src="assets/lumen.jpg" alt="" width="1600" height="1056" decoding="async" />
+  </div>
+  <div class="hero-scrim" aria-hidden="true"></div>
   <div class="container">
     <div class="hero__kicker">Round of 16 · Mon Jul 6, 2026 · Lumen Field, Seattle · Belgium 4, USA 1 · 66,925</div>
-    <h1 class="display display--xl">The actual path, walked.</h1>
+    <h1 class="display display--xl kinetic">The <span>actual</span> <span>path,</span> <span>walked.</span></h1>
     <p class="hero__sub">This page existed to predict our Round of 16 opponent, and it said Belgium. Belgium came. In front of 66,925 in Seattle on July 6, they beat us 4-1 and our World Cup ended. The prophecy page, fulfilled, just not the way I wanted. The match report is up top now; the prediction is kept below, exactly as written, because we called the path right and I want the receipt.</p>
-      <p class="hero__credit">Lumen Field · photo SounderBruce · CC BY-SA 4.0 · Wikimedia Commons</p>
+    <div class="stat scoreline" data-reveal="fade">
+      <p class="display display--xl scoreline__line">Belgium <span class="stat__num" data-count="4">4</span> · USA <span class="stat__num" data-count="1">1</span></p>
+      <div class="stat__label">Full time · Lumen Field · 66,925</div>
+    </div>
+    <p class="hero__credit">Lumen Field · photo SounderBruce · CC BY-SA 4.0 · Wikimedia Commons</p>
   </div>
 </section>
 
-<section class="section">
+<section class="section section--breath">
   <div class="container">
-    <div class="section__kicker">The match · Monday July 6 · Lumen Field · attendance 66,925</div>
-    <h2 class="display display--l section__title">Belgium. The whistle in Seattle.</h2>
+    <div class="section__kicker" data-reveal="fade">The match · Monday July 6 · Lumen Field · attendance 66,925</div>
+    <h2 class="display display--l section__title" data-reveal="fade">Belgium. The whistle in Seattle.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal="fade">
       <div class="profile-card__detail">
         <p>It went wrong early. Charles De Ketelaere finished a Castagne cross in the 8th or 9th minute, depending on whose clock you trust, and we were chasing before the nerves had settled.</p>
-        <p>Then came the 61 seconds I will keep. In the 31st minute Malik Tillman stood over a free kick and hit it, the wall deflected it in, and it was 1-1. His second free-kick goal in as many knockout games. For 61 seconds it was level and everything felt possible. Then Belgium took the restart, worked it straight up the field, and De Ketelaere scored again in the 33rd. Level for a minute and one second. The cruelest stat of my summer.</p>
+        <p>Then came the <span class="stat__num stat__num--inline" data-count="61">61</span> seconds I will keep. In the 31st minute Malik Tillman stood over a free kick and hit it, the wall deflected it in, and it was 1-1. His second free-kick goal in as many knockout games. For 61 seconds it was level and everything felt possible. Then Belgium took the restart, worked it straight up the field, and De Ketelaere scored again in the 33rd. Level for a minute and one second. The cruelest stat of my summer.</p>
+        <figure class="figure figure--tillman" data-reveal="fade">
+          <img src="assets/cc/tillman.jpg" alt="Malik Tillman in the white USMNT kit carrying the ball, Australia v USA, Seattle, June 19, 2026." loading="lazy" decoding="async" width="1280" height="1920" />
+          <figcaption>Malik Tillman, the dead-ball author, on the ball in Seattle, June 19, 2026. <span class="cr">photo Bryan Berlin · CC BY-SA 4.0 · Wikimedia Commons</span></figcaption>
+        </figure>
         <p>The second half took the rest. In the 52nd Christian Pulisic went down when his foot struck Tielemans' boot; he tried to carry on and was off around the 59th. In between, in the 57th, Matt Freese missed his clearance and Hans Vanaken put Belgium up 3-1. Lukaku added the fourth deep in stoppage time, 90+3'. Full time: Belgium 4, USA 1, and Belgium's unbeaten run stretched to 18 games. We were the 18th.</p>
       </div>
     </div>
@@ -69,10 +96,10 @@
 
 <section class="section">
   <div class="container">
-    <div class="section__kicker">The vindication, such as it is</div>
-    <h2 class="display display--l section__title">We lost to the team that pushed the champions hardest.</h2>
+    <div class="section__kicker" data-reveal="fade">The vindication, such as it is</div>
+    <h2 class="display display--l section__title" data-reveal="fade">We lost to the team that pushed the champions hardest.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal="fade">
       <div class="profile-card__detail">
         <p>This page said Spain's lane fed our quarterfinal. It did. The QF seat we were playing for went to Belgium instead, and Belgium met Spain and lost only 2-1. Spain then won the whole tournament, conceding exactly one goal all summer. Sit with that math: the only goal anyone scored on the eventual champions was scored by the team that knocked us out.</p>
         <p>So here is the honest read. We did not stumble into some fluke ending. We lost to the side that pushed the champions harder than anyone else in the tournament. And the 5-2 friendly in March, the one this page talked itself into treating as a B-tier asterisk, turned out to be a truer omen than we hoped. Belgium was better than us, in March and in July. Both things get to be true: the scouting was right about who would be standing in Seattle, and wrong about how close we could make it.</p>
@@ -83,10 +110,10 @@
 
 <section class="section">
   <div class="container">
-    <div class="section__kicker">Where I was when it ended</div>
-    <h2 class="display display--l section__title">Stoughton, Wisconsin. Soccer fever.</h2>
+    <div class="section__kicker" data-reveal="fade">Where I was when it ended</div>
+    <h2 class="display display--l section__title" data-reveal="fade">Stoughton, Wisconsin. Soccer fever.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal="fade">
       <div class="profile-card__detail">
         <p>I did not watch the end of our World Cup in a stadium. I watched it in a small town in Wisconsin, and I would not trade it. My own words that day: "I'm here in the Norwegian town of Stoughton, WISCONSIN! where soccer fever has struck in the past 24 hours." That morning Matt Kramer texted "MATCHDAY!!!" and I texted back "MATCHDAY", because that is the whole liturgy.</p>
         <p>Then the match happened. Somewhere in there I texted "The goal was the most horrible defense", because loving a team means being honest about it. And after the whistle a friend wrote, "And that's a rap for our World Cup." I sat with that for a second. Then I answered with the truest sentence I typed all summer: <a href="friends.html">"Maybe the World Cup was the friends we made along the way."</a> That sentence earned its own page. Go read it.</p>
@@ -98,10 +125,10 @@
 
 <section class="section">
   <div class="container">
-    <div class="section__kicker">The artifact · kept as written</div>
-    <h2 class="display display--l section__title">What this page said before July 6.</h2>
+    <div class="section__kicker" data-reveal="fade">The artifact · kept as written</div>
+    <h2 class="display display--l section__title" data-reveal="fade">What this page said before July 6.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal="fade">
       <div class="profile-card__detail">
         <p>Everything below is the prediction as it stood in May, untouched except for one clearly labeled coda at the bottom. We mapped the bracket, named Belgium the most likely opponent, profiled the five 3rd-place long shots, and charted where the giants lived. It was right about the big thing. Kept as written, because a prophecy you edit afterward is not a prophecy.</p>
       </div>
@@ -111,10 +138,10 @@
 
 <section class="section">
   <div class="container">
-    <div class="section__kicker">A correction worth being clear about</div>
-    <h2 class="display display--l section__title">Where we are vs where the giants are.</h2>
+    <div class="section__kicker" data-reveal="fade">A correction worth being clear about</div>
+    <h2 class="display display--l section__title" data-reveal="fade">Where we are vs where the giants are.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal="fade">
       <div class="profile-card__detail">
         <p>USA, as Group D winner, sits in <strong>Match 81</strong> of the Round of 32. The R16 pairs winners of <strong>Match 81 vs Match 82</strong>. That R16 match is <strong>Match 94, on Monday July 6 at Lumen Field in Seattle</strong>.</p>
         <p><strong>Match 82</strong> is: <strong>Group G winner vs the best 3rd-place team from Group A, E, H, I, or J.</strong></p>
@@ -131,10 +158,10 @@
 
 <section class="section">
   <div class="container">
-    <div class="section__kicker">The most likely R16 opponent</div>
-    <h2 class="display display--l section__title">Belgium.</h2>
+    <div class="section__kicker" data-reveal="fade">The most likely R16 opponent</div>
+    <h2 class="display display--l section__title" data-reveal="fade">Belgium.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal="fade">
       <div class="profile-card__header"><div class="profile-card__name">Belgium (Red Devils)</div><div class="profile-card__role">Group G winner · Coach Rudi Garcia · 3-4-3</div></div>
       <div class="profile-card__detail">
         <p><strong>Star:</strong> Kevin De Bruyne.</p>
@@ -160,44 +187,44 @@
 
 <section class="section">
   <div class="container">
-    <div class="section__kicker">The 3rd-place upset scenario</div>
-    <h2 class="display display--l section__title">If a 3rd-place team beats Belgium in R32.</h2>
+    <div class="section__kicker" data-reveal="fade">The 3rd-place upset scenario</div>
+    <h2 class="display display--l section__title" data-reveal="fade">If a 3rd-place team beats Belgium in R32.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal="fade">
       <div class="profile-card__detail">
         <p>The other path: a 3rd-place team from Group A, E, H, I, or J beats Belgium in Match 82, then plays USA in R16. The candidates from those groups, ordered by how plausible they are:</p>
       </div>
     </div>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal="fade">
       <div class="profile-card__header"><div class="profile-card__name">Senegal</div><div class="profile-card__role">If 3rd in Group I (France, Senegal, Norway, Iraq)</div></div>
       <div class="profile-card__detail">
         <p>Africa's most consistent side. Mané, Koulibaly. <strong>If France wins Group I and Norway finishes 2nd, Senegal could be the 3rd-place team here.</strong> A real test.</p>
       </div>
     </div>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal="fade">
       <div class="profile-card__header"><div class="profile-card__name">Uruguay</div><div class="profile-card__role">If 3rd in Group H (Spain, Cape Verde, Saudi Arabia, Uruguay)</div></div>
       <div class="profile-card__detail">
         <p>Bielsa's vicious counter-attacking side. Valverde + Núñez. <strong>If Spain wins the group and Saudi or Cape Verde takes second, Uruguay finishing 3rd is plausible.</strong> The most dangerous possible 3rd-place team in this entire branch.</p>
       </div>
     </div>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal="fade">
       <div class="profile-card__header"><div class="profile-card__name">Austria</div><div class="profile-card__role">If 3rd in Group J (Argentina, Algeria, Austria, Jordan)</div></div>
       <div class="profile-card__detail">
         <p>Rangnick's high-press machine. <strong>Argentina is the lock-in for 1st; Austria most likely 2nd, but could slip to 3rd if Algeria has a moment.</strong></p>
       </div>
     </div>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal="fade">
       <div class="profile-card__header"><div class="profile-card__name">Ivory Coast</div><div class="profile-card__role">If 3rd in Group E (Germany, Curaçao, Ivory Coast, Ecuador)</div></div>
       <div class="profile-card__detail">
         <p>AFCON 2023 champions. <strong>Could finish 3rd behind Germany and Ecuador.</strong> Same team we profiled in R32 as a possibility.</p>
       </div>
     </div>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal="fade">
       <div class="profile-card__header"><div class="profile-card__name">South Korea</div><div class="profile-card__role">If 3rd in Group A (Mexico, South Africa, South Korea, Czechia)</div></div>
       <div class="profile-card__detail">
         <p>Son's likely last World Cup. <strong>If Mexico and Czechia finish ahead, Son's Korea could be a 3rd-place team here.</strong> Lethal in transition.</p>
@@ -208,10 +235,10 @@
 
 <section class="section">
   <div class="container">
-    <div class="section__kicker">Where the giants actually live</div>
-    <h2 class="display display--l section__title">Brazil, Spain, Portugal, England.</h2>
+    <div class="section__kicker" data-reveal="fade">Where the giants actually live</div>
+    <h2 class="display display--l section__title" data-reveal="fade">Brazil, Spain, Portugal, England.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal="fade">
       <div class="profile-card__detail">
         <p>None of these four can be the R16 opponent. But their paths converge with ours at different rounds, and two of them arrive earlier than the casual read suggests.</p>
 
@@ -231,6 +258,12 @@
         <p>The Spain lane was exactly right: the winner of our R16 went on to face Spain in the quarterfinal, and Belgium lost it 2-1. The Brazil semifinal hypothetical never came due, because Norway beat Brazil 2-0 in the Round of 16 and the lane rerouted. England did live in the other half, and took third place in that ridiculous 6-4 bronze game. Portugal is the one the map missed: the bracket dropped them into Spain's lane after all, and Spain beat them 1-0 in the Round of 16, one round before Belgium. So the gauntlet was real. We just never got to walk it.</p>
       </div>
     </div>
+
+    <a class="door" href="friends.html" data-reveal>
+      <img src="assets/scarf-friends.jpg" alt="" loading="lazy" decoding="async" />
+      <div class="door__scrim"></div>
+      <div class="door__label"><div class="door__kicker">Next · Chapter 7</div><div class="door__title">The friends we made along the way</div></div>
+    </a>
   </div>
 </section>
 
@@ -240,9 +273,12 @@
   <div class="container">
     <p>Friends &amp; Family Edition · Round of 16 page · Updated August 1, 2026.</p>
     <p style="margin-top: 12px;">Email me with R16 questions, cc <a href="mailto:gbellamy@gmail.com?cc=gbellamyAI@gmail.com&amp;subject=R16%20question">gbellamyAI@gmail.com</a>.</p>
+        <p style="margin-top:10px;font-size:.85rem"><a href="meta.html">⚙ The Making Of · how we built this site, and the others →</a></p>
+    <ul class="passport"></ul>
   </div>
 </footer>
 
 <script src="site.js" defer></script>
+<script src="effects.js" defer></script>
 </body>
 </html>

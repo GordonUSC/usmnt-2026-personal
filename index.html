@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" />
 <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="effects.css" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="USA 26 with Gordon · Friends &amp; Family Edition" />
 <meta property="og:title" content="USA 26 with Gordon · The summer, kept" />
@@ -24,7 +25,7 @@
 <meta name="apple-mobile-web-app-title" content="USA 26 · Gordon" />
 <meta name="format-detection" content="telephone=no" />
 </head>
-<body>
+<body data-page="index">
 
 <header class="nav">
   <a href="index.html" class="nav__brand"><strong>USA</strong> · 26 · Friends &amp; Family</a>
@@ -40,31 +41,59 @@
     <a href="r16.html">R16</a>
     <a href="lore.html">Lore</a>
     <a href="kits.html">Kits</a>
+    <button id="sound-toggle" class="sound-toggle" aria-pressed="false">♪ off</button>
   </nav>
 </header>
 
 <main id="top">
 
-<section class="hero hero--photo" style="--hero-img:url('assets/sofi.jpg')">
+<section class="hero hero--photo hero-drift vt-hero" style="--hero-img:url('assets/g-sofi-0625.jpg')">
   <div class="container">
-    <div class="hero__kicker">Personal · Curated by Gordon · For my people · The tournament ended July 19. The site graduated into a memory.</div>
-    <h1 class="display display--xl">A World Cup<br/>at home, <span class="italic">together.</span></h1>
-    <p class="hero__sub">This started as a guide for the people I love: which games, which watch parties, how to find each other. The tournament is over now, so this is what the site became: the record of the best soccer summer of my life. Same World Cup the whole country watched. Made smaller, and warmer, by who was around the table.</p>
-    <p class="hero__signoff">Every page updated August 1 with what actually happened, verified scores and real photos and the texts we really sent. Start with The Run, then meet The Friends.<br/>G</p>
-    <div class="hero__next" id="next-usa"><span class="dot"></span><span id="next-usa-text">Final whistle · USA won Group D, beat Bosnia with ten men, fell to Belgium in the Round of 16 · Spain won the Cup at MetLife · We were exactly where we belonged the whole time</span></div>
-    <a href="run.html" style="display:inline-block;margin-top:18px;background:#B31942;color:#fff;font-weight:700;text-decoration:none;padding:14px 26px;border-radius:999px;font-size:1.02rem;box-shadow:0 8px 24px rgba(179,25,66,.4)">⚽ The Run → five matches, one summer, as we lived it</a>
+    <div class="hero__kicker">Personal · Curated by Gordon · For my people · The tournament ended July 19. The site became a memory.</div>
+    <h1 class="display display--xl kinetic"><span>A</span> <span>World</span> <span>Cup</span><br/><span>at</span> <span>home,</span> <span class="italic">together.</span></h1>
+    <p class="hero__sub" data-reveal="fade">This started as a guide for the people I love: which games, which watch parties, how to find each other. Now it holds what the guide became: the best soccer summer of my life. Same World Cup the whole country watched. Made smaller, and warmer, by who was around the table.</p>
+    <p class="hero__signoff" data-reveal="fade">That face up there is me, walking into SoFi on June 25. Fifty years of loving this game, one week of living inside it.<br/>G</p>
+    <p id="greet"></p>
+    <a href="run.html" style="display:inline-block;margin-top:18px;background:#B31942;color:#fff;font-weight:700;text-decoration:none;padding:14px 26px;border-radius:999px;font-size:1.02rem;box-shadow:0 8px 24px rgba(179,25,66,.4)">⚽ The Run → five matches, one summer</a>
     <a href="friends.html" style="display:inline-block;margin-top:18px;margin-left:10px;background:rgba(255,255,255,.12);color:#fff;font-weight:700;text-decoration:none;padding:14px 26px;border-radius:999px;font-size:1.02rem;border:1px solid rgba(255,255,255,.3)">❤️ The Friends → the people who made it</a>
-      <p class="hero__credit">SoFi Stadium · photo Troutfarm27 · CC BY-SA 4.0 · Wikimedia Commons</p>
+    <p class="hero__credit">SoFi Stadium, June 25, 2026 · photo by G</p>
+  </div>
+</section>
+
+<section class="section" id="numbers">
+  <div class="container">
+    <div class="section__kicker">The summer, in numbers that are also feelings</div>
+    <div class="stat-row" data-reveal-group>
+      <div class="stat"><div class="stat__num" data-count="50">0</div><div class="stat__label">years loving this game</div></div>
+      <div class="stat"><div class="stat__num" data-count="5">0</div><div class="stat__label">USA matches lived</div></div>
+      <div class="stat"><div class="stat__num" data-count="2">0</div><div class="stat__label">seats inside SoFi</div></div>
+      <div class="stat"><div class="stat__num" data-count="6810966">0</div><div class="stat__label">of us, in the stands, all summer</div></div>
+    </div>
   </div>
 </section>
 
 <section class="section" id="result">
   <div class="container">
     <div class="section__kicker">The final ledger · June 12 to July 19</div>
-    <h2 class="display display--l section__title">What the summer held. <span class="italic">All of it true.</span></h2>
-    <p class="section__lede">USA 4-1 Paraguay. USA 2-0 Australia. Türkiye 3-2 over a rotated side that had already won Group D. USA 2-0 Bosnia with ten men, our first knockout win since 2002. Belgium 4-1, and the whistle in Seattle. Then Spain won the whole thing at MetLife, 1-0 over Argentina in extra time, twenty miles from the table where I sat with my people. The biggest World Cup ever played, 6.8 million in the stands, and two of those seats, on two different nights, were mine.</p>
+    <h2 class="display display--l section__title" data-reveal>What the summer held. <span class="italic">All of it true.</span></h2>
+    <p class="section__lede" data-reveal>USA 4-1 Paraguay. USA 2-0 Australia. Türkiye 3-2 over a rotated side that had already won Group D. USA 2-0 Bosnia with ten men, our first knockout win since 2002. Belgium 4-1, and the whistle in Seattle. Then Spain won the whole thing at MetLife, 1-0 over Argentina in extra time, twenty miles from the table where I sat with my people. The biggest World Cup ever played, and two of those seats, on two different nights, were mine.</p>
 
-    <div class="ledger">
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span class="q">"Not me crying in an uber on the way to a soccer game"<b>G · Jun 25</b></span>
+        <span class="q">"GO TO THE WORLD CUP?!?!"<b>Pete · Jun 25</b></span>
+        <span class="q">"MATCHDAY!!!"<b>Matt · every matchday</b></span>
+        <span class="q">"We've got our table booked for the big game"<b>Foster · Jun 10</b></span>
+        <span class="q">"Maybe the World Cup was the friends we made along the way"<b>G · Jul 6</b></span>
+        <span class="q">"Not me crying in an uber on the way to a soccer game"<b>G · Jun 25</b></span>
+        <span class="q">"GO TO THE WORLD CUP?!?!"<b>Pete · Jun 25</b></span>
+        <span class="q">"MATCHDAY!!!"<b>Matt · every matchday</b></span>
+        <span class="q">"We've got our table booked for the big game"<b>Foster · Jun 10</b></span>
+        <span class="q">"Maybe the World Cup was the friends we made along the way"<b>G · Jul 6</b></span>
+      </div>
+    </div>
+
+    <div class="ledger" data-reveal>
       <h3>The two sentences I keep</h3>
       <p><strong>"Not me crying in an uber on the way to a soccer game."</strong> Sent to six friends on June 25, on the way to sit next to Pete Hines at a home World Cup, fifty years into loving this sport.</p>
       <p style="margin-top:12px;"><strong>"Maybe the World Cup was the friends we made along the way."</strong> Sent minutes after elimination on July 6, and truer every day since. It became <a href="friends.html">a whole page</a>.</p>
@@ -72,24 +101,40 @@
   </div>
 </section>
 
+<section class="section" id="frames">
+  <div class="container">
+    <div class="section__kicker">The summer in six frames · Tap any photo</div>
+    <h2 class="display display--l section__title" data-reveal>Proof of joy.</h2>
+    <div class="polaroid-wall" data-reveal-group>
+      <figure class="polaroid"><a href="assets/quinn-soccerhouse-0611.jpg" data-lightbox data-caption="Quinn and me at US Soccer House, opening day. June 11."><img src="assets/quinn-soccerhouse-0611.jpg" alt="Gordon and Quinn beaming at US Soccer House" loading="lazy" decoding="async" width="1350" height="1800"/></a><figcaption>Opening day with Quinn. <em>Jun 11.</em></figcaption></figure>
+      <figure class="polaroid"><a href="assets/g-pete-bowl-0625.jpg" data-lightbox data-caption="Pete and me, the full SoFi bowl behind us. June 25."><img src="assets/g-pete-bowl-0625.jpg" alt="Gordon and Pete Hines with the sunlit SoFi bowl behind them" loading="lazy" decoding="async" width="1350" height="1800"/></a><figcaption>Pete. The bowl. The day. <em>Jun 25.</em></figcaption></figure>
+      <figure class="polaroid"><a href="assets/board-0625.jpg" data-lightbox data-caption="GORDON BELLAMY and PETE HINES on the SoFi videoboard, June 25."><img src="assets/board-0625.jpg" alt="SoFi videoboard listing Gordon Bellamy and Pete Hines as Super Supporters" loading="lazy" decoding="async" width="1350" height="1800"/></a><figcaption>Our names. On the board. At a home World Cup. <em>Jun 25.</em></figcaption></figure>
+      <figure class="polaroid"><a href="assets/minecraft-dragonhouse.jpg" data-lightbox data-caption="Minecraft on the big screen at the Dragon House. Wiscago, July."><img src="assets/minecraft-dragonhouse.jpg" alt="Minecraft world on a TV at the Dragon House" loading="lazy" decoding="async" width="1800" height="1350"/></a><figcaption>Dragon House rules: soccer on one screen, Minecraft on the other. <em>Wiscago.</em></figcaption></figure>
+      <figure class="polaroid"><a href="assets/foster-birthday-0718.jpg" data-lightbox data-caption="Foster's 55th, the candle, the crew. July 18."><img src="assets/foster-birthday-0718.jpg" alt="Foster at his birthday table with a dessert plate and candle" loading="lazy" decoding="async" width="1350" height="1800"/></a><figcaption>Foster's 55th, bronze game on the screens. <em>Jul 18.</em></figcaption></figure>
+      <figure class="polaroid"><a href="assets/final-table-0719.jpg" data-lightbox data-caption="Final Sunday, New York, 4:06pm. Brennan on the peace sign."><img src="assets/final-table-0719.jpg" alt="Gordon, Brennan, and friends at a New York table with the Final on the screens" loading="lazy" decoding="async" width="1350" height="1800"/></a><figcaption>Final Sunday. The table, full. <em>Jul 19.</em></figcaption></figure>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="deep-dives">
   <div class="container">
     <div class="section__kicker">For the curious</div>
-    <h2 class="display display--l section__title">Deep dives.</h2>
-    <p class="section__lede">Every page below was written during the tournament and updated after it, with the original reads kept as artifacts and graded honestly. That's the house style: we say what we believed, then we say what happened.</p>
+    <h2 class="display display--l section__title" data-reveal>Deep dives.</h2>
+    <p class="section__lede" data-reveal>Every page below was written during the tournament and updated after it, with the original reads kept as artifacts and graded honestly. That's the house style: we say what we believed, then we say what happened. Your passport at the bottom of every page stamps as you go.</p>
 
-    <div class="friend-grid">
+    <div class="friend-grid" data-reveal-group>
       <div class="friend-card"><div class="friend-card__name"><a href="run.html">The Run</a></div><div class="friend-card__detail">Five matches, one arc, with the photos. Start here.</div></div>
       <div class="friend-card"><div class="friend-card__name"><a href="friends.html">The Friends</a></div><div class="friend-card__detail">The people, one chapter each, with the real texts.</div></div>
-      <div class="friend-card"><div class="friend-card__name"><a href="soccer-journey.html">My Soccer Journey</a></div><div class="friend-card__detail">Fifty years, now with the ending the first fifty were waiting for.</div></div>
-      <div class="friend-card"><div class="friend-card__name"><a href="roster.html">Roster</a></div><div class="friend-card__detail">All 26, and what each actually did.</div></div>
+      <div class="friend-card"><div class="friend-card__name"><a href="soccer-journey.html">My Soccer Journey</a></div><div class="friend-card__detail">Fifty years, now with the ending, narrated.</div></div>
+      <div class="friend-card"><div class="friend-card__name"><a href="roster.html">Roster</a></div><div class="friend-card__detail">All 26, flip the cards, see what each became.</div></div>
       <div class="friend-card"><div class="friend-card__name"><a href="strategy.html">Strategy</a></div><div class="friend-card__detail">The identity project, graded against reality.</div></div>
-      <div class="friend-card"><div class="friend-card__name"><a href="group-d.html">Group D</a></div><div class="friend-card__detail">Won on 6 points. The scouting, graded.</div></div>
-      <div class="friend-card"><div class="friend-card__name"><a href="r32.html">Round of 32</a></div><div class="friend-card__detail">We scouted five teams. The bracket sent a sixth.</div></div>
-      <div class="friend-card"><div class="friend-card__name"><a href="r16.html">Round of 16</a></div><div class="friend-card__detail">The page that predicted Belgium. Belgium came.</div></div>
-      <div class="friend-card"><div class="friend-card__name"><a href="lore.html">Lore</a></div><div class="friend-card__detail">1950, 2010, and now the 2026 entries this summer earned.</div></div>
-      <div class="friend-card"><div class="friend-card__name"><a href="kits.html">Kits</a></div><div class="friend-card__detail">From the 1994 denim to the number 4 I wore into SoFi.</div></div>
-      <div class="friend-card"><div class="friend-card__name"><a href="experience.html">The Fan Guide</a></div><div class="friend-card__detail">The matchday guide, archived as a time capsule. It worked.</div></div>
+      <div class="friend-card"><div class="friend-card__name"><a href="group-d.html">Group D</a></div><div class="friend-card__detail">Won on 6 points. Call each match before it reveals.</div></div>
+      <div class="friend-card"><div class="friend-card__name"><a href="r32.html">Round of 32</a></div><div class="friend-card__detail">Ten men at Levi's. Hold your breath, literally.</div></div>
+      <div class="friend-card"><div class="friend-card__name"><a href="r16.html">Round of 16</a></div><div class="friend-card__detail">The page that predicted Belgium. Quiet, on purpose.</div></div>
+      <div class="friend-card"><div class="friend-card__name"><a href="lore.html">Lore</a></div><div class="friend-card__detail">1950, 2010, and the 2026 entries this summer earned.</div></div>
+      <div class="friend-card"><div class="friend-card__name"><a href="kits.html">Kits</a></div><div class="friend-card__detail">Touch the shirt. It comes alive.</div></div>
+      <div class="friend-card"><div class="friend-card__name"><a href="experience.html">Being There</a></div><div class="friend-card__detail">The archived fan guide, now the photo atlas.</div></div>
+      <div class="friend-card"><div class="friend-card__name"><a href="meta.html">The Making Of</a></div><div class="friend-card__detail">My World Cup had a co-pilot. The sites we built along the way.</div></div>
     </div>
   </div>
 </section>
@@ -97,10 +142,10 @@
 <section class="section" id="games">
   <div class="container">
     <div class="section__kicker">By the match · Tap to expand · Plans on top, what happened below</div>
-    <h2 class="display display--l section__title">Which game were you on?</h2>
-    <p class="section__lede">Each match had its night, and every night had rooms: stadium seats, bars, couches, one Dragon House. Tap any match for what it became. If you were in one of these rooms, that card is partly yours.</p>
+    <h2 class="display display--l section__title" data-reveal>Which game were you on?</h2>
+    <p class="section__lede" data-reveal>Each match had its night, and every night had rooms: stadium seats, bars, couches, one Dragon House. Tap any match for what it became. If you were in one of these rooms, that card is partly yours.</p>
 
-    <details>
+    <details data-reveal>
       <summary>
         <div class="match-summary">
           <div class="match-summary__num">M01</div>
@@ -117,7 +162,7 @@
       </div>
     </details>
 
-    <details>
+    <details data-reveal>
       <summary>
         <div class="match-summary">
           <div class="match-summary__num">M02</div>
@@ -134,7 +179,7 @@
       </div>
     </details>
 
-    <details open>
+    <details open data-reveal>
       <summary>
         <div class="match-summary">
           <div class="match-summary__num">M03</div>
@@ -146,13 +191,12 @@
         </div>
       </summary>
       <div class="match-body">
-        <figure class="figure"><img src="assets/g-sofi-0625.jpg" alt="Gordon beaming inside SoFi Stadium under the USA ribbon board before USA v Türkiye" loading="lazy"><figcaption>Walking in. Fifty years, one face.<span class="cr">June 25, 2026. Photo by G.</span></figcaption></figure>
         <h4>What it became</h4>
-        <p>The night of my soccer life. Pete Hines transferred me the ticket on June 7 and texted "What time you heading this way to GO TO THE WORLD CUP?!?!" I cried in the uber and told six friends so. Trusty scored off a corner at 3', Güler and Yılmaz answered, Berhalter leveled at 49', and Ayhan won it for Türkiye with the last touch at 90'+8 against our heavily rotated side. The group was already ours, the seeding didn't move, and at some point <strong>the videoboard put GORDON BELLAMY and PETE HINES up with the Super Supporters.</strong> Quinn drove up from San Diego and was in the building too. Scoreboard: lost. Night: undefeated. Full chapter with both photos on <a href="run.html#turkiye">The Run</a>.</p>
+        <p>The night of my soccer life. Pete Hines transferred me the ticket on June 7 and texted "What time you heading this way to GO TO THE WORLD CUP?!?!" I cried in the uber and told six friends so. Trusty scored off a corner at 3', Güler and Yılmaz answered, Berhalter leveled at 49', and Ayhan won it for Türkiye with the last touch at 90'+8 against our heavily rotated side. The group was already ours, the seeding didn't move, and at some point <strong>the videoboard put GORDON BELLAMY and PETE HINES up with the Super Supporters.</strong> Quinn drove up from San Diego and was in the building too. Scoreboard: lost. Night: undefeated. Full chapter with the photos on <a href="run.html#turkiye">The Run</a>.</p>
       </div>
     </details>
 
-    <details>
+    <details data-reveal>
       <summary>
         <div class="match-summary">
           <div class="match-summary__num">R32</div>
@@ -169,7 +213,7 @@
       </div>
     </details>
 
-    <details>
+    <details data-reveal>
       <summary>
         <div class="match-summary">
           <div class="match-summary__num">R16</div>
@@ -187,7 +231,7 @@
       </div>
     </details>
 
-    <details>
+    <details data-reveal>
       <summary>
         <div class="match-summary">
           <div class="match-summary__num">QF-SF</div>
@@ -204,7 +248,7 @@
       </div>
     </details>
 
-    <details>
+    <details data-reveal>
       <summary>
         <div class="match-summary">
           <div class="match-summary__num">FINAL</div>
@@ -216,7 +260,7 @@
         </div>
       </summary>
       <div class="match-body">
-        <figure class="figure"><img src="assets/final-table-0719.jpg" alt="Gordon, Brennan, and friends at a New York table with the World Cup Final on the screens" loading="lazy"><figcaption>Final Sunday, 4:06pm, New York. The game on every screen, the table full, Brennan on the peace sign.<span class="cr">July 19, 2026.</span></figcaption></figure>
+        <figure class="figure"><a href="assets/final-table-0719.jpg" data-lightbox data-caption="Final Sunday, 4:06pm, New York. The game on every screen, the table full."><img src="assets/final-table-0719.jpg" alt="Gordon, Brennan, and friends at a New York table with the World Cup Final on the screens" loading="lazy" decoding="async" width="1350" height="1800"/></a><figcaption>Final Sunday, 4:06pm, New York. The game on every screen, the table full, Brennan on the peace sign.<span class="cr">July 19, 2026.</span></figcaption></figure>
         <h4>What it became</h4>
         <p>The trip delivered everything it promised. Foster's 55th birthday on the 18th, Brazilian churrasco while England and France played a 6-4 bronze game for the ages, Fan Fest days at the Javits with Brennan and the crew, and then the Final itself: <strong>Spain 1, Argentina 0, extra time, Ferran Torres in the 106th, 80,663 at MetLife,</strong> the biggest World Cup ever played ending twenty miles from our table. And the receipt I treasure most: on the loudest sports day of the year, the only text I sent was about the venue for Dane's wedding, which I officiated six days later. The Cup ended. The life it threads through kept going.</p>
       </div>
@@ -227,27 +271,33 @@
 <section class="section" id="meet">
   <div class="container">
     <div class="section__kicker">What this site learned</div>
-    <h2 class="display display--l section__title">The signal.</h2>
-    <p class="section__lede">The rules that ran this site during the tournament turned out to be the point of it.</p>
+    <h2 class="display display--l section__title" data-reveal>The signal.</h2>
+    <p class="section__lede" data-reveal>The rules that ran this site during the tournament turned out to be the point of it.</p>
 
-    <div class="ledger">
+    <div class="ledger" data-reveal>
       <h3>1. The people who love me through this</h3>
       <p><strong>Joe and Brennan are not soccer people.</strong> They showed up all summer anyway: Brennan at the soccer bar and the Final table, Joe holding the home front through a two-month fandom bender. If you saw them in any room with me, they were there because they love me. That was always the whole sentence.</p>
     </div>
-    <div class="ledger">
+    <div class="ledger" data-reveal>
       <h3>2. Everything real, everything receipted</h3>
-      <p>This was the World Cup of AI fakes and manufactured highlights. So this site went the other way: every photo from our phones with its date, every quote a real message, every score verified against the record, and every "I was there" backed by a ticket. Where we don't have a receipt, we say so. That discipline is why you can trust the joy.</p>
+      <p>This was the World Cup of AI fakes and manufactured highlights. So this site went the other way: every photo from our phones with its date, every quote a real message, every score verified against the record, and every "I was there" backed by a ticket. The three commissioned artworks on this site are labeled as art, because the difference matters. Where we don't have a receipt, we say so. That discipline is why you can trust the joy.</p>
     </div>
-    <div class="ledger">
+    <div class="ledger" data-reveal>
       <h3>3. Share it</h3>
       <p>This site is meant to be sent around. Every match chapter and every friend chapter has its own link, so you can text one exact memory to one exact person. If someone you love was part of this summer, send them their moment. <strong>The whole point was to make the biggest tournament on earth feel small and warm at scale.</strong></p>
     </div>
 
-    <div class="cta">
+    <div class="cta" data-reveal>
       <h3>One more time, with feeling.</h3>
       <p>Corrections, additions, photos I don't have, memories I got wrong: text me at 818-472-7283 or email below, cc Darby, and the record improves. This is a living archive now.</p>
       <a href="mailto:gbellamy@gmail.com?cc=gbellamyAI@gmail.com&amp;subject=USA%2026%20%C2%B7%20Memory&amp;body=G%2C%0A%0AThe%20moment%20I%20want%20added%20or%20fixed%3A%0A%0AWhat%20I%20remember%3A%0A%0APhoto%20attached%3F%0A">Send me a memory</a>
     </div>
+
+    <a class="door" href="soccer-journey.html" data-reveal>
+      <img src="assets/art/number4-poster.jpg" alt="" loading="lazy" decoding="async" />
+      <div class="door__scrim"></div>
+      <div class="door__label"><div class="door__kicker">Next · Chapter 2 · Commissioned art</div><div class="door__title">Number 4. Fifty years, one journey.</div></div>
+    </a>
   </div>
 </section>
 
@@ -257,28 +307,14 @@
   <div class="container">
     <p>USA 26 · Friends &amp; Family Edition · Curated by Gordon · Updated August 1, 2026 · The tournament ended July 19. The memories didn't.</p>
     <p style="margin-top: 12px;">
-      Built by Gordon with Darby, from real photos, real texts, and a verified match record, in the summer the World Cup came home.
+      Built by Gordon with Darby, from real photos, real texts, and a verified match record, in the summer the World Cup came home. <a href="meta.html">Read The Making Of →</a>
       · Public supporters' version: <a href="../usmnt-2026-public/index.html">USA 26 · The Supporters' Path</a>
     </p>
+    <ul class="passport"></ul>
   </div>
 </footer>
 
-<script>
-(function () {
-  "use strict";
-  var el = document.getElementById("next-usa-text");
-  if (!el) return;
-  var LINES = [
-    "Final whistle · USA won Group D, beat Bosnia with ten men, fell to Belgium in the Round of 16 · Spain won the Cup at MetLife",
-    "Two seats at SoFi, two different nights, were ours · June 18 with the Delphi crew · June 25 with Pete",
-    "6,810,966 people watched this World Cup in person · the biggest ever played · we were five of the rooms",
-    "Maybe the World Cup was the friends we made along the way"
-  ];
-  var i = 0;
-  setInterval(function () { i = (i + 1) % LINES.length; el.textContent = LINES[i]; }, 7000);
-})();
-</script>
-
 <script src="site.js" defer></script>
+<script src="effects.js" defer></script>
 </body>
 </html>

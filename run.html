@@ -9,10 +9,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" />
 <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="effects.css" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="USA 26 with Gordon · Friends &amp; Family Edition" />
 <meta property="og:title" content="The Run · Five matches, one summer" />
-<meta property="og:description" content="The USMNT's 2026 World Cup, match by match, as Gordon and his people actually lived it. Photos, receipts, and the whole arc from the opener to the Final." />
+<meta property="og:description" content="The USMNT's 2026 World Cup, match by match, as Gordon and his people actually lived it. Photos, receipts, and the whole arc from the opener to the Final, told as one continuous scroll." />
 <meta property="og:url" content="https://gordonusc.github.io/usmnt-2026-personal/run.html" />
 <meta property="og:image" content="https://gordonusc.github.io/usmnt-2026-personal/assets/g-pete-0625.jpg" />
 <meta name="twitter:card" content="summary" />
@@ -22,8 +23,53 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="USA 26 · Gordon" />
 <meta name="format-detection" content="telephone=no" />
+<style>
+/* run.html set piece · the montage stage. Transform/opacity only, page-scoped. */
+body[data-page="run"] .scrolly__scene { background: #0B0E1A; }
+body[data-page="run"] .run-strip {
+  position: absolute; top: 50%; left: 0;
+  width: 500%; max-width: none; height: auto;
+  transform-origin: 10% 50%;
+  transform: translateY(-50%) scale(1.06);
+  transition: transform 1.2s var(--ease-out), transform-origin 1.2s var(--ease-out);
+  will-change: transform;
+}
+body[data-page="run"] .scrolly__scene[data-step="2"] .run-strip { transform-origin: 30% 50%; transform: translateY(-50%) translateX(-20%) scale(1.02); }
+body[data-page="run"] .scrolly__scene[data-step="3"] .run-strip { transform-origin: 50% 50%; transform: translateY(-50%) translateX(-40%) scale(1.06); }
+body[data-page="run"] .scrolly__scene[data-step="4"] .run-strip { transform-origin: 70% 50%; transform: translateY(-50%) translateX(-60%) scale(1.02); }
+body[data-page="run"] .scrolly__scene[data-step="5"] .run-strip { transform-origin: 90% 50%; transform: translateY(-50%) translateX(-80%) scale(1.06); }
+body[data-page="run"] .run-scene-scrim { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(0deg, rgba(11,14,26,.8), transparent 45%), linear-gradient(180deg, rgba(11,14,26,.5), transparent 28%); }
+body[data-page="run"] .run-scoreline { position: absolute; left: 26px; right: 26px; bottom: 30px; display: grid; }
+body[data-page="run"] .run-scoreline span {
+  grid-area: 1 / 1; justify-self: start;
+  font-family: 'Fraunces', serif; font-weight: 600; line-height: 1;
+  font-size: clamp(2.4rem, 6vw, 4.6rem); letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--paper);
+  text-shadow: 0 2px 24px rgba(11,14,26,.85);
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .6s var(--ease-out), transform .6s var(--ease-out);
+}
+body[data-page="run"] .scrolly__scene:not([data-step]) .run-scoreline span[data-for="1"],
+body[data-page="run"] .scrolly__scene[data-step="1"] .run-scoreline span[data-for="1"],
+body[data-page="run"] .scrolly__scene[data-step="2"] .run-scoreline span[data-for="2"],
+body[data-page="run"] .scrolly__scene[data-step="3"] .run-scoreline span[data-for="3"],
+body[data-page="run"] .scrolly__scene[data-step="4"] .run-scoreline span[data-for="4"],
+body[data-page="run"] .scrolly__scene[data-step="5"] .run-scoreline span[data-for="5"] { opacity: 1; transform: none; }
+body[data-page="run"] .run-chip { position: absolute; top: 16px; right: 16px; }
+body[data-page="run"] .run-chip .badge-art { display: inline-block; background: rgba(11,14,26,.65); }
+body[data-page="run"] .scrolly__step { padding: 0 16px; }
+@media (max-width: 799px) {
+  /* Keep the stage pinned on small screens so the steps scroll over it */
+  body[data-page="run"] .scrolly { display: block; }
+}
+body[data-page="run"] .polaroid video { display: block; width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 1px; }
+body[data-page="run"] .door__credit { font-family: 'JetBrains Mono', monospace; font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; opacity: .55; margin-top: 6px; }
+@media (prefers-reduced-motion: reduce) {
+  body[data-page="run"] .run-strip, body[data-page="run"] .run-scoreline span { transition: none; }
+}
+</style>
 </head>
-<body>
+<body data-page="run">
 
 <header class="nav">
   <a href="index.html" class="nav__brand"><strong>USA</strong> · 26 · Friends &amp; Family</a>
@@ -40,91 +86,155 @@
     <a href="lore.html">Lore</a>
     <a href="kits.html">Kits</a>
   </nav>
+  <button id="sound-toggle" class="sound-toggle" aria-pressed="false">♪ off</button>
 </header>
 
 <main>
 
-<section class="hero hero--photo" style="--hero-img:url('assets/g-sofi-0625.jpg')">
+<section class="hero hero--photo hero-drift vt-hero" style="--hero-img:url('assets/g-sofi-0625.jpg')">
   <div class="container">
     <div class="hero__kicker">June 12 to July 6 · Five matches · One summer</div>
-    <h1 class="display display--xl">The Run.</h1>
+    <h1 class="display display--xl kinetic"><span>The</span> <span>Run.</span></h1>
     <p class="hero__sub">Everything on this page happened. The scores are verified, the photos are from our phones, and the texts are quoted with permission from my own thumbs. This is the USA's 2026 World Cup the way we actually lived it: some of us in the stadium, most of us around tables, all of us together.</p>
     <p class="hero__signoff">Read it top to bottom in one sitting. That's how it felt.<br/>G</p>
     <p class="hero__credit">June 25, 2026. SoFi Stadium. Photo by G, moments after walking in.</p>
   </div>
 </section>
 
-<section class="section" id="paraguay">
-  <div class="container">
-    <div class="section__kicker">Match 1 · Fri Jun 12 · SoFi Stadium · The first home World Cup match since 1994</div>
-    <h2 class="display display--l section__title">USA 4, Paraguay 1. <span class="italic">The rout.</span></h2>
-
-    <div class="profile-card">
-      <div class="profile-card__detail">
-        <p>Seven minutes in, Pulisic split two defenders, fed McKennie, and the centering touch went in off Bobadilla for an own goal. Balogun added a slick finish at 31' and a rocket into the top corner in first-half stoppage time. <strong>The first American to score twice in a World Cup game since 1930.</strong> Gio Reyna glided into the box at 90'+8 and toe-flicked his first World Cup goal. A 4-1 that announced the whole summer.</p>
-        <p><strong>Where we were:</strong> Quinn was inside SoFi. His ticket, his night, sixteen years of our shared US Soccer chapters walking into a home World Cup opener. I was at the watch in West Hollywood, exactly as planned, texting Pete a photo of the second Balogun goal at 9:09pm. "heyyyyyy watching the world cup! 3-0 🇺🇸 at halftime."</p>
+<section class="section--flush" aria-label="The five matches, match by match">
+  <div class="scrolly">
+    <div class="scrolly__scene" aria-hidden="true">
+      <img class="run-strip" src="assets/art/run-montage.jpg" alt="" width="1376" height="768" loading="lazy" decoding="async" />
+      <div class="run-scene-scrim"></div>
+      <div class="run-scoreline">
+        <span data-for="1">USA 4·1 PAR</span>
+        <span data-for="2">USA 2·0 AUS</span>
+        <span data-for="3">TÜR 3·2 USA</span>
+        <span data-for="4">USA 2·0 BIH</span>
+        <span data-for="5">BEL 4·1 USA</span>
       </div>
+      <div class="run-chip"><span class="badge-art">Commissioned art</span></div>
+    </div>
+
+    <div class="scrolly__steps">
+
+      <div class="scrolly__step" data-step="1" id="paraguay">
+        <div>
+          <div class="section__kicker">Match 1 · Fri Jun 12 · SoFi Stadium · The first home World Cup match since 1994</div>
+          <h2 class="display display--l section__title">USA 4, Paraguay 1. <span class="italic">The rout.</span></h2>
+          <div class="ticket">
+            <div class="ticket__meta">Fri Jun 12 · SoFi Stadium</div>
+            <div class="ticket__match">USA v Paraguay · Group D, Match 1</div>
+            <div class="ticket__score">USA 4 · PAR 1</div>
+            <div class="ticket__note">G at the watch in West Hollywood. Quinn inside SoFi.</div>
+            <div class="ticket__barcode"></div>
+          </div>
+          <p>Seven minutes in, Pulisic split two defenders, fed McKennie, and the centering touch went in off Bobadilla for an own goal. Balogun added a slick finish at 31' and a rocket into the top corner in first-half stoppage time. <strong>The first American to score twice in a World Cup game since 1930.</strong> Gio Reyna glided into the box at 90'+8 and toe-flicked his first World Cup goal. A 4-1 that announced the whole summer.</p>
+          <p><strong>Where we were:</strong> Quinn was inside SoFi. His ticket, his night, sixteen years of our shared US Soccer chapters walking into a home World Cup opener. I was at the watch in West Hollywood, exactly as planned, texting Pete a photo of the second Balogun goal at 9:09pm. "heyyyyyy watching the world cup! 3-0 🇺🇸 at halftime."</p>
+          <figure class="figure">
+            <div class="duotone"><a href="assets/cc/balogun.jpg" data-lightbox data-caption="Folarin Balogun mid-celebration with Ream, Dest, and Richards arriving. Australia v USA, Jun 19, 2026, Seattle. Photo Bryan Berlin, CC BY-SA 4.0, Wikimedia Commons."><img src="assets/cc/balogun.jpg" alt="Folarin Balogun celebrating a goal with teammates Ream, Dest, and Richards arriving" loading="lazy" decoding="async" width="1280" height="853" /></a></div>
+            <figcaption>Balogun mid-celebration, teammates arriving. Shot at the Australia match a week later, and exactly what the brace felt like from West Hollywood.<span class="cr">photo Bryan Berlin · CC BY-SA 4.0 · Wikimedia Commons</span></figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="scrolly__step" data-step="2" id="australia">
+        <div>
+          <div class="section__kicker">Match 2 · Fri Jun 19 · Lumen Field, Seattle · Noon kickoff</div>
+          <h2 class="display display--l section__title">USA 2, Australia 0. <span class="italic">Through with a game to spare.</span></h2>
+          <div class="ticket">
+            <div class="ticket__meta">Fri Jun 19 · Lumen Field, Seattle · Noon</div>
+            <div class="ticket__match">USA v Australia · Group D, Match 2</div>
+            <div class="ticket__score">USA 2 · AUS 0</div>
+            <div class="ticket__note">G on the noon kick from LA. Mike Morrow in the building.</div>
+            <div class="ticket__barcode"></div>
+          </div>
+          <p>Pochettino surprised everyone with a 3-5-2, and it worked: Burgess turned a cross into his own net at 11', and Alex Freeman rose for a header at 43'. Pulisic missed it entirely, kicked in the calf at training, and the team didn't blink. 62 percent of the ball and a clean sheet. <strong>Knockouts clinched with a match to spare.</strong></p>
+          <p><strong>Where we were:</strong> Mike Morrow was in the building, in his own city, thirty-two years after he and I sat at the 1994 draw in Vegas. His full-time verdict, verbatim: "Scrappy. US deserved the win but they will have trouble getting to 16." He was not wrong, and I love him for it. I watched the noon kick from LA and skipped a party the next day to watch more soccer, which is the most me sentence on this page.</p>
+          <figure class="figure">
+            <div class="duotone"><a href="assets/cc/ream.jpg" data-lightbox data-caption="Tim Ream climbing for a header. Australia v USA, Jun 19, 2026, Seattle. Photo Bryan Berlin, CC BY-SA 4.0, Wikimedia Commons."><img src="assets/cc/ream.jpg" alt="Tim Ream leaping for a header against Australia" loading="lazy" decoding="async" width="1280" height="853" /></a></div>
+            <figcaption>Tim Ream climbing for a header in the clean-sheet win, Jun 19, Seattle.<span class="cr">photo Bryan Berlin · CC BY-SA 4.0 · Wikimedia Commons</span></figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="scrolly__step" data-step="3" id="turkiye">
+        <div>
+          <div class="section__kicker">Match 3 · Thu Jun 25 · SoFi Stadium · The night of my life</div>
+          <h2 class="display display--l section__title">Türkiye 3, USA 2. <span class="italic">And it didn't matter.</span></h2>
+          <div class="ticket">
+            <div class="ticket__meta">Thu Jun 25 · SoFi Stadium</div>
+            <div class="ticket__match">USA v Türkiye · Group D, Match 3</div>
+            <div class="ticket__score">TÜR 3 · USA 2</div>
+            <div class="ticket__note">G in the building with Pete. Quinn drove up from San Diego.</div>
+            <div class="ticket__barcode"></div>
+          </div>
+          <figure class="figure"><a href="assets/g-pete-0625.jpg" data-lightbox data-caption="Pete and me. Section forever. June 25, 2026. Photo from our seats."><img src="assets/g-pete-0625.jpg" alt="Gordon and Pete Hines, draped in a flag, in the SoFi seats under the World Cup 2026 ribbon boards" loading="lazy" decoding="async" width="1350" height="1800" /></a><figcaption>Pete and me. Section forever. June 25, 2026.<span class="cr">Photo from our seats.</span></figcaption></figure>
+          <p>The group was already won, so Pochettino rotated nearly everyone: Turner in goal, Reyna and Berhalter starting. Trusty headed us in front off a corner at 3'. Güler answered at 10'. Yılmaz got a knee to Kökçü's shot at 31'. Berhalter leveled at 49'. And with the final touch of the match, at 90'+8, Kaan Ayhan won it for Türkiye. A dead rubber, a wild one, and the seeding unchanged.</p>
+          <p><strong>Where I was: in the building.</strong> Pete Hines transferred me a ticket on June 7 and texted "What time you heading this way to GO TO THE WORLD CUP?!?!" at 1:47pm. I texted six friends the same sentence on the way: <em>"Not me crying in an uber on the way to a soccer game."</em> Fifty years of loving this sport, and I was inside a home World Cup with one of the friends who made the fandom worth having. Quinn drove up from San Diego and was in the building too. The scoreboard says we lost. The scoreboard was not at our seats.</p>
+          <figure class="figure"><a href="assets/board-0625.jpg" data-lightbox data-caption="The videoboard, mid-match. GORDON BELLAMY and PETE HINES, on the board at a home World Cup. Yes, really. June 25, 2026."><img src="assets/board-0625.jpg" alt="The SoFi videoboard listing USA Super Supporters, including Gordon Bellamy and Pete Hines" loading="lazy" decoding="async" width="1350" height="1800" /></a><figcaption>The videoboard, mid-match. GORDON BELLAMY and PETE HINES, on the board at a home World Cup.<span class="cr">Yes, really. June 25, 2026.</span></figcaption></figure>
+        </div>
+      </div>
+
+      <div class="scrolly__step" data-step="4" id="bosnia">
+        <div>
+          <div class="section__kicker">Round of 32 · Wed Jul 1 · Levi's Stadium · Watched from the Dragon House, Stoughton WI</div>
+          <div class="predict" data-answer="We hold">
+            <p class="predict__q">Down to ten men in a knockout. What happens?</p>
+            <div class="predict__opts"><button data-v="We hold">We hold</button><button data-v="Heartbreak">Heartbreak</button></div>
+            <div class="predict__reveal" hidden><p>We hold. A man down for the last half hour, the line compacted, and then a free kick bent home at 82'. Read on.</p></div>
+          </div>
+          <h2 class="display display--l section__title">USA 2, Bosnia 0. <span class="italic">Ten men, one history.</span></h2>
+          <div class="ticket">
+            <div class="ticket__meta">Wed Jul 1 · Levi's Stadium</div>
+            <div class="ticket__match">USA v Bosnia · Round of 32</div>
+            <div class="ticket__score">USA 2 · BIH 0</div>
+            <div class="ticket__note">G at the Dragon House in Stoughton, Wisconsin, with the Francksens.</div>
+            <div class="ticket__barcode"></div>
+          </div>
+          <p>Balogun scored on the stroke of halftime. Then in the 61st minute he went studs-first into Muharemović's ankle and the VAR review sent him off. <strong>The first player to score and see red in the same World Cup knockout game since Zidane in the 2006 final.</strong> A man down for the last half hour, the team compacted, held, and then Malik Tillman bent a free kick home at 82'. Pulisic afterward: "We had to dig deep for that one."</p>
+          <p><strong>The first US men's knockout win since 2002. Only the second ever.</strong> I watched it from the Dragon House in Stoughton, Wisconsin with the Francksens, in a Norwegian-flagged town that was about to catch soccer fever. Four days later FIFA suspended Balogun's ban on probation, Belgium protested, and the protest was ruled inadmissible hours before the Round of 16. I forwarded that news to about eighty friends in one hour. A friend texted back the tournament's most honest sentence: "open corruption? In our favor? We're finally a real soccer team 🥹"</p>
+        </div>
+      </div>
+
+      <div class="scrolly__step" data-step="5" id="belgium">
+        <div>
+          <div class="section__kicker">Round of 16 · Mon Jul 6 · Lumen Field, Seattle · 66,925 in the building, none of them ready</div>
+          <div class="predict" data-answer="The whistle hurts">
+            <p class="predict__q">61 seconds level with Belgium. How does it end?</p>
+            <div class="predict__opts"><button data-v="We shock the world">We shock the world</button><button data-v="The whistle hurts">The whistle hurts</button></div>
+            <div class="predict__reveal" hidden><p>The whistle hurts. Belgium scored straight off the restart. But those 61 seconds are the reason this page exists.</p></div>
+          </div>
+          <h2 class="display display--l section__title">Belgium 4, USA 1. <span class="italic">The whistle.</span></h2>
+          <div class="ticket">
+            <div class="ticket__meta">Mon Jul 6 · Lumen Field, Seattle</div>
+            <div class="ticket__match">USA v Belgium · Round of 16</div>
+            <div class="ticket__score">BEL 4 · USA 1</div>
+            <div class="ticket__note">G in Stoughton, Wisconsin. Matt Kramer opened the day with "MATCHDAY!!!"</div>
+            <div class="ticket__barcode"></div>
+          </div>
+          <p>De Ketelaere finished a Castagne cross in the ninth minute. Tillman answered with another free kick at 31', his second of the tournament, and for 61 seconds we were level and the whole country believed. Belgium scored straight off the restart, added a third when a clearance went wrong at 57', and Lukaku closed it in stoppage time. Pulisic's foot met Tielemans' boot at 52' and he limped off. That was the run.</p>
+          <figure class="figure">
+            <div class="duotone"><a href="assets/cc/tillman.jpg" data-lightbox data-caption="Malik Tillman on the ball. Australia v USA, Jun 19, 2026, Seattle. Photo Bryan Berlin, CC BY-SA 4.0, Wikimedia Commons."><img src="assets/cc/tillman.jpg" alt="Malik Tillman on the ball in the USA kit" loading="lazy" decoding="async" width="1280" height="1920" /></a></div>
+            <figcaption>Malik Tillman, who bent home a free kick in each knockout game. Photographed against Australia, Jun 19, Seattle.<span class="cr">photo Bryan Berlin · CC BY-SA 4.0 · Wikimedia Commons</span></figcaption>
+          </figure>
+          <p><strong>Where we were:</strong> Stoughton, Wisconsin, where I had texted a friend that morning: "I'm here in the Norwegian town of Stoughton, WISCONSIN! where soccer fever has struck in the past 24 hours." Matt Kramer opened the day with "MATCHDAY!!!" and I answered "MATCHDAY". After the whistle a friend wrote "And that's a rap for our World Cup" and I typed the sentence I believe more every day: <em>"Maybe the World Cup was the friends we made along the way."</em> That sentence became <a href="friends.html">a whole page</a>.</p>
+          <p>For the record, and for the healing: Belgium then took eventual champions Spain to 2-1 in the quarterfinal, closer than anyone else managed. <strong>We went out to the team that pushed the champions hardest.</strong> And this was still the program's best home-soil World Cup since 1994: a group won, a knockout win, and a young core that will be better in 2030.</p>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
-<section class="section" id="australia">
+<section class="section" id="numbers">
   <div class="container">
-    <div class="section__kicker">Match 2 · Fri Jun 19 · Lumen Field, Seattle · Noon kickoff</div>
-    <h2 class="display display--l section__title">USA 2, Australia 0. <span class="italic">Through with a game to spare.</span></h2>
-
-    <div class="profile-card">
-      <div class="profile-card__detail">
-        <p>Pochettino surprised everyone with a 3-5-2, and it worked: Burgess turned a cross into his own net at 11', and Alex Freeman rose for a header at 43'. Pulisic missed it entirely, kicked in the calf at training, and the team didn't blink. 62 percent of the ball and a clean sheet. <strong>Knockouts clinched with a match to spare.</strong></p>
-        <p><strong>Where we were:</strong> Mike Morrow was in the building, in his own city, thirty-two years after he and I sat at the 1994 draw in Vegas. His full-time verdict, verbatim: "Scrappy. US deserved the win but they will have trouble getting to 16." He was not wrong, and I love him for it. I watched the noon kick from LA and skipped a party the next day to watch more soccer, which is the most me sentence on this page.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="turkiye">
-  <div class="container">
-    <div class="section__kicker">Match 3 · Thu Jun 25 · SoFi Stadium · The night of my life</div>
-    <h2 class="display display--l section__title">Türkiye 3, USA 2. <span class="italic">And it didn't matter.</span></h2>
-
-    <figure class="figure"><img src="assets/g-pete-0625.jpg" alt="Gordon and Pete Hines, draped in a flag, in the SoFi seats under the World Cup 2026 ribbon boards" loading="lazy"><figcaption>Pete and me. Section forever. June 25, 2026.<span class="cr">Photo from our seats.</span></figcaption></figure>
-
-    <div class="profile-card">
-      <div class="profile-card__detail">
-        <p>The group was already won, so Pochettino rotated nearly everyone: Turner in goal, Reyna and Berhalter starting. Trusty headed us in front off a corner at 3'. Güler answered at 10'. Yılmaz got a knee to Kökçü's shot at 31'. Berhalter leveled at 49'. And with the final touch of the match, at 90'+8, Kaan Ayhan won it for Türkiye. A dead rubber, a wild one, and the seeding unchanged.</p>
-        <p><strong>Where I was: in the building.</strong> Pete Hines transferred me a ticket on June 7 and texted "What time you heading this way to GO TO THE WORLD CUP?!?!" at 1:47pm. I texted six friends the same sentence on the way: <em>"Not me crying in an uber on the way to a soccer game."</em> Fifty years of loving this sport, and I was inside a home World Cup with one of the friends who made the fandom worth having. Quinn drove up from San Diego and was in the building too. The scoreboard says we lost. The scoreboard was not at our seats.</p>
-      </div>
-    </div>
-
-    <figure class="figure"><img src="assets/board-0625.jpg" alt="The SoFi videoboard listing USA Super Supporters, including Gordon Bellamy and Pete Hines" loading="lazy"><figcaption>The videoboard, mid-match. GORDON BELLAMY and PETE HINES, on the board at a home World Cup.<span class="cr">Yes, really. June 25, 2026.</span></figcaption></figure>
-  </div>
-</section>
-
-<section class="section" id="bosnia">
-  <div class="container">
-    <div class="section__kicker">Round of 32 · Wed Jul 1 · Levi's Stadium · Watched from the Dragon House, Stoughton WI</div>
-    <h2 class="display display--l section__title">USA 2, Bosnia 0. <span class="italic">Ten men, one history.</span></h2>
-
-    <div class="profile-card">
-      <div class="profile-card__detail">
-        <p>Balogun scored on the stroke of halftime. Then in the 61st minute he went studs-first into Muharemović's ankle and the VAR review sent him off. <strong>The first player to score and see red in the same World Cup knockout game since Zidane in the 2006 final.</strong> A man down for the last half hour, the team compacted, held, and then Malik Tillman bent a free kick home at 82'. Pulisic afterward: "We had to dig deep for that one."</p>
-        <p><strong>The first US men's knockout win since 2002. Only the second ever.</strong> I watched it from the Dragon House in Stoughton, Wisconsin with the Francksens, in a Norwegian-flagged town that was about to catch soccer fever. Four days later FIFA suspended Balogun's ban on probation, Belgium protested, and the protest was ruled inadmissible hours before the Round of 16. I forwarded that news to about eighty friends in one hour. A friend texted back the tournament's most honest sentence: "open corruption? In our favor? We're finally a real soccer team 🥹"</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="belgium">
-  <div class="container">
-    <div class="section__kicker">Round of 16 · Mon Jul 6 · Lumen Field, Seattle · 66,925 in the building, none of them ready</div>
-    <h2 class="display display--l section__title">Belgium 4, USA 1. <span class="italic">The whistle.</span></h2>
-
-    <div class="profile-card">
-      <div class="profile-card__detail">
-        <p>De Ketelaere finished a Castagne cross in the ninth minute. Tillman answered with another free kick at 31', his second of the tournament, and for 61 seconds we were level and the whole country believed. Belgium scored straight off the restart, added a third when a clearance went wrong at 57', and Lukaku closed it in stoppage time. Pulisic's foot met Tielemans' boot at 52' and he limped off. That was the run.</p>
-        <p><strong>Where we were:</strong> Stoughton, Wisconsin, where I had texted a friend that morning: "I'm here in the Norwegian town of Stoughton, WISCONSIN! where soccer fever has struck in the past 24 hours." Matt Kramer opened the day with "MATCHDAY!!!" and I answered "MATCHDAY". After the whistle a friend wrote "And that's a rap for our World Cup" and I typed the sentence I believe more every day: <em>"Maybe the World Cup was the friends we made along the way."</em> That sentence became <a href="friends.html">a whole page</a>.</p>
-        <p>For the record, and for the healing: Belgium then took eventual champions Spain to 2-1 in the quarterfinal, closer than anyone else managed. <strong>We went out to the team that pushed the champions hardest.</strong> And this was still the program's best home-soil World Cup since 1994: a group won, a knockout win, and a young core that will be better in 2030.</p>
-      </div>
+    <div class="section__kicker" data-reveal>The run in numbers</div>
+    <div class="stat-row" data-reveal-group>
+      <div class="stat"><div class="stat__num" data-count="5">0</div><div class="stat__label">matches in the run</div></div>
+      <div class="stat"><div class="stat__num" data-count="2">0</div><div class="stat__label">nights inside SoFi</div></div>
+      <div class="stat"><div class="stat__num" data-count="6810966">0</div><div class="stat__label">total attendance, biggest Cup ever</div></div>
+      <div class="stat"><div class="stat__num" data-count="61">0</div><div class="stat__label">seconds of belief in Seattle</div></div>
     </div>
   </div>
 </section>
@@ -134,7 +244,7 @@
     <div class="section__kicker">Graded honestly</div>
     <h2 class="display display--l section__title">The hope ledger.</h2>
 
-    <div class="ledger">
+    <div class="ledger" data-reveal>
       <p><strong>What we believed in May:</strong> this site said we had a real shot at the deepest run since 1930. <strong>What the models said:</strong> the Opta supercomputer gave us a 42.5 percent chance of reaching the quarterfinals before the knockouts began. <strong>What happened:</strong> Group D won with 6 points, a ten-man knockout win, a Round of 16 exit to the champions' toughest opponent. Better than 2022. Short of the dream. Both of those are true at once, and if you can't hold both you weren't at the table with us on July 6, where we hurt for about an hour and then started talking about 2030.</p>
     </div>
   </div>
@@ -145,7 +255,7 @@
     <div class="section__kicker">The tournament after us · Jul 9 to Jul 19</div>
     <h2 class="display display--l section__title">The Cup kept going. <span class="italic">So did we.</span></h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal>
       <div class="profile-card__detail">
         <p>Norway beat Brazil 2-0 in the Round of 16, and Stoughton's flags flew harder. Egypt won its first knockout game ever, on penalties, to earn Salah against Messi. England ended co-host Mexico's run 3-2, then survived Norway in extra time on two Bellingham goals. Spain beat Portugal, then Belgium, then France 2-0 in the semifinal in Texas. Argentina broke England's hearts 2-1 in Atlanta.</p>
         <p>The bronze game was a 6-4 England win over France with a Saka hat trick, the highest-scoring World Cup match since 1982, and we watched it over Brazilian churrasco in New York on Foster's 55th birthday, meat sweats and penalty nerves and the crew around one table.</p>
@@ -154,7 +264,20 @@
       </div>
     </div>
 
-    <figure class="figure"><img src="assets/final-table-0719.jpg" alt="Gordon, Brennan, and friends at a table with the World Cup Final on the screens, New York, July 19" loading="lazy"><figcaption>Final Sunday, New York, 4:06pm. The game on every screen, the table full.<span class="cr">July 19, 2026.</span></figcaption></figure>
+    <div class="polaroid-wall" data-reveal-group>
+      <figure class="polaroid polaroid--lg">
+        <a href="assets/final-table-0719.jpg" data-lightbox data-caption="Final Sunday, New York, 4:06pm. The game on every screen, the table full. July 19, 2026."><img src="assets/final-table-0719.jpg" alt="Gordon, Brennan, and friends at a table with the World Cup Final on the screens, New York, July 19" loading="lazy" decoding="async" width="1800" height="1350" /></a>
+        <figcaption>Final Sunday, New York, 4:06pm. The game on every screen, the table full. <em>Jul 19.</em></figcaption>
+      </figure>
+      <figure class="polaroid polaroid--tall">
+        <video autoplay muted loop playsinline preload="metadata" poster="assets/final-ceremony-0719.jpg" width="1350" height="1800"><source src="assets/final-ceremony-0719.mp4" type="video/mp4"/></video>
+        <figcaption>The Final ceremony in gold on the bar TV, a few looping seconds of it. <em>Jul 19.</em></figcaption>
+      </figure>
+      <figure class="polaroid polaroid--tall">
+        <a href="assets/bronze-heyjude-0718.jpg" data-lightbox data-caption="The bronze game over churrasco, England 6, France 4, the Saka hat trick night. Hey Jude!!! July 18, 2026."><img src="assets/bronze-heyjude-0718.jpg" alt="TV showing the France versus England bronze final at 4-6 with a Hey Jude caption, over churrasco dinner" loading="lazy" decoding="async" width="1350" height="1800" /></a>
+        <figcaption>The bronze game over churrasco, England 6, France 4. Hey Jude!!! <em>Jul 18.</em></figcaption>
+      </figure>
+    </div>
   </div>
 </section>
 
@@ -163,18 +286,43 @@
     <div class="section__kicker">One diagram, no romance</div>
     <h2 class="display display--l section__title">Where our path ended, where the Cup went.</h2>
 
-    <div class="callout">
+    <div class="callout" data-reveal>
       <p><strong>USA</strong> · won Group D → beat Bosnia 2-0 → lost to Belgium 1-4<br/>
       <strong>Belgium</strong> · beat us → lost to Spain 2-1 in the quarterfinal, closer than anyone<br/>
       <strong>Spain</strong> · beat Portugal 1-0 → Belgium 2-1 → France 2-0 → <strong>Argentina 1-0 in the Final, and lifted the Cup at MetLife</strong><br/>
       So the chain from our whistle to the trophy was two matches long. We were nearer the top of this thing than the scoreboard felt like admitting.</p>
     </div>
 
-    <div class="cta">
+    <div class="cta" data-reveal>
       <h3>The people who lived it with me have their own page.</h3>
       <p>Every match above had a room, and every room had people. That's the real story.</p>
       <a href="friends.html">The friends we made along the way →</a>
     </div>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span class="q">USA 4·1 PAR<b>Jun 12 · SoFi</b></span>
+        <span class="q">USA 2·0 AUS<b>Jun 19 · Lumen</b></span>
+        <span class="q">TÜR 3·2 USA<b>Jun 25 · SoFi</b></span>
+        <span class="q">USA 2·0 BIH<b>Jul 1 · Levi's</b></span>
+        <span class="q">BEL 4·1 USA<b>Jul 6 · Lumen</b></span>
+        <span class="q">USA 4·1 PAR<b>Jun 12 · SoFi</b></span>
+        <span class="q">USA 2·0 AUS<b>Jun 19 · Lumen</b></span>
+        <span class="q">TÜR 3·2 USA<b>Jun 25 · SoFi</b></span>
+        <span class="q">USA 2·0 BIH<b>Jul 1 · Levi's</b></span>
+        <span class="q">BEL 4·1 USA<b>Jul 6 · Lumen</b></span>
+      </div>
+    </div>
+
+    <a class="door" href="group-d.html" data-reveal>
+      <img src="assets/cc/levis-bowl.jpg" alt="" loading="lazy" decoding="async" width="1280" height="960" />
+      <div class="door__scrim"></div>
+      <div class="door__label">
+        <div class="door__kicker">Next · Chapter 4</div>
+        <div class="door__title">Group D, graded</div>
+        <div class="door__credit">Levi's Stadium at dusk · photo Kaisersauce1 · CC BY 4.0 · Wikimedia Commons</div>
+      </div>
+    </a>
   </div>
 </section>
 
@@ -184,9 +332,38 @@
   <div class="container">
     <p>Friends &amp; Family Edition · The Run · Written August 1, 2026, from verified match records and our own receipts.</p>
     <p style="margin-top: 12px;">Every score checked against primary sources. Every "where we were" backed by a text, a ticket, or a photo. Nothing invented, ever.</p>
+        <p style="margin-top:10px;font-size:.85rem"><a href="meta.html">⚙ The Making Of · how we built this site, and the others →</a></p>
+    <ul class="passport"></ul>
   </div>
 </footer>
 
 <script src="site.js" defer></script>
+<script src="effects.js" defer></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (!window.FX) return;
+  function fire(x, y) {
+    if (FX.store.get("runConfetti")) return;
+    FX.store.set("runConfetti", 1);
+    FX.confetti(x, y);
+  }
+  var bosnia = document.querySelector("#bosnia .predict");
+  if (bosnia) {
+    bosnia.addEventListener("click", function (ev) {
+      var b = ev.target.closest("button[data-v]");
+      if (b && b.dataset.v === "We hold") fire(0.5, 0.5);
+    });
+  }
+  var after = document.getElementById("after");
+  if (after && "IntersectionObserver" in window && !FX.store.get("runConfetti")) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { fire(0.5, 0.35); io.disconnect(); }
+      });
+    }, { threshold: 0.2 });
+    io.observe(after);
+  }
+});
+</script>
 </body>
 </html>

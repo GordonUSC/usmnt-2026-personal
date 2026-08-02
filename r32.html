@@ -9,10 +9,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" />
 <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="effects.css" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="USA 26 with Gordon · Friends &amp; Family Edition" />
 <meta property="og:title" content="Round of 32 · USA 26 with Gordon" />
-<meta property="og:description" content="USA 2-0 Bosnia and Herzegovina, July 1 at Levi's Stadium. First knockout win since 2002. We scouted five teams; the bracket sent a sixth." />
+<meta property="og:description" content="USA 2-0 Bosnia and Herzegovina, July 1 at Levi's Stadium. First knockout win since 2002. Ten men, half an hour to survive. We scouted five teams; the bracket sent a sixth." />
 <meta property="og:url" content="https://gordonusc.github.io/usmnt-2026-personal/r32.html" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Round of 32 · USA 26 with Gordon" />
@@ -22,7 +23,7 @@
 <meta name="apple-mobile-web-app-title" content="USA 26 · Gordon" />
 <meta name="format-detection" content="telephone=no" />
 </head>
-<body>
+<body data-page="r32">
 
 <header class="nav">
   <a href="index.html" class="nav__brand"><strong>USA</strong> · 26 · Friends &amp; Family</a>
@@ -39,14 +40,15 @@
     <a href="lore.html">Lore</a>
     <a href="kits.html">Kits</a>
   </nav>
+  <button id="sound-toggle" class="sound-toggle" aria-pressed="false">♪ off</button>
 </header>
 
 <main>
 
-<section class="hero hero--photo" style="--hero-img:url('assets/levis.jpg')">
+<section class="hero hero--photo hero-drift" style="--hero-img:url('assets/levis.jpg')">
   <div class="container">
     <div class="hero__kicker">Round of 32 · Wed Jul 1 · Levi's Stadium · Watched from Stoughton, Wisconsin</div>
-    <h1 class="display display--xl">We scouted five teams. The bracket sent a sixth.</h1>
+    <h1 class="display display--xl kinetic vt-hero"><span>We</span> <span>scouted</span> <span>five</span> <span>teams.</span> <span>The</span> <span>bracket</span> <span>sent</span> <span>a</span> <span>sixth.</span></h1>
     <p class="hero__sub">This page spent a month profiling Switzerland, Sweden, Norway, Ivory Coast, and Austria as our most likely Round of 32 opponents. The third-place math did its own thing and sent us <strong>Bosnia and Herzegovina</strong> instead. Final score: <strong>USA 2-0 Bosnia</strong>, July 1, Levi's Stadium. Our first knockout win since 2002. The five scouting reports stay below exactly as written, because owning your predictions is half the fun of making them.</p>
       <p class="hero__credit">Levi's Stadium · photo Matthew Roth · CC BY-SA 2.0 · Wikimedia Commons</p>
   </div>
@@ -56,30 +58,39 @@
   <div class="container">
     <div class="section__kicker">The real opponent · USA 2-0 Bosnia and Herzegovina · Wed Jul 1 · Levi's Stadium</div>
     <h2 class="display display--l section__title">Bosnia. The night we dug deep.</h2>
-    <p class="section__lede">Not one of my five. Better than all five, because it actually happened, and because of how it happened.</p>
+    <p class="section__lede" data-reveal>Not one of my five. Better than all five, because it actually happened, and because of how it happened.</p>
 
-    <div class="profile-card">
+    <figure class="figure" data-reveal>
+      <img src="assets/cc/balogun.jpg" alt="Folarin Balogun celebrating a goal with Ream, Dest, and Richards against Australia" loading="lazy" decoding="async" width="1280" height="853" />
+      <figcaption>Balogun in the group stage, by the photographer who followed the run. Celebrating against Australia with Ream, Dest, and Richards, Jun 19 in Seattle. <span class="cr">photo Bryan Berlin · CC BY-SA 4.0 · Wikimedia Commons</span></figcaption>
+    </figure>
+
+    <div class="profile-card" data-reveal>
       <div class="profile-card__header"><div class="profile-card__name">The match report</div><div class="profile-card__role">Round of 32 · a knockout game for the history books</div></div>
       <div class="profile-card__detail">
         <p><strong>Folarin Balogun opened it in the 45th minute</strong>, right on the edge of halftime, and Levi's got loud in a way I could feel through a television in Wisconsin. One up at the break, a knockout game finally tilting our way.</p>
 
         <p>Then the 61st minute. Balogun went in with his studs on <strong>Tarik Muharemović</strong>, VAR took its look, and the red came out. Our goalscorer, off. <strong>Ten men, roughly twenty-nine minutes to hold, in a World Cup knockout game.</strong> I have watched this program my whole life and I know exactly what that setup usually becomes.</p>
 
-        <p>Not this time. This team defended like the lead was a person they loved. And in the <strong>82nd minute Malik Tillman stepped up to a free kick and buried it</strong>. 2-0, ten men, door shut. The whistle blew and I understood something new about this group of players.</p>
+        <p><button class="hold" data-target="#dug-deep"><svg viewBox="0 0 28 28" aria-hidden="true"><circle class="hold__track" cx="14" cy="14" r="11"/><circle class="hold__ring" cx="14" cy="14" r="11"/></svg> Ten men, half an hour to survive. Press and hold.</button></p>
 
-        <h4>What it meant</h4>
-        <p><strong>First US men's World Cup knockout win since 2002, and only the second in program history.</strong> And a piece of stranger history too: Balogun became the first player to score and be sent off in the same World Cup knockout game since <strong>Zidane in the 2006 final</strong>. My guy shares a stat line with Zizou now. Forever.</p>
+        <div id="dug-deep" hidden>
+          <p>Not this time. This team defended like the lead was a person they loved. And in the <strong>82nd minute Malik Tillman stepped up to a free kick and buried it</strong>. 2-0, ten men, door shut. The whistle blew and I understood something new about this group of players.</p>
 
-        <p>Christian Pulisic said it best after: <strong>"We had to dig deep for that one."</strong> Yes. Yes we did.</p>
+          <h4>What it meant</h4>
+          <p><strong>First US men's World Cup knockout win since 2002, and only the second in program history.</strong> And a piece of stranger history too: Balogun became the first player to score and be sent off in the same World Cup knockout game since <strong>Zidane in the 2006 final</strong>. My guy shares a stat line with Zizou now. Forever.</p>
+
+          <p>Christian Pulisic said it best after: <strong>"We had to dig deep for that one."</strong> Yes. Yes we did.</p>
+        </div>
       </div>
     </div>
 
-    <div class="ledger" id="aftermath">
+    <div class="ledger" id="aftermath" data-reveal>
       <h3>The aftermath, which was its own movie</h3>
       <p>Balogun's red should have meant a suspension for the Round of 16. Then FIFA <strong>suspended the ban under Article 27 probation</strong>, and Belgium filed a protest that was <strong>ruled inadmissible hours before kickoff</strong>. I found out on July 5 and did what any healthy adult does with joy: I forwarded the news to roughly <strong>eighty friends in one hour</strong>. The best reply, from a friend: <em>"open corruption? In our favor? We're finally a real soccer team 🥹"</em></p>
     </div>
 
-    <div class="ledger" id="dragon-house">
+    <div class="ledger" id="dragon-house" data-reveal>
       <h3>Where I watched it</h3>
       <p>I watched this one from <strong>Dragon House in Stoughton, Wisconsin, with the Francksens</strong>. A US World Cup knockout win, in a living room full of people I love, in a little Norwegian town in the Midwest. I would not trade that seat for one at Levi's.</p>
       <p>And the night before, the town itself: <em>"i went to the Old Firehouse to watch soccer with the Stoughton community 🇳🇴"</em> is a real text I sent on June 30, and I stand by every word of it. Stoughton caught the fever right alongside me.</p>
@@ -92,7 +103,7 @@
   <div class="container">
     <div class="section__kicker">Historical artifact · written in May, before the groups finished</div>
     <h2 class="display display--l section__title">The five we scouted, kept as written.</h2>
-    <p class="section__lede">Everything below is the scouting page exactly as it stood before the tournament sorted itself out. Switzerland, Sweden, Norway, Ivory Coast, Austria. Bosnia is nowhere on it. I am keeping all five writeups untouched, because this is what we believed going in, and the believing was part of the summer. One clearly-marked update sits in the Norway card, because that story kept going without us.</p>
+    <p class="section__lede" data-reveal>Everything below is the scouting page exactly as it stood before the tournament sorted itself out. Switzerland, Sweden, Norway, Ivory Coast, Austria. Bosnia is nowhere on it. I am keeping all five writeups untouched, because this is what we believed going in, and the believing was part of the summer. One clearly-marked update sits in the Norway card, because that story kept going without us.</p>
   </div>
 </section>
 
@@ -101,7 +112,7 @@
     <div class="section__kicker">From Group B · Threat: highest</div>
     <h2 class="display display--l section__title">Switzerland.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal>
       <div class="profile-card__header"><div class="profile-card__name">Switzerland (Nati)</div><div class="profile-card__role">Coach Murat Yakin · 4-2-3-1</div></div>
       <div class="profile-card__detail">
         <p><strong>Star:</strong> Granit Xhaka. <strong>Why they finish 3rd:</strong> Group B has Canada and Qatar above them. Switzerland is a knockout-instinct team that often slips group-stage games against weaker sides.</p>
@@ -124,7 +135,7 @@
     <div class="section__kicker">From Group F · Threat: single-game capable</div>
     <h2 class="display display--l section__title">Sweden.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal>
       <div class="profile-card__header"><div class="profile-card__name">Sweden</div><div class="profile-card__role">Coach Graham Potter · 4-4-2 (speculative)</div></div>
       <div class="profile-card__detail">
         <p><strong>Stars:</strong> Alexander Isak (Liverpool) and Viktor Gyökeres (Arsenal). <strong>Why they finish 3rd:</strong> Group F has Netherlands, Japan, and Sweden all of broadly similar quality. The math says someone finishes 3rd.</p>
@@ -147,7 +158,7 @@
     <div class="section__kicker">From Group I · Threat: extreme but narrow</div>
     <h2 class="display display--l section__title">Norway.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal>
       <div class="profile-card__header"><div class="profile-card__name">Norway</div><div class="profile-card__role">Coach Ståle Solbakken · 4-3-3</div></div>
       <div class="profile-card__detail">
         <p><strong>Star:</strong> Erling Haaland. First WC since 1998. <strong>Why they finish 3rd:</strong> Group I has France above them and Senegal of equal level. Norway is otherwise an average squad.</p>
@@ -176,7 +187,7 @@
     <div class="section__kicker">From Group E · Threat: high</div>
     <h2 class="display display--l section__title">Ivory Coast.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal>
       <div class="profile-card__header"><div class="profile-card__name">Ivory Coast (Les Éléphants)</div><div class="profile-card__role">Coach Émerse Faé · 4-3-3</div></div>
       <div class="profile-card__detail">
         <p><strong>Star:</strong> Sébastien Haller. <strong>AFCON 2023 champions.</strong> <strong>Why they finish 3rd:</strong> Group E has Germany and Ecuador above them, but they're squarely in the mix to be third.</p>
@@ -199,7 +210,7 @@
     <div class="section__kicker">From Group J · Threat: tactical headache</div>
     <h2 class="display display--l section__title">Austria.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal>
       <div class="profile-card__header"><div class="profile-card__name">Austria</div><div class="profile-card__role">Coach Ralf Rangnick · 4-2-2-2</div></div>
       <div class="profile-card__detail">
         <p><strong>Star:</strong> David Alaba. First WC since 1998. <strong>Why they finish 3rd:</strong> Group J has Argentina above them and Jordan as a wildcard. Austria is the second-best team but could slip.</p>
@@ -214,6 +225,13 @@
         <p>Quality on the ball. Adams and McKennie have to play through the press. <strong>If you can break Austria's first wave, the second wave is less organized.</strong></p>
       </div>
     </div>
+
+    <a class="door" href="r16.html" data-reveal>
+      <img src="assets/lumen.jpg" alt="" loading="lazy" decoding="async" width="1600" height="1056" />
+      <div class="door__scrim"></div>
+      <div class="door__label"><div class="door__kicker">Next · Chapter 6</div><div class="door__title">The whistle in Seattle</div></div>
+    </a>
+    <p class="hero__credit" style="margin-top:10px; font-size:0.6875rem; letter-spacing:0.08em; text-transform:uppercase; color:rgba(245,241,232,0.35);">Lumen Field · photo SounderBruce · CC BY-SA 4.0 · Wikimedia Commons</p>
   </div>
 </section>
 
@@ -223,9 +241,30 @@
   <div class="container">
     <p>Friends &amp; Family Edition · Round of 32 page · Updated August 1, 2026.</p>
     <p style="margin-top: 12px;">Email me, cc <a href="mailto:gbellamy@gmail.com?cc=gbellamyAI@gmail.com&amp;subject=R32%20question">gbellamyAI@gmail.com</a> and we'll update the page.</p>
+        <p style="margin-top:10px;font-size:.85rem"><a href="meta.html">⚙ The Making Of · how we built this site, and the others →</a></p>
+    <ul class="passport"></ul>
   </div>
 </footer>
 
 <script src="site.js" defer></script>
+<script src="effects.js" defer></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var t = document.getElementById("dug-deep");
+  if (!t || !window.FX) return;
+  var fire = function () {
+    if (t.hidden) return false;
+    if (!FX.store.get("r32Confetti")) {
+      FX.store.set("r32Confetti", 1);
+      FX.confetti(0.5, 0.5);
+    }
+    return true;
+  };
+  if (!fire() && "MutationObserver" in window) {
+    var mo = new MutationObserver(function () { if (fire()) mo.disconnect(); });
+    mo.observe(t, { attributes: true, attributeFilter: ["hidden"] });
+  }
+});
+</script>
 </body>
 </html>

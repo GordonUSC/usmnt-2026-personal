@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" />
 <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="effects.css" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="USA 26 with Gordon · Friends &amp; Family Edition" />
 <meta property="og:title" content="USMNT Kit Lore · USA 26 with Gordon" />
@@ -21,8 +22,22 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="USA 26 · Gordon" />
 <meta name="format-detection" content="telephone=no" />
+<style>
+/* kits page additions · quiet, on top of styles.css + effects.css */
+.kit-card .kit-year { font-family: 'JetBrains Mono', monospace; display: inline-block; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid rgba(255,205,0,0.35); border-radius: 999px; padding: 3px 11px; margin-bottom: 14px; }
+/* the set piece: duotone shirt photos that flood to color on touch */
+.shirt__btn { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; font: inherit; color: inherit; text-align: inherit; }
+.shirt img { filter: grayscale(0.85); transition: filter 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.shirt:hover img, .shirt:focus-within img, .shirt.alive img { filter: none; }
+.shirt-hint { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid rgba(245,241,232,0.3); border-radius: 999px; padding: 4px 11px; margin: 10px 14px 4px; color: rgba(245,241,232,0.75); transition: opacity 0.6s; }
+.shirt:hover .shirt-hint, .shirt:focus-within .shirt-hint, .shirt.alive .shirt-hint { opacity: 0.35; }
+.door__credit { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.55; margin-top: 6px; }
+@media (prefers-reduced-motion: reduce) {
+  .shirt img, .shirt-hint { transition: none; }
+}
+</style>
 </head>
-<body>
+<body data-page="kits">
 
 <header class="nav">
   <a href="index.html" class="nav__brand"><strong>USA</strong> · 26 · Friends &amp; Family</a>
@@ -39,6 +54,7 @@
     <a href="lore.html">Lore</a>
     <a href="kits.html" aria-current="page">Kits</a>
   </nav>
+  <button id="sound-toggle" class="sound-toggle" aria-pressed="false">♪ off</button>
 </header>
 
 <main>
@@ -46,7 +62,7 @@
 <section class="hero">
   <div class="container">
     <div class="hero__kicker">The clothes that carry the story</div>
-    <h1 class="display display--xl">USMNT Kits.</h1>
+    <h1 class="display display--xl kinetic vt-hero"><span>USMNT</span> <span>Kits.</span></h1>
     <p class="hero__sub">A team's kit is part of its mythology. USMNT has worn the entire range from beloved-cult-classic to widely-mocked-disaster. Sometimes those were the same kit. This is a tour through the ones that matter, and where the 2026 home shirt sits in the story.</p>
   </div>
 </section>
@@ -54,46 +70,46 @@
 <section class="section">
   <div class="container">
     <div class="section__kicker">The classics</div>
-    <h2 class="display display--l section__title">Kits that deserve their own room.</h2>
+    <h2 class="display display--l section__title" data-reveal>Kits that deserve their own room.</h2>
 
-    <div class="kit-card">
+    <div class="kit-card" data-reveal>
       <h4>The 1994 Denim</h4>
       <div class="kit-year">1994 away · adidas · WC 94</div>
       <p><strong>The kit that built the cult.</strong> Faux-denim front. Red and blue stars scattered across the chest. Technically the away kit, worn at the home World Cup. <strong>Eric Wynalda, Tab Ramos, Alexi Lalas, Cobi Jones, Tony Meola.</strong> Universally regarded as one of the great World Cup kits ever made. Vintage versions sell for hundreds of dollars on eBay.</p>
     </div>
 
-    <div class="kit-card">
+    <div class="kit-card" data-reveal>
       <h4>The 1994 Stars and Stripes (home)</h4>
       <div class="kit-year">1994 home · adidas</div>
       <p>Red and white vertical stripes. Worn vs Switzerland in the group stage. The aesthetic counterpart to the denim. <strong>Together they are the visual identity of the 1994 World Cup for soccer-side memory.</strong></p>
     </div>
 
-    <div class="kit-card">
+    <div class="kit-card" data-reveal>
       <h4>The 2014 Bomb Pop</h4>
       <div class="kit-year">2014 away · Nike · World Cup Brazil</div>
       <p>Horizontal red and blue popsicle stripes on white. Worn during the 2-2 vs Portugal that ended on a 95th-minute equalizer. <strong>Dempsey's nose was bloody. Bradley's hair was wet. The shirt was beautiful.</strong> Polarizing at release. Beloved now.</p>
     </div>
 
-    <div class="kit-card">
+    <div class="kit-card" data-reveal>
       <h4>The 2010 White Sash Home</h4>
       <div class="kit-year">2010 home · Nike · World Cup South Africa</div>
       <p>White with a single blue sash running from shoulder to waist. Clean, minimal, classic. <strong>Worn during the Donovan-vs-Algeria moment.</strong> Donovan in this kit, sliding to score, is one of the most-reproduced images in American soccer.</p>
     </div>
 
-    <div class="kit-card">
+    <div class="kit-card" data-reveal>
       <h4>The 2010 "Don't Tread on Me" Third (verify before sharing)</h4>
       <div class="kit-year">Around the 2010 cycle · attribution uncertain</div>
       <p>There was discussion around a USA kit with Gadsden-flag-style imagery during the 2010 era. <strong>I'm flagging this entry as needing verification</strong> before it should be cited or shared. Memory of the exact kit, designer, and whether it was officially worn is fuzzy on the public record.</p>
     </div>
 
-    <div class="kit-card">
+    <div class="kit-card" data-reveal>
       <h4>The 2018 Hoops</h4>
       <div class="kit-year">2018 cycle · Nike</div>
       <p>USA's 2018 cycle had a horizontal-stripe shirt that lives in the supporter memory as the "hoops" kit. <strong>USA failed to qualify for the 2018 World Cup</strong>, so it never appeared at a major tournament. The kit and the Trinidad disaster are linked in fan memory forever.</p>
       <p><strong>Note on accuracy:</strong> specific design details (number of stripes, colors, who designed it) need verification before adding more here.</p>
     </div>
 
-    <div class="kit-card">
+    <div class="kit-card" data-reveal>
       <h4>The 2022 White Home</h4>
       <div class="kit-year">2022 home · Nike · World Cup Qatar</div>
       <p>White base. Worn during Pulisic's Iran goal and the R16 run. <strong>The shirt of the modern-era return to the World Cup.</strong></p>
@@ -105,24 +121,36 @@
 <section class="section">
   <div class="container">
     <div class="section__kicker">The current chapter</div>
-    <h2 class="display display--l section__title">The 2026 kits.</h2>
+    <h2 class="display display--l section__title" data-reveal>The 2026 kits.</h2>
 
-    <div class="kit-card">
+    <div class="kit-card" data-reveal>
       <h4>The #4, worn.</h4>
       <div class="kit-year">2026 away · Nike · worn into SoFi twice, June 2026</div>
       <p><strong>Fifty years of loving this game, compressed into one navy Nike shirt with a 4 on it.</strong> I wore it into SoFi twice in eight days. June 18 through Entry 12 to Andy's box, my first World Cup match ever. June 25 to the seats next to Pete for USA v Türkiye. Every other kit on this page belongs to the team. This one is ours. The kit lore page ends with it now, and that feels exactly right.</p>
-      <figure class="figure"><img src="assets/delphi-0618.jpg" alt="Gordon in the navy number 4 USA shirt with the Delphi crew at the SoFi gates" loading="lazy"><figcaption>June 18. The Delphi crew at the SoFi gates. Gordon in the navy number 4, first World Cup match of his life, Switzerland v Bosnia from Andy Kleinman's box.</figcaption></figure>
-      <figure class="figure"><img src="assets/g-pete-0625.jpg" alt="Gordon and Pete Hines in the seats at SoFi for USA v Türkiye" loading="lazy"><figcaption>June 25. Gordon and Pete Hines in the seats. USA v Türkiye. Fifty years in the making.</figcaption></figure>
+      <figure class="figure shirt">
+        <button class="shirt__btn" type="button" aria-pressed="false" aria-label="Bring the June 18 photo to full color">
+          <img src="assets/delphi-0618.jpg" alt="Gordon in the navy number 4 USA shirt with the Delphi crew at the SoFi gates" loading="lazy" decoding="async" width="1350" height="1800" />
+          <span class="shirt-hint" aria-hidden="true">Touch the shirt</span>
+        </button>
+        <figcaption>June 18. The Delphi crew at the SoFi gates. Gordon in the navy number 4, first World Cup match of his life, Switzerland v Bosnia from Andy Kleinman's box.</figcaption>
+      </figure>
+      <figure class="figure shirt">
+        <button class="shirt__btn" type="button" aria-pressed="false" aria-label="Bring the June 25 photo to full color">
+          <img src="assets/g-pete-0625.jpg" alt="Gordon and Pete Hines in the seats at SoFi for USA v Türkiye" loading="lazy" decoding="async" width="1350" height="1800" />
+          <span class="shirt-hint" aria-hidden="true">Touch the shirt</span>
+        </button>
+        <figcaption>June 25. Gordon and Pete Hines in the seats. USA v Türkiye. Fifty years in the making.</figcaption>
+      </figure>
     </div>
 
-    <div class="kit-card">
+    <div class="kit-card" data-reveal>
       <h4>2026 Home</h4>
       <div class="kit-year">Nike · home soil edition</div>
       <p>The kit USMNT wore at SoFi for the opener vs Paraguay. <strong>The first World Cup shirt worn on home soil since the 1994 classics.</strong> And it happened. The shirts were worn from June 12 to July 19 at the biggest World Cup ever staged, 6.8 million people in the stands.</p>
       <p><strong>Note on accuracy:</strong> specific design details (stripe patterns, accent colors) are still deliberately not described here. The tournament is over and I would rather leave this blank than guess.</p>
     </div>
 
-    <div class="kit-card">
+    <div class="kit-card" data-reveal>
       <h4>2026 Away</h4>
       <div class="kit-year">Nike · road edition</div>
       <p>The road shirt of a tournament that ran June 12 to July 19, the biggest World Cup ever staged, 6.8 million in the stands. The navy one with the 4 on it, the one above, is the version I can vouch for personally. <strong>Note on accuracy:</strong> specific design details of the players' shirts still not described here pending verified imagery.</p>
@@ -133,15 +161,25 @@
 <section class="section">
   <div class="container">
     <div class="section__kicker">The patches and crests</div>
-    <h2 class="display display--l section__title">The badge.</h2>
+    <h2 class="display display--l section__title" data-reveal>The badge.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal>
       <div class="profile-card__detail">
         <p><strong>1995:</strong> The blue-and-red shield with stars on white. The badge we wore through the 2002 Quarterfinal and the 2009 Spain win.</p>
         <p><strong>2016:</strong> The simplified red, white, and blue waved-flag crest. Still in use. The badge we wore through 2022 Qatar and the Pochettino era.</p>
         <p><strong>The stars myth:</strong> You'll hear that stars above the crest count Gold Cup wins. Not true. The USMNT badge carries no trophy stars at all. (The USWNT wears four, one per World Cup title.)</p>
       </div>
     </div>
+
+    <a class="door" href="lore.html" data-reveal>
+      <img src="assets/azteca.jpg" alt="" loading="lazy" decoding="async" width="1600" height="900" />
+      <div class="door__scrim"></div>
+      <div class="door__label">
+        <div class="door__kicker">Next · Chapter 12</div>
+        <div class="door__title">The moments that made this team</div>
+        <div class="door__credit">Estadio Azteca · photo AnatGutman · CC0 · Wikimedia Commons</div>
+      </div>
+    </a>
   </div>
 </section>
 
@@ -151,9 +189,29 @@
   <div class="container">
     <p>Friends &amp; Family Edition · Kits page · Updated August 1, 2026.</p>
     <p style="margin-top: 12px;">Kit questions, kit memories, or a kit you want me to add? Email me, cc <a href="mailto:gbellamy@gmail.com?cc=gbellamyAI@gmail.com&amp;subject=Kit%20question">gbellamyAI@gmail.com</a>.</p>
+        <p style="margin-top:10px;font-size:.85rem"><a href="meta.html">⚙ The Making Of · how we built this site, and the others →</a></p>
+    <ul class="passport"></ul>
   </div>
 </footer>
 
 <script src="site.js" defer></script>
+<script src="effects.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var chimed = false;
+  document.querySelectorAll('.shirt__btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var fig = btn.closest('.shirt');
+      if (!fig) return;
+      var on = fig.classList.toggle('alive');
+      btn.setAttribute('aria-pressed', String(on));
+      if (on && !chimed) {
+        chimed = true;
+        if (window.FX && FX.sound) FX.sound.chime(true);
+      }
+    });
+  });
+});
+</script>
 </body>
 </html>

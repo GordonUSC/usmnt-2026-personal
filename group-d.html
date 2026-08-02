@@ -9,10 +9,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" />
 <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="effects.css" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="USA 26 with Gordon · Friends &amp; Family Edition" />
 <meta property="og:title" content="Group D · USA 26 with Gordon" />
-<meta property="og:description" content="How USA won Group D: 4-1 over Paraguay, 2-0 over Australia, a 3-2 loss to Türkiye with a rotated side. Six points, top of the group." />
+<meta property="og:description" content="How USA won Group D: 4-1 over Paraguay, 2-0 over Australia, a 3-2 loss to Türkiye with a rotated side. Six points, top of the group. Call each match before you read it." />
 <meta property="og:url" content="https://gordonusc.github.io/usmnt-2026-personal/group-d.html" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Group D · USA 26 with Gordon" />
@@ -22,7 +23,7 @@
 <meta name="apple-mobile-web-app-title" content="USA 26 · Gordon" />
 <meta name="format-detection" content="telephone=no" />
 </head>
-<body>
+<body data-page="groupd">
 
 <header class="nav">
   <a href="index.html" class="nav__brand"><strong>USA</strong> · 26 · Friends &amp; Family</a>
@@ -39,6 +40,7 @@
     <a href="lore.html">Lore</a>
     <a href="kits.html">Kits</a>
   </nav>
+  <button id="sound-toggle" class="sound-toggle" aria-pressed="false">♪ off</button>
 </header>
 
 <main>
@@ -46,8 +48,8 @@
 <section class="hero">
   <div class="container">
     <div class="hero__kicker">Three matches · Twelve days · Two venues · Group won</div>
-    <h1 class="display display--xl">Group D.</h1>
-    <p class="hero__sub">We won it. Six points: 4-1 over Paraguay on June 12, 2-0 over Australia on June 19, and a 3-2 loss to Türkiye on June 25 with a heavily rotated side, after the knockouts were already clinched. USA finished top of Group D. This page holds the results, and the scouting we wrote going in, graded honestly.</p>
+    <h1 class="display display--xl kinetic vt-hero"><span>Group</span> <span>D.</span></h1>
+    <p class="hero__sub">We won it. Six points: 4-1 over Paraguay on June 12, 2-0 over Australia on June 19, and a 3-2 loss to Türkiye on June 25 with a heavily rotated side, after the knockouts were already clinched. USA finished top of Group D. This page holds the results, and the scouting we wrote going in, graded honestly. For the last two matches, make your call before you read the result. I had to.</p>
   </div>
 </section>
 
@@ -56,7 +58,15 @@
     <div class="section__kicker">Match 1 · Jun 12 · SoFi · Final</div>
     <h2 class="display display--l section__title">Paraguay. <span class="italic">Done.</span></h2>
 
-    <div class="profile-card">
+    <div class="ticket" data-reveal>
+      <div class="ticket__meta">Fri Jun 12 2026 · SoFi Stadium, Los Angeles · Group D · Match 1</div>
+      <div class="ticket__match">USA v Paraguay</div>
+      <div class="ticket__score">USA 4 · Paraguay 1</div>
+      <div class="ticket__note">The opener. The plan worked, and then some.</div>
+      <div class="ticket__barcode"></div>
+    </div>
+
+    <div class="profile-card" data-reveal>
       <div class="profile-card__header"><div class="profile-card__name">Result: USA 4, Paraguay 1</div><div class="profile-card__role">Group D · Match 1 · Won</div></div>
       <div class="profile-card__detail">
         <p>The plan worked, and then some. Paraguay own goal off Damián Bobadilla at 7'. Folarin Balogun's brace at 31' and 45'+5', the first American to score twice in a World Cup game since 1930. Giovanni Reyna at 90'+8'. Paraguay pulled one back at 73'. <strong>Christian Pulisic was the creator, forcing the own goal and assisting Balogun's first before leaving at halftime with calf tightness.</strong></p>
@@ -64,7 +74,7 @@
       </div>
     </div>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal>
       <div class="profile-card__header"><div class="profile-card__name">Paraguay (La Albirroja)</div><div class="profile-card__role">Coach Gustavo Alfaro · 4-2-3-1 / 4-4-2</div></div>
       <div class="profile-card__detail">
         <p><strong>Star:</strong> Miguel Almirón (Atlanta United pace, the counter-attack threat).</p>
@@ -94,15 +104,33 @@
     <div class="section__kicker">Match 2 · Jun 19 · Lumen Field · Final</div>
     <h2 class="display display--l section__title">Australia. <span class="italic">Done.</span></h2>
 
-    <div class="profile-card">
-      <div class="profile-card__header"><div class="profile-card__name">Result: USA 2, Australia 0</div><div class="profile-card__role">Group D · Match 2 · Won</div></div>
-      <div class="profile-card__detail">
+    <div class="ticket" data-reveal>
+      <div class="ticket__meta">Fri Jun 19 2026 · Lumen Field, Seattle · Group D · Match 2 · Noon kickoff</div>
+      <div class="ticket__match">USA v Australia</div>
+      <div class="ticket__score">USA 2 · Australia 0</div>
+      <div class="ticket__note">Watched from LA at noon, texting "watching soccer" at 12:19.</div>
+      <div class="ticket__barcode"></div>
+    </div>
+
+    <div class="predict" data-answer="W" data-reveal>
+      <p class="predict__q">Before you scroll: noon in Seattle, no Pulisic. What do we do?</p>
+      <div class="predict__opts">
+        <button data-v="W">Win</button>
+        <button data-v="D">Draw</button>
+        <button data-v="L">Loss</button>
+      </div>
+      <div class="predict__reveal" hidden>
         <p>A noon kickoff in Seattle and a clean sheet. Burgess, one of the back three we scouted below, turned one into his own net at 11', and Alex Freeman rose for a header at 43'. Pulisic missed the match entirely, his calf kicked in training, and Pochettino answered with a 3-5-2 we never saw coming: Freese; Richards, Ream, Robinson; Dest, McKennie, Adams, Tillman, Freeman; Pepi, Balogun. 62 percent possession. <strong>Knockout rounds clinched with a game to spare.</strong></p>
         <p>I watched this one from LA at noon, texting "watching soccer" at 12:19 like that was a normal Friday and not the day we punched our ticket. The scouting below is what we read going in.</p>
       </div>
     </div>
 
-    <div class="profile-card">
+    <figure class="figure" data-reveal>
+      <div class="duotone"><img src="assets/cc/ream.jpg" alt="Tim Ream leaping for a header against Australia at Lumen Field" loading="lazy" decoding="async" width="1280" height="853" /></div>
+      <figcaption>Tim Ream, one wing of that surprise back three, leaping for a header against Australia, Jun 19 in Seattle. <span class="cr">photo Bryan Berlin · CC BY-SA 4.0 · Wikimedia Commons</span></figcaption>
+    </figure>
+
+    <div class="profile-card" data-reveal>
       <div class="profile-card__header"><div class="profile-card__name">Australia (Socceroos)</div><div class="profile-card__role">Coach Tony Popovic · 3-4-2-1</div></div>
       <div class="profile-card__detail">
         <p><strong>Star:</strong> Nestory Irankunda (pace, finishing, breakout player).</p>
@@ -132,15 +160,27 @@
     <div class="section__kicker">Match 3 · Jun 25 · SoFi · Final</div>
     <h2 class="display display--l section__title">Türkiye. <span class="italic">The one I saw.</span></h2>
 
-    <div class="profile-card">
-      <div class="profile-card__header"><div class="profile-card__name">Result: Türkiye 3, USA 2</div><div class="profile-card__role">Group D · Match 3 · Lost · Group still won</div></div>
-      <div class="profile-card__detail">
+    <div class="ticket" data-reveal>
+      <div class="ticket__meta">Thu Jun 25 2026 · SoFi Stadium, Los Angeles · Group D · Match 3</div>
+      <div class="ticket__match">USA v Türkiye</div>
+      <div class="ticket__score">Türkiye 3 · USA 2</div>
+      <div class="ticket__note">My night. Inside SoFi, next to Pete, on the ticket he transferred me on June 7.</div>
+      <div class="ticket__barcode"></div>
+    </div>
+
+    <div class="predict" data-answer="wild" data-reveal>
+      <p class="predict__q">Before you scroll: group already won, everyone rested. The Türkiye finale goes...</p>
+      <div class="predict__opts">
+        <button data-v="win">We win anyway</button>
+        <button data-v="wild">Wild 3-2 loss</button>
+      </div>
+      <div class="predict__reveal" hidden>
         <p>With the knockouts already clinched, Pochettino rotated heavily: Turner in goal, Reyna and Berhalter in the eleven. We struck first, Trusty off a corner at 3', and Güler answered at 10'. Barış Alper Yılmaz put Türkiye ahead with a knee finish off Kökçü's shot at 31'. Berhalter pulled us level at 49', and Kaan Ayhan got the final touch on the winner at 90'+8'. <strong>USA still won Group D with 6 points.</strong></p>
         <p>This was my night. I was inside SoFi, next to Pete, on the ticket he transferred me on June 7, the one that had me texting friends "Not me crying in an uber on the way to a soccer game." Quinn was in the building too, in a different section, because of course he was. The scouting below is what we read going in.</p>
       </div>
     </div>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal>
       <div class="profile-card__header"><div class="profile-card__name">Türkiye (Ay-Yıldızlılar)</div><div class="profile-card__role">Coach Vincenzo Montella · 4-2-3-1</div></div>
       <div class="profile-card__detail">
         <p><strong>Star:</strong> Arda Güler (Real Madrid, 21, the truth).</p>
@@ -173,20 +213,34 @@
     <div class="section__kicker">Final table · Group D complete</div>
     <h2 class="display display--l section__title">How it ended.</h2>
 
-    <div class="ledger">
+    <div class="stat-row" data-reveal-group>
+      <div class="stat"><div class="stat__num" data-count="6">0</div><div class="stat__label">points, top of Group D</div></div>
+      <div class="stat"><div class="stat__num" data-count="8">0</div><div class="stat__label">goals across three matches</div></div>
+      <div class="stat"><div class="stat__num" data-count="2">0</div><div class="stat__label">own goals forced</div></div>
+      <div class="stat"><div class="stat__num" data-count="12">0</div><div class="stat__label">days, two venues</div></div>
+    </div>
+
+    <div class="ledger" data-reveal>
       <h3>1st · USA · 6 points</h3>
       <p>Won 4-1 over Paraguay, won 2-0 over Australia, lost 3-2 to Türkiye with the rotated side. Group D winners, on to the Round of 32.</p>
     </div>
 
-    <div class="ledger">
+    <div class="ledger" data-reveal>
       <h3>Also through: Paraguay and Australia</h3>
       <p>Both reached the Round of 32 with us. Paraguay took Germany all the way to penalties there, and Australia did the same against Egypt. This was not a soft group.</p>
     </div>
 
-    <div class="ledger">
+    <div class="ledger" data-reveal>
       <h3>Out: Türkiye</h3>
       <p>The only team that beat us all group, and they still finished last. Football is a strange and beautiful accountant. I am not going to guess the exact points and goal differences for the other three from memory; the shape of the table is the verified part, and the shape says we won it.</p>
     </div>
+
+    <a class="door" href="r32.html" data-reveal>
+      <img src="assets/cc/levis-bowl.jpg" alt="" loading="lazy" decoding="async" width="1280" height="960" />
+      <div class="door__scrim"></div>
+      <div class="door__label"><div class="door__kicker">Next · Chapter 5</div><div class="door__title">The night we dug deep</div></div>
+    </a>
+    <p class="hero__credit" style="margin-top:10px; font-size:0.6875rem; letter-spacing:0.08em; text-transform:uppercase; color:rgba(245,241,232,0.35);">Levi's Stadium at dusk · photo Kaisersauce1 · CC BY 4.0 · Wikimedia Commons</p>
   </div>
 </section>
 
@@ -196,9 +250,12 @@
   <div class="container">
     <p>Friends &amp; Family Edition · Group D page · Updated August 1, 2026.</p>
     <p style="margin-top: 12px;">Email me with questions, cc <a href="mailto:gbellamy@gmail.com?cc=gbellamyAI@gmail.com&amp;subject=Group%20D%20question">gbellamyAI@gmail.com</a> and we'll update the page.</p>
+        <p style="margin-top:10px;font-size:.85rem"><a href="meta.html">⚙ The Making Of · how we built this site, and the others →</a></p>
+    <ul class="passport"></ul>
   </div>
 </footer>
 
 <script src="site.js" defer></script>
+<script src="effects.js" defer></script>
 </body>
 </html>

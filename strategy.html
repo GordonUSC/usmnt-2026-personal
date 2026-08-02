@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" />
 <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="effects.css" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="USA 26 with Gordon · Friends &amp; Family Edition" />
 <meta property="og:title" content="USMNT Strategy · USA 26 with Gordon" />
@@ -21,8 +22,56 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="USA 26 · Gordon" />
 <meta name="format-detection" content="telephone=no" />
+<style>
+/* strategy page only · pinned pitch scrolly set piece */
+.pitch { height: min(70dvh, 540px); max-width: 88vw; }
+.pitch .dot { fill: var(--gold); transition: transform .9s cubic-bezier(.16, 1, .3, 1); }
+.pitch .gk { fill: var(--stamp-red); }
+.pitch__tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; fill: rgba(245, 241, 232, .55); }
+.pitch .tag { opacity: 0; transition: opacity .5s .4s; }
+/* step 1 (and initial) · the predicted 4-2-3-1 */
+.scrolly__scene .d1 { transform: translate(150px, 395px); }
+.scrolly__scene .d2 { transform: translate(45px, 330px); }
+.scrolly__scene .d3 { transform: translate(115px, 340px); }
+.scrolly__scene .d4 { transform: translate(185px, 340px); }
+.scrolly__scene .d5 { transform: translate(255px, 330px); }
+.scrolly__scene .d6 { transform: translate(110px, 268px); }
+.scrolly__scene .d7 { transform: translate(190px, 268px); }
+.scrolly__scene .d8 { transform: translate(55px, 185px); }
+.scrolly__scene .d9 { transform: translate(150px, 175px); }
+.scrolly__scene .d10 { transform: translate(245px, 185px); }
+.scrolly__scene .d11 { transform: translate(150px, 95px); }
+.scrolly__scene[data-step="1"] .tag-1 { opacity: 1; }
+/* step 2 · the actual 3-5-2 vs Australia */
+.scrolly__scene[data-step="2"] .d2 { transform: translate(85px, 340px); }
+.scrolly__scene[data-step="2"] .d3 { transform: translate(150px, 345px); }
+.scrolly__scene[data-step="2"] .d4 { transform: translate(215px, 340px); }
+.scrolly__scene[data-step="2"] .d5 { transform: translate(268px, 235px); }
+.scrolly__scene[data-step="2"] .d6 { transform: translate(150px, 295px); }
+.scrolly__scene[data-step="2"] .d7 { transform: translate(95px, 255px); }
+.scrolly__scene[data-step="2"] .d8 { transform: translate(32px, 235px); }
+.scrolly__scene[data-step="2"] .d9 { transform: translate(205px, 255px); }
+.scrolly__scene[data-step="2"] .d10 { transform: translate(112px, 115px); }
+.scrolly__scene[data-step="2"] .d11 { transform: translate(188px, 115px); }
+.scrolly__scene[data-step="2"] .tag-2 { opacity: 1; }
+/* step 3 · the rotated XI idea vs Türkiye, the depth night */
+.scrolly__scene[data-step="3"] .d6 { transform: translate(150px, 278px); }
+.scrolly__scene[data-step="3"] .d7 { transform: translate(100px, 240px); }
+.scrolly__scene[data-step="3"] .d9 { transform: translate(200px, 240px); }
+.scrolly__scene[data-step="3"] .d8 { transform: translate(55px, 140px); }
+.scrolly__scene[data-step="3"] .d10 { transform: translate(245px, 140px); }
+.scrolly__scene[data-step="3"] .d11 { transform: translate(150px, 105px); }
+.scrolly__scene[data-step="3"] .tag-3 { opacity: 1; }
+.step-kicker { font-family: 'JetBrains Mono', monospace; font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--warm); margin-bottom: 10px; }
+.step-title { font-family: 'Fraunces', serif; font-size: 1.35rem; line-height: 1.15; margin-bottom: 4px; }
+.step-role { font-size: .8rem; color: var(--gold); margin-bottom: 12px; }
+.scrolly__step p { color: var(--ink-dim); line-height: 1.6; margin-bottom: 12px; font-size: .95rem; }
+.scrolly__step p strong { color: var(--ink); }
+.step-note { font-family: 'Fraunces', serif; font-style: italic; font-size: .85rem; opacity: .75; }
+@media (prefers-reduced-motion: reduce) { .pitch .dot { transition: none; } .pitch .tag { transition: none; } }
+</style>
 </head>
-<body>
+<body data-page="strategy">
 
 <header class="nav">
   <a href="index.html" class="nav__brand"><strong>USA</strong> · 26 · Friends &amp; Family</a>
@@ -39,6 +88,7 @@
     <a href="lore.html">Lore</a>
     <a href="kits.html">Kits</a>
   </nav>
+  <button id="sound-toggle" class="sound-toggle" aria-pressed="false">♪ off</button>
 </header>
 
 <main>
@@ -46,7 +96,7 @@
 <section class="hero">
   <div class="container">
     <div class="hero__kicker">Pochettino's Identity Project, Graded</div>
-    <h1 class="display display--xl">How USA actually played.</h1>
+    <h1 class="display display--xl kinetic vt-hero">How <span>USA</span> <span>actually</span> <span>played.</span></h1>
     <p class="hero__sub">Vertical. Intense. Possession-with-purpose. That was the read in May, and it mostly held. This page stays exactly as I wrote it before the opener, because the rare preview that can face its own grades should get to. Under every section there is now a grade: what we called, what Pochettino actually did, and where the tournament answered back. Three wins, a group title, a ten-man knockout win, and a Round of 16 ending. The homework is below.</p>
   </div>
 </section>
@@ -54,25 +104,76 @@
 <section class="section">
   <div class="container">
     <div class="section__kicker">The shape</div>
-    <h2 class="display display--l section__title">4-2-3-1, with a 3-4-3 in the pocket.</h2>
+    <h2 class="display display--l section__title" data-reveal>4-2-3-1, with a 3-4-3 in the pocket.</h2>
+    <p data-reveal>Scroll. The pitch keeps the score of my predictions: eleven dots, three arrangements, one summer.</p>
+  </div>
+</section>
 
-    <div class="profile-card">
-      <div class="profile-card__header"><div class="profile-card__name">Default: 4-2-3-1 (speculation)</div><div class="profile-card__role">The base formation</div></div>
-      <div class="profile-card__detail">
-        <p>One striker (Balogun). Three behind: Pulisic on the left, Reyna or Tillman in the middle, Weah on the right. Two pivot midfielders: Adams paired with McKennie or Berhalter. Back four: Robinson, Ream, Richards, Scally (or Dest if healthy).</p>
-        <p><strong>Why this shape:</strong> protects Pulisic's freedom, gives Adams cover, lets the fullbacks push high when the build-up is settled.</p>
-        <p><strong>Note on accuracy:</strong> the specific starting eleven is speculation. Pochettino has not announced it. Adams as the 6 and Pulisic on the left are the only structural locks. Everything else could shift between the Senegal and Germany friendlies before the opener.</p>
-        <p><strong>Grade: the shape call missed, and I respect why.</strong> Pochettino opened the Australia match in a 3-5-2 this page never saw coming: Freese; Richards, Ream, Robinson; Dest, McKennie, Adams, Tillman, Freeman; Pepi and Balogun up top. Then he rotated the side wholesale for Türkiye, Turner in goal, Reyna and Berhalter starting, and still won the group. My "structural locks" were half right. Adams held the middle, but Pulisic's calf took the left wing off the board by match two. The lesson: I predicted a formation, and he brought a whole wardrobe.</p>
-      </div>
+<section class="section--flush">
+  <div class="scrolly">
+    <div class="scrolly__scene" aria-hidden="true">
+      <svg class="pitch" viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg">
+        <rect x="6" y="6" width="288" height="408" rx="10" fill="#131735" stroke="rgba(245,241,232,.5)" stroke-width="2" />
+        <line x1="6" y1="210" x2="294" y2="210" stroke="rgba(245,241,232,.5)" stroke-width="2" />
+        <circle cx="150" cy="210" r="36" fill="none" stroke="rgba(245,241,232,.5)" stroke-width="2" />
+        <circle cx="150" cy="210" r="2.5" fill="rgba(245,241,232,.5)" />
+        <rect x="75" y="348" width="150" height="66" fill="none" stroke="rgba(245,241,232,.5)" stroke-width="2" />
+        <rect x="112" y="392" width="76" height="22" fill="none" stroke="rgba(245,241,232,.35)" stroke-width="1.5" />
+        <rect x="75" y="6" width="150" height="66" fill="none" stroke="rgba(245,241,232,.5)" stroke-width="2" />
+        <rect x="112" y="6" width="76" height="22" fill="none" stroke="rgba(245,241,232,.35)" stroke-width="1.5" />
+        <circle cx="150" cy="366" r="2.5" fill="rgba(245,241,232,.5)" />
+        <circle cx="150" cy="54" r="2.5" fill="rgba(245,241,232,.5)" />
+        <g>
+          <circle class="dot gk d1" r="7" />
+          <circle class="dot d2" r="7" />
+          <circle class="dot d3" r="7" />
+          <circle class="dot d4" r="7" />
+          <circle class="dot d5" r="7" />
+          <circle class="dot d6" r="7" />
+          <circle class="dot d7" r="7" />
+          <circle class="dot d8" r="7" />
+          <circle class="dot d9" r="7" />
+          <circle class="dot d10" r="7" />
+          <circle class="dot d11" r="7" />
+        </g>
+        <text class="pitch__tag tag tag-1" x="16" y="26">4-2-3-1 · the call</text>
+        <text class="pitch__tag tag tag-2" x="16" y="26">3-5-2 · the answer</text>
+        <text class="pitch__tag tag tag-3" x="16" y="26">the depth night</text>
+      </svg>
     </div>
+    <div class="scrolly__steps">
 
-    <div class="profile-card">
-      <div class="profile-card__header"><div class="profile-card__name">Plan B: 3-4-3</div><div class="profile-card__role">Game-state alternate</div></div>
-      <div class="profile-card__detail">
-        <p>Three centerbacks (Ream, Richards, McKenzie). Wing-backs (Robinson, Weah) wider. Three forwards (Pulisic, Balogun, Reyna).</p>
-        <p><strong>When Pochettino reaches for it:</strong> against a packed midfield like Paraguay's. Or when chasing late.</p>
-        <p><strong>Grade:</strong> I sketched a back three as the break-glass alternate, and he made a back three the opening act in Seattle. Wrong card, right instinct. The names were off too, Dest and Freeman as the wide men instead of my guesses. Beyond the verified lineups I will not pretend to know his chalkboard. The honest summary is that the flexibility this card predicted was real, just pointed somewhere I did not call.</p>
+      <div class="scrolly__step" data-step="1">
+        <div>
+          <div class="step-kicker">Step 1 · The call, May</div>
+          <div class="step-title">Default: 4-2-3-1 (speculation)</div>
+          <div class="step-role">The base formation</div>
+          <p>One striker (Balogun). Three behind: Pulisic on the left, Reyna or Tillman in the middle, Weah on the right. Two pivot midfielders: Adams paired with McKennie or Berhalter. Back four: Robinson, Ream, Richards, Scally (or Dest if healthy).</p>
+          <p><strong>Why this shape:</strong> protects Pulisic's freedom, gives Adams cover, lets the fullbacks push high when the build-up is settled.</p>
+          <p><strong>Note on accuracy:</strong> the specific starting eleven is speculation. Pochettino has not announced it. Adams as the 6 and Pulisic on the left are the only structural locks. Everything else could shift between the Senegal and Germany friendlies before the opener.</p>
+        </div>
       </div>
+
+      <div class="scrolly__step" data-step="2">
+        <div>
+          <div class="step-kicker">Step 2 · The answer, Jun 19, Seattle</div>
+          <div class="step-title">The actual 3-5-2</div>
+          <p><strong>Grade: the shape call missed, and I respect why.</strong> Pochettino opened the Australia match in a 3-5-2 this page never saw coming: Freese; Richards, Ream, Robinson; Dest, McKennie, Adams, Tillman, Freeman; Pepi and Balogun up top. Then he rotated the side wholesale for Türkiye, Turner in goal, Reyna and Berhalter starting, and still won the group. My "structural locks" were half right. Adams held the middle, but Pulisic's calf took the left wing off the board by match two. The lesson: I predicted a formation, and he brought a whole wardrobe.</p>
+        </div>
+      </div>
+
+      <div class="scrolly__step" data-step="3">
+        <div>
+          <div class="step-kicker">Step 3 · The depth night</div>
+          <div class="step-title">Plan B: 3-4-3</div>
+          <div class="step-role">Game-state alternate</div>
+          <p>Three centerbacks (Ream, Richards, McKenzie). Wing-backs (Robinson, Weah) wider. Three forwards (Pulisic, Balogun, Reyna).</p>
+          <p><strong>When Pochettino reaches for it:</strong> against a packed midfield like Paraguay's. Or when chasing late.</p>
+          <p><strong>Grade:</strong> I sketched a back three as the break-glass alternate, and he made a back three the opening act in Seattle. Wrong card, right instinct. The names were off too, Dest and Freeman as the wide men instead of my guesses. Beyond the verified lineups I will not pretend to know his chalkboard. The honest summary is that the flexibility this card predicted was real, just pointed somewhere I did not call.</p>
+          <p class="step-note">The dots beside this step are the rotated side at SoFi against Türkiye, the depth night. Dots only. The names that matter are already in the grades.</p>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -80,9 +181,9 @@
 <section class="section">
   <div class="container">
     <div class="section__kicker">The spine</div>
-    <h2 class="display display--l section__title">The three relationships that decide everything.</h2>
+    <h2 class="display display--l section__title" data-reveal>The three relationships that decide everything.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal>
       <div class="profile-card__header"><div class="profile-card__name">Adams + (McKennie or Berhalter)</div><div class="profile-card__role">The double pivot</div></div>
       <div class="profile-card__detail">
         <p>With Yunus Musah controversially left off the final 26, the double pivot will pair Tyler Adams with either Weston McKennie (physicality, late runs) or Sebastian Berhalter (passing range, MLS form). <strong>Adams' health is the foundation of everything. The partner choice is Pochettino's biggest tactical question.</strong></p>
@@ -90,7 +191,7 @@
       </div>
     </div>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal>
       <div class="profile-card__header"><div class="profile-card__name">Pulisic + Balogun</div><div class="profile-card__role">The decisive connection</div></div>
       <div class="profile-card__detail">
         <p>The 10-and-9 axis. Pulisic drifting in from the left, Balogun playing on the shoulder. <strong>Goals at this tournament will mostly come through this pair.</strong></p>
@@ -98,7 +199,7 @@
       </div>
     </div>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal>
       <div class="profile-card__header"><div class="profile-card__name">Robinson + Ream</div><div class="profile-card__role">The left side back</div></div>
       <div class="profile-card__detail">
         <p>Jedi gives the team width going forward. Ream holds shape behind him. <strong>Without that balance, USA is leaking transitions on the left.</strong></p>
@@ -111,27 +212,27 @@
 <section class="section">
   <div class="container">
     <div class="section__kicker">Where it could break</div>
-    <h2 class="display display--l section__title">Honest assessment.</h2>
+    <h2 class="display display--l section__title" data-reveal>Honest assessment.</h2>
 
-    <div class="ledger">
+    <div class="ledger" data-reveal>
       <h3>Pulisic's form</h3>
       <p>Seventeen league matches without a goal, a drought running since December 28. He comes in cold. If the opener goes poorly, the team's psychological center of gravity is in trouble.</p>
       <p><strong>Grade: it broke, but differently than feared.</strong> The drought never ended. Zero goals all summer. And the fear underneath this ledger was still wrong, because the opener did not go poorly, it went 4-1, and Christian was the reason: the forced own goal, the assist on Balogun's first, a half of pure conduction before the calf pulled him. Then he missed Australia, and the Tielemans boot in Seattle finished it. He never scored and he still mattered. I did not have that outcome on my card.</p>
     </div>
 
-    <div class="ledger">
+    <div class="ledger" data-reveal>
       <h3>Backline vs elite attacks</h3>
       <p>Belgium beat USA 5-2 in March. Portugal beat them 2-0 three days later. <strong>The Pochettino back four can be unsettled by combinations and pace.</strong> Against Brazil, Spain, or Türkiye, this is the question.</p>
       <p><strong>Grade: exactly as feared.</strong> Belgium 4-1 in Seattle. The March 5-2 was not a bad night, it was an omen, and the same opponent delivered the confirmation in the Round of 16. For four matches the backline was good enough, two clean sheets included. Then the one elite attack on our path asked the question at full volume and got the same answer as March. This is the ledger line that graded itself, and I take no joy in the A.</p>
     </div>
 
-    <div class="ledger">
+    <div class="ledger" data-reveal>
       <h3>Set-piece defense</h3>
       <p>USA has been good attacking from set pieces (Pulisic delivery is elite). They have been less good defending them. Türkiye's Çalhanoğlu is a perfect storm of a corner taker.</p>
       <p><strong>Grade: mixed, and the good half was gorgeous.</strong> The feared dead-ball collapse never came. Belgium's goals arrived in open play and transition, not off restarts. Meanwhile the set-piece attack this ledger mentioned in passing carried us all tournament: Trusty off a corner three minutes into the Türkiye match, then Tillman free kicks in both knockout games. We spent May worrying about defending dead balls and spent the summer scoring from them.</p>
     </div>
 
-    <div class="ledger">
+    <div class="ledger" data-reveal>
       <h3>Sub depth in attack</h3>
       <p>If Pulisic or Balogun cools off, the dropoff is real. Aaronson, Tillman, and Wright are useful pieces, but none is the same level of solo creator.</p>
       <p><strong>Grade: wrong in the best possible way.</strong> The dropoff we feared turned out to be the engine. Trusty, Berhalter, Freeman, Pepi, and Reyna all scored or started. The heavily rotated side took Türkiye to a 90+8 winner and we still won the group. And Malik Tillman, "useful piece," scored in both knockout games. The depth did not just hold when Pulisic went down. The depth won us the group.</p>
@@ -142,9 +243,9 @@
 <section class="section">
   <div class="container">
     <div class="section__kicker">What we want to see</div>
-    <h2 class="display display--l section__title">The signs USA is on.</h2>
+    <h2 class="display display--l section__title" data-reveal>The signs USA is on.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal>
       <div class="profile-card__detail">
         <p><strong>1. Vertical entries through midfield.</strong> Without Musah on the roster, USA needs Adams + McKennie / Berhalter to do the line-breaking. If midfielders carry past the first line, things happen. If they don't, they don't.</p>
         <p><strong>2. Pulisic finishing chances.</strong> Not creating. Finishing. His actual goal-output is the leading indicator.</p>
@@ -159,14 +260,20 @@
 <section class="section">
   <div class="container">
     <div class="section__kicker">The final grade</div>
-    <h2 class="display display--l section__title">Pochettino's tournament, in one paragraph.</h2>
+    <h2 class="display display--l section__title" data-reveal>Pochettino's tournament, in one paragraph.</h2>
 
-    <div class="profile-card">
+    <div class="profile-card" data-reveal>
       <div class="profile-card__detail">
         <p>He won the group with a rotation discipline this page did not predict and could not have: a 3-5-2 nobody scouted, a wholesale-rotated eleven that nearly took the third match too, and trust in 26 players instead of a first-choice eleven. He won a knockout game with ten men for the last half hour, the program's first knockout win since 2002 and second ever. And he met the ceiling exactly where the honest assessment above said it lived, against an elite attack in transition, on a night when the scoreline told the truth. That is the best World Cup this program has had on home soil since 1994. It hurt to lose, and it was still the run. Both are true, and I am grateful I wrote the hard parts down in May so I could face them honestly in August.</p>
         <p><strong>G</strong></p>
       </div>
     </div>
+
+    <a class="door" href="kits.html" data-reveal>
+      <img src="assets/g-pete-0625.jpg" alt="" loading="lazy" decoding="async" width="1350" height="1800" />
+      <div class="door__scrim"></div>
+      <div class="door__label"><div class="door__kicker">Next · Chapter 10</div><div class="door__title">The shirt, worn</div></div>
+    </a>
   </div>
 </section>
 
@@ -176,9 +283,12 @@
   <div class="container">
     <p>Friends &amp; Family Edition · Strategy page · Updated August 1, 2026.</p>
     <p style="margin-top: 12px;">Tactical questions? Email me, cc Darby on <a href="mailto:gbellamy@gmail.com?cc=gbellamyAI@gmail.com&amp;subject=Strategy%20question">gbellamyAI@gmail.com</a>. We'll add the answer here.</p>
+        <p style="margin-top:10px;font-size:.85rem"><a href="meta.html">⚙ The Making Of · how we built this site, and the others →</a></p>
+    <ul class="passport"></ul>
   </div>
 </footer>
 
 <script src="site.js" defer></script>
+<script src="effects.js" defer></script>
 </body>
 </html>
