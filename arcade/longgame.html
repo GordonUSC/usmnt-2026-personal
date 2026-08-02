@@ -35,7 +35,7 @@
   <button class="dn" data-k="down">▼</button>
   <button class="rt" data-k="right">▶</button>
 </div>
-<p class="note">Arrow keys on desktop, pad on phone. One character, fifty-two years, seven graphics engines. The last one is a photograph, because that's the most realistic renderer there is. <a href="belamini.html">Belamini '26 demo</a> · <a href="../meta.html">The Making Of</a></p>
+<p class="note">Arrow keys on desktop, pad on phone. One character, fifty-two years, eight graphics engines from Pong to anime. The HD and anime worlds stand on commissioned AI environment art; the final era is a real photograph, because that's the most realistic renderer there is. <a href="belamini.html">Belamini '26 demo</a> · <a href="../meta.html">The Making Of</a></p>
 
 <script>
 (function () {
@@ -146,6 +146,15 @@
   var photo = new Image(); photo.src = "../assets/g-sofi-0625.jpg";
   var stadiumPhoto = new Image(); stadiumPhoto.src = "../assets/sofi.jpg";
   var cutout = new Image(); cutout.src = "../assets/g-cutout.png"; /* real photo of G, background removed */
+  var hdDusk = new Image(); hdDusk.src = "../assets/art/hd-dusk.jpg";
+  var hdNight = new Image(); hdNight.src = "../assets/art/hd-night.jpg";
+  var animeBlue = new Image(); animeBlue.src = "../assets/art/anime-blue.jpg";
+  var animeWarm = new Image(); animeWarm.src = "../assets/art/anime-warm.jpg";
+  function imOk(img) { return img.complete && img.naturalWidth > 0; }
+  function drawCover(g2, img, w, h) {
+    var sc = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+    g2.drawImage(img, (w - img.naturalWidth * sc) / 2, (h - img.naturalHeight * sc) / 2, img.naturalWidth * sc, img.naturalHeight * sc);
+  }
 
   /* ---------------- kickable balls through the decades ---------------- */
   var BALLS = [
@@ -519,7 +528,26 @@
       return h * (.63 + cam.horizon * .5);
     }
 
-    if (era === 5) { /* HD: soft gradients, glow, vignette */
+    if (era === 5 && imOk(hdDusk) && imOk(hdNight)) { /* HD: the FIFA-2010s environment plates, live layers on top */
+      drawCover(g2, hdDusk, w, h);
+      var nA = Math.max(0, Math.min(1, .25 - mood * 1.2));
+      if (nA > .02) { g2.globalAlpha = nA; drawCover(g2, hdNight, w, h); g2.globalAlpha = 1; }
+      if (mood < -.2) { g2.fillStyle = "rgba(6,10,26," + (-mood * .3).toFixed(3) + ")"; g2.fillRect(0, 0, w, h); }
+      var sheen2 = g2.createRadialGradient(w / 2, h * .8, 10, w / 2, h * .8, w * .55);
+      sheen2.addColorStop(0, "rgba(255,255,255,.07)"); sheen2.addColorStop(1, "rgba(255,255,255,0)");
+      g2.fillStyle = sheen2; g2.fillRect(0, h * .55, w, h * .45);
+      if (mood > .25) { /* the long dusk shadow raking off your feet */
+        g2.fillStyle = "rgba(10,14,30,.28)";
+        g2.beginPath(); g2.ellipse(w * .32 + w * .1, h * .885, w * .12, h * .013, -.05, 0, 6.29); g2.fill();
+      }
+      g2.fillStyle = "rgba(8,10,20,.78)"; g2.fillRect(w * .72, h * .055, w * .21, h * .048);
+      g2.fillStyle = "#BF0A30"; g2.fillRect(w * .72, h * .055, w * .011, h * .048);
+      g2.fillStyle = "#FFCD00"; g2.fillRect(w * .919, h * .055, w * .011, h * .048);
+      g2.fillStyle = "#f0f0e8"; g2.font = "600 " + Math.round(h * .028) + "px Inter";
+      g2.fillText("USA 26 · LIVE · " + year(p), w * .74, h * .0885);
+      return h * .88;
+    }
+    if (era === 5) { /* HD fallback: soft gradients, glow, vignette */
       var sk = g2.createLinearGradient(0, 0, 0, h);
       sk.addColorStop(0, moodColor([120, 170, 250], [18, 24, 48]));
       sk.addColorStop(1, moodColor([230, 200, 160], [30, 34, 60]));
@@ -592,6 +620,22 @@
 
     if (era === 6) { /* THE ANIME ARC 2019-2026: Haikyuu when the heart is up, Blue Lock when it drops, violet dusk between */
       var au = (mood + 1) / 2; /* 0 = Blue Lock, 1 = Haikyuu */
+      if (imOk(animeBlue) && imOk(animeWarm)) { /* painted background plates, the shows crossfading with the heart */
+        drawCover(g2, animeBlue, w, h);
+        if (au > .02) { g2.globalAlpha = Math.min(1, au); drawCover(g2, animeWarm, w, h); g2.globalAlpha = 1; }
+        var midA = Math.max(0, .3 - Math.abs(au - .5) * 1.2); /* violet anime dusk between the worlds */
+        if (midA > .02) { g2.fillStyle = "rgba(122,82,198," + midA.toFixed(3) + ")"; g2.fillRect(0, 0, w, h); }
+        if (keys.left || keys.right) {
+          for (var st7 = 0; st7 < 14; st7++) {
+            var sw7 = 60 + (st7 * 53) % 200, sx7 = ((st7 * 211 + t * 26) % (w + sw7)) - sw7;
+            g2.fillStyle = au < .5 ? "rgba(90,170,255," + (.05 + (st7 % 3) * .04).toFixed(3) + ")" : "rgba(255,230,180," + (.06 + (st7 % 3) * .04).toFixed(3) + ")";
+            g2.fillRect(keys.right ? w - sx7 - sw7 : sx7, (st7 * 79) % h, sw7, 1 + st7 % 3);
+          }
+        }
+        g2.fillStyle = au < .5 ? "rgba(80,140,255,.05)" : "rgba(180,120,60,.05)";
+        for (var ht7 = 0; ht7 < w; ht7 += 16) for (var hy7 = ((ht7 / 16) % 2) * 8; hy7 < h; hy7 += 16) g2.fillRect(ht7, hy7, 2, 2);
+        return h * .9;
+      }
       var L3 = function (c1, c2, u2) { return "rgb(" + Math.round(c1[0] + (c2[0] - c1[0]) * u2) + "," + Math.round(c1[1] + (c2[1] - c1[1]) * u2) + "," + Math.round(c1[2] + (c2[2] - c1[2]) * u2) + ")"; };
       var tTop = au < .5 ? L3([8, 12, 48], [122, 82, 198], au * 2) : L3([122, 82, 198], [255, 236, 205], (au - .5) * 2);
       var tBot = au < .5 ? L3([14, 24, 78], [185, 120, 195], au * 2) : L3([185, 120, 195], [255, 205, 140], (au - .5) * 2);
