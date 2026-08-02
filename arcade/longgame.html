@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>THE LONG GAME · 1974-2026</title>
+<meta name="description" content="A playable idea: walk right and time moves forward, the game's own graphics evolving from Pong to photograph. Walk left and it all rewinds. Up is joy, down is sorrow. Fifty-two years of loving one game, in one walk. Built by Darby for Gordon." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;600;800&display=swap" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #05070f; color: #F5F1E8; font-family: Inter, system-ui, sans-serif; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 14px; }
+  h1 { font-family: 'Press Start 2P', monospace; font-size: clamp(.8rem, 3.5vw, 1.2rem); color: #FFCD00; text-align: center; line-height: 1.7; }
+  h1 small { display: block; font-size: .55em; color: #F5F1E8; opacity: .75; margin-top: 6px; font-family: Inter; letter-spacing: .04em; }
+  .frame { position: relative; width: min(97vw, 880px); aspect-ratio: 16/9; background: #000; border: 4px solid #2a2f4a; border-radius: 8px; overflow: hidden; box-shadow: 0 24px 70px rgba(0,0,0,.65); }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; }
+  .pad { display: grid; grid-template-columns: repeat(3, 56px); grid-template-rows: repeat(2, 46px); gap: 6px; user-select: none; -webkit-user-select: none; }
+  .pad button { font-family: 'Press Start 2P', monospace; font-size: .8rem; background: #1a2044; color: #FFCD00; border: 2px solid #2a3468; border-radius: 10px; cursor: pointer; touch-action: none; }
+  .pad button:active { background: #BF0A30; color: #fff; }
+  .pad .up { grid-column: 2; grid-row: 1; }
+  .pad .lf { grid-column: 1; grid-row: 2; }
+  .pad .dn { grid-column: 2; grid-row: 2; }
+  .pad .rt { grid-column: 3; grid-row: 2; }
+  .note { font-size: .72rem; opacity: .8; max-width: 760px; text-align: center; line-height: 1.7; }
+  .note a { color: #FFCD00; }
+  @media (min-width: 700px) { .pad { display: none; } }
+</style>
+</head>
+<body>
+<h1>THE LONG GAME<small>walk right: time and realism advance · walk left: it all rewinds · up lifts the heart, down lowers it</small></h1>
+<div class="frame"><canvas id="g" width="960" height="540" aria-label="The Long Game: use arrow keys to walk through fifty-two years of loving soccer, from Pong graphics to a real photograph"></canvas></div>
+<div class="pad" aria-hidden="true">
+  <button class="up" data-k="up">▲</button>
+  <button class="lf" data-k="left">◀</button>
+  <button class="dn" data-k="down">▼</button>
+  <button class="rt" data-k="right">▶</button>
+</div>
+<p class="note">Arrow keys on desktop, pad on phone. One character, fifty-two years, seven graphics engines. The last one is a photograph, because that's the most realistic renderer there is. <a href="belamini.html">Belamini '26 demo</a> · <a href="../meta.html">The Making Of</a></p>
+
+<script>
+(function () {
+  "use strict";
+  var cv = document.getElementById("g"), ctx = cv.getContext("2d");
+  var VW = 960, VH = 540;
+
+  /* world span: x 0..8000 maps 1974..2026 */
+  var WORLD = 8000;
+  var px = 120, mood = 0, t = 0;      /* player world-x, mood -1..1 */
+  var keys = { left: false, right: false, up: false, down: false };
+  var walked = false, reachedEnd = false;
+
+  /* ---------------- eras ---------------- */
+  var ERAS = [
+    { name: "PONG",     sub: "1974",       until: .10, rw: 96,  rh: 54,  smooth: false },
+    { name: "2600",     sub: "1982",       until: .22, rw: 128, rh: 72,  smooth: false },
+    { name: "8-BIT",    sub: "1988",       until: .36, rw: 192, rh: 108, smooth: false },
+    { name: "16-BIT",   sub: "1994",       until: .55, rw: 320, rh: 180, smooth: false },
+    { name: "POLYGON",  sub: "2002",       until: .72, rw: 480, rh: 270, smooth: true  },
+    { name: "HD",       sub: "2010",       until: .88, rw: 960, rh: 540, smooth: true  },
+    { name: "REAL",     sub: "2022-2026",  until: 1.01, rw: 960, rh: 540, smooth: true }
+  ];
+  function progress() { return Math.max(0, Math.min(1, px / WORLD)); }
+  function eraIndex(p) { for (var i = 0; i < ERAS.length; i++) if (p < ERAS[i].until) return i; return ERAS.length - 1; }
+  function year(p) { return Math.round(1974 + p * 52); }
+
+  /* ---------------- milestones (all receipts-true) ---------------- */
+  var MILES = [
+    { y: 1974, txt: "AGE 4. NUMBER 4. RESTON RATTLERS." },
+    { y: 1980, txt: "THE WHITECAPS YEARS." },
+    { y: 1986, txt: "JV WING AT ST. PAUL'S. RAIN IN OCTOBER." },
+    { y: 1993, txt: "FIFA ON GENESIS. A TESTER NAMED GORDIO BELAMINI." },
+    { y: 1994, txt: "THE DRAW IN VEGAS, WITH MIKE." },
+    { y: 1996, txt: "FIRST MLS MATCH. SPARTAN STADIUM." },
+    { y: 1997, txt: "STADIO OLIMPICO. INCE'S BANDAGE." },
+    { y: 2002, txt: "THE QUARTERFINAL GENERATION." },
+    { y: 2009, txt: "SPAIN FALLS IN BLOEMFONTEIN." },
+    { y: 2010, txt: "DONOVAN. ALGERIA. 91st MINUTE." },
+    { y: 2017, txt: "TRINIDAD. THE NIGHT THE PROGRAM BROKE." },
+    { y: 2022, txt: "PULISIC. IRAN. THE RETURN." },
+    { y: 2026, txt: "SOFI. PETE. THE SEAT. FIFTY YEARS." }
+  ];
+  function milestoneFor(yr) {
+    var m = null;
+    for (var i = 0; i < MILES.length; i++) if (yr >= MILES[i].y) m = MILES[i];
+    return m;
+  }
+
+  /* ---------------- offscreen render target ---------------- */
+  var off = document.createElement("canvas"), og = off.getContext("2d");
+
+  /* ---------------- audio: era + mood ---------------- */
+  var AC = null, padOsc = null, padGain = null, lastStep = 0;
+  function ac() { if (!AC) { var A = window.AudioContext || window.webkitAudioContext; if (A) AC = new A(); } return AC; }
+  function beep(f, d, type, v, when) {
+    var c = ac(); if (!c) return;
+    var o = c.createOscillator(), g = c.createGain(), t0 = c.currentTime + (when || 0);
+    o.type = type; o.frequency.value = f;
+    g.gain.setValueAtTime(v, t0); g.gain.exponentialRampToValueAtTime(.001, t0 + d);
+    o.connect(g); g.connect(c.destination); o.start(t0); o.stop(t0 + d + .02);
+  }
+  function stepSound(era) {
+    var now = performance.now();
+    if (now - lastStep < 260) return;
+    lastStep = now;
+    var minor = mood < -0.2;
+    var base = [180, 220, 262, 330, 392, 440, 494][era] || 262;
+    var third = minor ? base * 1.189 : base * 1.26;   /* minor vs major third */
+    var types = ["sine", "square", "square", "square", "triangle", "triangle", "sine"];
+    beep(base, .07, types[era], .045);
+    if (era >= 3) beep(third, .07, types[era], .03, .02);
+  }
+  function milestoneSound(era) {
+    var minor = mood < -0.2;
+    var seq = minor ? [392, 466, 587] : [392, 494, 587, 784];
+    seq.forEach(function (f, i) { beep(f, .12, era < 4 ? "square" : "triangle", .05, i * .08); });
+  }
+
+  /* ---------------- palettes with mood ---------------- */
+  function lerp(a, b, u) { return a + (b - a) * u; }
+  function moodColor(happyRGB, sadRGB) {
+    var u = (mood + 1) / 2; /* 0 sad .. 1 happy */
+    return "rgb(" + Math.round(lerp(sadRGB[0], happyRGB[0], u)) + "," + Math.round(lerp(sadRGB[1], happyRGB[1], u)) + "," + Math.round(lerp(sadRGB[2], happyRGB[2], u)) + ")";
+  }
+
+  /* particles: confetti when happy, rain when sad */
+  var parts = [];
+  function emitParticles(w, h) {
+    if (mood > .45 && parts.length < 80) parts.push({ r: false, x: Math.random() * w, y: -4, vx: (Math.random() - .5) * .6, vy: .6 + Math.random(), c: ["#BF0A30", "#FFCD00", "#F5F1E8", "#3C6EF0"][Math.random() * 4 | 0], l: 220 });
+    if (mood < -.45 && parts.length < 120) parts.push({ r: true, x: Math.random() * w, y: -4, vx: -.3, vy: 3.2 + Math.random() * 2, c: "rgba(160,190,230,.7)", l: 200 });
+  }
+  function drawParticles(g2) {
+    parts.forEach(function (p) { p.x += p.vx; p.y += p.vy; p.l--; g2.fillStyle = p.c; if (p.r) g2.fillRect(p.x, p.y, 1, 5); else g2.fillRect(p.x, p.y, 3, 3); });
+    parts = parts.filter(function (p) { return p.l > 0 && p.y < 600; });
+  }
+
+  /* ---------------- the real photo (final era) ---------------- */
+  var photo = new Image(); photo.src = "../assets/g-sofi-0625.jpg";
+  var stadiumPhoto = new Image(); stadiumPhoto.src = "../assets/sofi.jpg";
+
+  /* ---------------- character per era ---------------- */
+  function drawChar(g2, x, y, era, s, walkT) {
+    var bob = Math.sin(walkT * .35) * (mood > 0 ? 2.2 : 1) * s;
+    var skin = "#7a4a22", navy = moodColor([40, 60, 160], [22, 28, 60]), white = "#f0f0e8";
+    y += (mood < -.3 ? 1.5 * s : 0) - bob;
+    if (era === 0) { /* pong: a paddle-square being */
+      g2.fillStyle = "#f0f0e8"; g2.fillRect(x - 3 * s, y - 10 * s, 6 * s, 10 * s);
+      return;
+    }
+    if (era === 1) { /* atari: chunky biped */
+      g2.fillStyle = skin; g2.fillRect(x - 2 * s, y - 12 * s, 4 * s, 3 * s);
+      g2.fillStyle = "#d0d0d0"; g2.fillRect(x - 3 * s, y - 9 * s, 6 * s, 5 * s);
+      g2.fillStyle = skin; g2.fillRect(x - 3 * s, y - 4 * s, 2 * s, 4 * s); g2.fillRect(x + 1 * s, y - 4 * s, 2 * s, 4 * s);
+      return;
+    }
+    if (era <= 3) { /* 8/16-bit sprite */
+      g2.fillStyle = skin; g2.fillRect(x - 2 * s, y - 15 * s, 4 * s, 4 * s);
+      g2.fillStyle = navy; g2.fillRect(x - 3 * s, y - 11 * s, 6 * s, 6 * s);
+      if (era === 3) { g2.fillStyle = white; g2.fillRect(x - 1 * s, y - 10 * s, 2 * s, 3 * s); } /* the 4 patch */
+      g2.fillStyle = white; g2.fillRect(x - 3 * s, y - 5 * s, 6 * s, 2 * s);
+      var leg = Math.sin(walkT * .35) * 2 * s;
+      g2.fillStyle = skin;
+      g2.fillRect(x - 3 * s, y - 3 * s, 2 * s, 3 * s + leg);
+      g2.fillRect(x + 1 * s, y - 3 * s, 2 * s, 3 * s - leg);
+      return;
+    }
+    /* polygon/HD/real: rounded figure with shading */
+    var g3 = g2;
+    g3.save();
+    g3.translate(x, y);
+    var lean = Math.sin(walkT * .35) * .06;
+    g3.rotate(lean * (era >= 5 ? .6 : 1));
+    /* legs */
+    var swing = Math.sin(walkT * .35) * 5 * s;
+    g3.strokeStyle = skin; g3.lineWidth = 2.6 * s; g3.lineCap = "round";
+    g3.beginPath(); g3.moveTo(0, -6 * s); g3.lineTo(-2 * s + swing * .4, 0); g3.stroke();
+    g3.beginPath(); g3.moveTo(0, -6 * s); g3.lineTo(2 * s - swing * .4, 0); g3.stroke();
+    /* torso */
+    var grad = g3.createLinearGradient(0, -16 * s, 0, -4 * s);
+    grad.addColorStop(0, moodColor([60, 84, 200], [26, 32, 70]));
+    grad.addColorStop(1, moodColor([28, 40, 120], [14, 18, 42]));
+    g3.fillStyle = grad;
+    g3.beginPath(); g3.ellipse(0, -10 * s, 3.4 * s, 6 * s, 0, 0, 6.29); g3.fill();
+    /* the 4 */
+    if (era >= 4) { g3.fillStyle = "#f0f0e8"; g3.font = (4 * s) + "px Inter"; g3.textAlign = "center"; g3.fillText("4", 0, -8.4 * s); }
+    /* head */
+    g3.fillStyle = skin; g3.beginPath(); g3.arc(0, -18 * s, 2.6 * s, 0, 6.29); g3.fill();
+    /* smile / frown */
+    g3.strokeStyle = "#f0f0e8"; g3.lineWidth = .6 * s;
+    g3.beginPath();
+    if (mood >= 0) g3.arc(0, -17.6 * s, 1.2 * s, .3, 2.8);
+    else g3.arc(0, -16.4 * s, 1.2 * s, 3.6, 5.8);
+    g3.stroke();
+    g3.restore();
+  }
+
+  /* ---------------- scenes per era ---------------- */
+  function drawScene(era, w, h, p) {
+    var g2 = og;
+    var groundY = h * .82;
+    var scrollX = px * (w / 640);
+
+    if (era === 0) { /* PONG */
+      g2.fillStyle = mood < -.3 ? "#000000" : "#04040a"; g2.fillRect(0, 0, w, h);
+      g2.fillStyle = "#f0f0f0";
+      for (var y0 = 4; y0 < h; y0 += 8) g2.fillRect(w / 2 - 1, y0, 2, 4); /* center line */
+      /* two paddles rallying, the primordial soccer */
+      var by = h / 2 + Math.sin(t * .05) * h * .3;
+      g2.fillRect(8, by - 8, 3, 16);
+      g2.fillRect(w - 11, h - by - 8, 3, 16);
+      var bx = w / 2 + Math.sin(t * .08) * (w / 2 - 20);
+      g2.fillRect(bx, (by + (h - by)) / 2, 3, 3);
+      g2.fillRect(0, groundY + 8, w, 1);
+      return groundY + 8;
+    }
+
+    var skyHappy = [[70, 110, 200], [110, 150, 230], [140, 190, 250], [110, 160, 250], [120, 170, 250], [110, 165, 245]];
+    var skySad = [[10, 12, 24], [16, 18, 34], [24, 26, 44], [20, 24, 46], [26, 30, 52], [24, 30, 54]];
+    var idx = Math.min(era - 1, 5);
+    g2.fillStyle = moodColor(skyHappy[idx], skySad[idx]);
+    g2.fillRect(0, 0, w, h);
+
+    if (era === 1) { /* ATARI: blocky hills + goal blocks */
+      g2.fillStyle = moodColor([200, 120, 60], [50, 36, 40]);
+      for (var i = 0; i < 6; i++) { var hx = ((i * 90 - scrollX * .4) % (w + 90) + w + 90) % (w + 90) - 45; g2.fillRect(hx, groundY - 26, 50, 26); }
+      g2.fillStyle = moodColor([60, 140, 60], [22, 40, 26]); g2.fillRect(0, groundY, w, h - groundY);
+      g2.fillStyle = "#f0f0e8"; var gx = ((900 - scrollX * .9) % (w + 200) + w + 200) % (w + 200) - 100;
+      g2.fillRect(gx, groundY - 22, 3, 22); g2.fillRect(gx + 30, groundY - 22, 3, 22); g2.fillRect(gx, groundY - 24, 33, 3);
+      return groundY;
+    }
+
+    if (era === 2) { /* 8-BIT: clouds, tiled grass, small stand */
+      g2.fillStyle = "#f8f8f8";
+      for (var c = 0; c < 4; c++) { var cx = ((c * 160 - scrollX * .25) % (w + 160) + w + 160) % (w + 160) - 60; g2.fillRect(cx, 14 + c * 8, 26, 8); g2.fillRect(cx + 6, 8 + c * 8, 16, 8); }
+      g2.fillStyle = moodColor([170, 60, 60], [50, 26, 30]);
+      var sx = ((300 - scrollX * .5) % (w + 300) + w + 300) % (w + 300) - 150;
+      g2.fillRect(sx, groundY - 40, 130, 40);
+      g2.fillStyle = "#f8d848"; for (var wn = 0; wn < 5; wn++) g2.fillRect(sx + 8 + wn * 25, groundY - 32, 10, 8);
+      for (var gx2 = 0; gx2 < w; gx2 += 16) { g2.fillStyle = (gx2 / 16) % 2 ? moodColor([70, 160, 70], [24, 46, 30]) : moodColor([56, 140, 60], [20, 40, 26]); g2.fillRect(gx2, groundY, 16, h - groundY); }
+      return groundY;
+    }
+
+    if (era === 3) { /* 16-BIT: parallax crowd, ribbon */
+      g2.fillStyle = moodColor([26, 32, 68], [12, 14, 30]); g2.fillRect(0, h * .18, w, h * .3);
+      for (var r = 0; r < 5; r++) for (var cc2 = 0; cc2 < 40; cc2++) {
+        var fx = ((cc2 * 18 - scrollX * (.3 + r * .06)) % (w + 18) + w + 18) % (w + 18) - 9;
+        g2.fillStyle = ["#c0243c", "#f0f0e8", "#3040a0", "#f0c020"][(cc2 + r) % 4];
+        var bounce = mood > .4 ? Math.round(Math.sin(t * .3 + cc2)) * 1 : 0;
+        g2.fillRect(fx, h * .2 + r * 9 - bounce, 3, 3);
+      }
+      g2.fillStyle = "#05070f"; g2.fillRect(0, h * .5, w, 8);
+      g2.fillStyle = "#f0c020"; g2.font = "7px 'Press Start 2P'";
+      var msg = "GORDIO BELAMINI ON SPAIN   1993   ";
+      g2.save(); g2.beginPath(); g2.rect(0, h * .5, w, 8); g2.clip();
+      g2.fillText(msg + msg, -(t * .5 % 240), h * .5 + 7); g2.restore();
+      for (var y2 = groundY; y2 < h; y2 += 10) { g2.fillStyle = ((y2 / 10) | 0) % 2 ? moodColor([30, 122, 46], [14, 50, 22]) : moodColor([23, 101, 36], [10, 42, 18]); g2.fillRect(0, y2, w, 10); }
+      g2.fillStyle = "#e8f0e0"; g2.fillRect(0, groundY, w, 2);
+      return groundY;
+    }
+
+    if (era === 4) { /* POLYGON: perspective pitch, flat shading */
+      var horizon = h * .45;
+      g2.fillStyle = moodColor([50, 60, 120], [16, 18, 40]); g2.fillRect(0, horizon - 34, w, 34);
+      for (var st = 0; st < 30; st++) { g2.fillStyle = "rgba(240,240,232," + (mood > 0 ? .5 : .2) + ")"; g2.fillRect((st * 37 + Math.sin(st) * 9 - scrollX * .2) % w, horizon - 30 + (st % 4) * 6, 2, 2); }
+      var grd = g2.createLinearGradient(0, horizon, 0, h);
+      grd.addColorStop(0, moodColor([46, 140, 70], [18, 52, 30]));
+      grd.addColorStop(1, moodColor([24, 96, 44], [8, 30, 16]));
+      g2.fillStyle = grd; g2.fillRect(0, horizon, w, h - horizon);
+      g2.strokeStyle = "rgba(240,240,232,.75)"; g2.lineWidth = 1.4;
+      for (var ln = 0; ln < 9; ln++) {
+        var lx = ((ln * 130 - scrollX * .9) % (w + 260) + w + 260) % (w + 260) - 130;
+        g2.beginPath(); g2.moveTo(lx, h); g2.lineTo(w / 2 + (lx - w / 2) * .22, horizon); g2.stroke();
+      }
+      g2.beginPath(); g2.moveTo(0, horizon + 26); g2.lineTo(w, horizon + 26); g2.stroke();
+      return h * .86;
+    }
+
+    if (era === 5) { /* HD: soft gradients, glow, vignette */
+      var sk = g2.createLinearGradient(0, 0, 0, h);
+      sk.addColorStop(0, moodColor([120, 170, 250], [18, 24, 48]));
+      sk.addColorStop(1, moodColor([230, 200, 160], [30, 34, 60]));
+      g2.fillStyle = sk; g2.fillRect(0, 0, w, h);
+      /* stadium arc silhouette */
+      g2.fillStyle = "rgba(20,26,52," + (mood > 0 ? .8 : .95) + ")";
+      g2.beginPath(); g2.ellipse(w / 2, h * .58, w * .62, h * .3, 0, Math.PI, 0); g2.fill();
+      /* floodlight glow */
+      var glow = g2.createRadialGradient(w / 2, h * .34, 10, w / 2, h * .34, w * .5);
+      glow.addColorStop(0, "rgba(255,240,200," + (mood > 0 ? .5 : .16) + ")");
+      glow.addColorStop(1, "rgba(255,240,200,0)");
+      g2.fillStyle = glow; g2.fillRect(0, 0, w, h);
+      var pg = g2.createLinearGradient(0, h * .62, 0, h);
+      pg.addColorStop(0, moodColor([52, 150, 78], [20, 56, 34]));
+      pg.addColorStop(1, moodColor([26, 100, 48], [10, 34, 20]));
+      g2.fillStyle = pg; g2.fillRect(0, h * .62, w, h);
+      g2.strokeStyle = "rgba(240,240,232,.8)"; g2.lineWidth = 2;
+      var cx2 = ((w * 1.2 - scrollX * .8) % (w * 1.6) + w * 1.6) % (w * 1.6) - w * .3;
+      g2.beginPath(); g2.arc(cx2, h * .82, 60, 0, 6.29); g2.stroke();
+      return h * .88;
+    }
+
+    /* era 6 REAL: the photograph takes over */
+    var pr = ERAS[5].until, u = Math.min(1, (p - pr) / (1 - pr)); /* 0..1 inside final era */
+    /* base: hd-ish dark room */
+    g2.fillStyle = "#0b0e1a"; g2.fillRect(0, 0, w, h);
+    if (stadiumPhoto.complete && stadiumPhoto.naturalWidth) {
+      g2.globalAlpha = Math.min(1, .35 + u * .65);
+      var s1 = Math.max(w / stadiumPhoto.naturalWidth, h / stadiumPhoto.naturalHeight);
+      g2.drawImage(stadiumPhoto, (w - stadiumPhoto.naturalWidth * s1) / 2, (h - stadiumPhoto.naturalHeight * s1) / 2, stadiumPhoto.naturalWidth * s1, stadiumPhoto.naturalHeight * s1);
+      g2.globalAlpha = 1;
+    }
+    if (u > .45 && photo.complete && photo.naturalWidth) {
+      var a = Math.min(1, (u - .45) / .5);
+      g2.globalAlpha = a;
+      var s2 = Math.max((w * .42) / photo.naturalWidth, (h * .8) / photo.naturalHeight);
+      var pw = photo.naturalWidth * s2, ph2 = photo.naturalHeight * s2;
+      g2.drawImage(photo, w - pw - w * .04, h * .1, pw, ph2);
+      g2.globalAlpha = 1;
+      g2.strokeStyle = "rgba(245,241,232," + a * .9 + ")"; g2.lineWidth = 3;
+      g2.strokeRect(w - pw - w * .04, h * .1, pw, ph2);
+    }
+    /* mood grade over the photo world */
+    if (mood < 0) { g2.fillStyle = "rgba(10,14,30," + (-mood * .45) + ")"; g2.fillRect(0, 0, w, h); }
+    if (mood > 0) { g2.fillStyle = "rgba(255,205,0," + (mood * .08) + ")"; g2.fillRect(0, 0, w, h); }
+    return h * .9;
+  }
+
+  /* ---------------- HUD ---------------- */
+  function drawHUD(era, p) {
+    var yr = year(p);
+    ctx.textAlign = "left";
+    if (era <= 3) {
+      ctx.fillStyle = "#05070f"; ctx.fillRect(10, 10, 240, 34);
+      ctx.fillStyle = "#FFCD00"; ctx.font = "14px 'Press Start 2P'";
+      ctx.fillText(yr + " · " + ERAS[era].name, 20, 33);
+    } else {
+      ctx.fillStyle = "rgba(5,7,15,.55)"; ctx.fillRect(10, 10, 260, 40);
+      ctx.fillStyle = "#FFCD00"; ctx.font = "600 20px Inter";
+      ctx.fillText(yr + "  ·  " + ERAS[era].name, 22, 37);
+    }
+    /* mood meter */
+    ctx.fillStyle = "rgba(5,7,15,.55)"; ctx.fillRect(VW - 40, VH / 2 - 62, 14, 124);
+    ctx.fillStyle = mood >= 0 ? "#FFCD00" : "#6080c0";
+    var mh = mood * 56;
+    ctx.fillRect(VW - 38, VH / 2 - (mh > 0 ? mh : 0), 10, Math.abs(mh) || 2);
+    /* milestone caption */
+    var m = milestoneFor(yr);
+    if (m) {
+      ctx.textAlign = "center";
+      if (era <= 3) {
+        ctx.font = "12px 'Press Start 2P'"; ctx.fillStyle = "#F5F1E8";
+        ctx.fillText(m.txt, VW / 2, VH - 26);
+      } else {
+        ctx.font = "italic 600 24px Fraunces"; ctx.fillStyle = "#F5F1E8";
+        ctx.shadowColor = "rgba(0,0,0,.7)"; ctx.shadowBlur = 8;
+        ctx.fillText(m.txt, VW / 2, VH - 28);
+        ctx.shadowBlur = 0;
+      }
+      ctx.textAlign = "left";
+    }
+    /* intro + finale */
+    if (!walked) {
+      ctx.textAlign = "center"; ctx.fillStyle = "#FFCD00";
+      ctx.font = "12px 'Press Start 2P'";
+      if ((t / 30 | 0) % 2) ctx.fillText("WALK RIGHT →", VW / 2, 80);
+      ctx.textAlign = "left";
+    }
+    if (reachedEnd) {
+      ctx.textAlign = "center";
+      ctx.fillStyle = "rgba(5,7,15,.6)"; ctx.fillRect(VW * .06, 66, VW * .5, 88);
+      ctx.fillStyle = "#FFCD00"; ctx.font = "italic 700 30px Fraunces";
+      ctx.fillText("June 25, 2026.", VW * .31, 102);
+      ctx.fillStyle = "#F5F1E8"; ctx.font = "italic 600 22px Fraunces";
+      ctx.fillText("You are here. It was real.", VW * .31, 136);
+      ctx.textAlign = "left";
+    }
+  }
+
+  /* ---------------- main loop ---------------- */
+  var lastMile = null;
+  function update() {
+    t++;
+    var speed = 9 + (mood > 0 ? mood * 2 : 0);
+    var moved = false;
+    if (keys.right) { px = Math.min(WORLD, px + speed); moved = true; }
+    if (keys.left) { px = Math.max(60, px - speed); moved = true; }
+    if (keys.up) mood = Math.min(1, mood + .02);
+    if (keys.down) mood = Math.max(-1, mood - .02);
+    if (!keys.up && !keys.down) mood *= .998;
+    var p = progress(), era = eraIndex(p);
+    if (moved) { walked = true; stepSound(era); }
+    reachedEnd = p > .985;
+    var m = milestoneFor(year(p));
+    if (m && m !== lastMile && walked) { lastMile = m; milestoneSound(era); }
+    return { p: p, era: era, moved: moved };
+  }
+
+  function frame() {
+    var s = update();
+    var era = ERAS[s.era];
+    off.width = era.rw; off.height = era.rh;
+    og.imageSmoothingEnabled = era.smooth;
+    var groundY = drawScene(s.era, era.rw, era.rh, s.p);
+    /* character stands at 30% across screen */
+    var charScale = Math.max(1, Math.round(era.rh / 60));
+    drawChar(og, era.rw * .32, groundY, s.era, s.era >= 4 ? era.rh / 180 : charScale, t);
+    emitParticles(era.rw, era.rh);
+    drawParticles(og);
+    /* blit up */
+    ctx.imageSmoothingEnabled = era.smooth;
+    ctx.clearRect(0, 0, VW, VH);
+    ctx.drawImage(off, 0, 0, VW, VH);
+    drawHUD(s.era, s.p);
+    requestAnimationFrame(frame);
+  }
+
+  /* ---------------- input ---------------- */
+  var KEYMAP = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", d: "right", w: "up", s: "down" };
+  document.addEventListener("keydown", function (e) { var k = KEYMAP[e.key]; if (k) { e.preventDefault(); keys[k] = true; ac(); } });
+  document.addEventListener("keyup", function (e) { var k = KEYMAP[e.key]; if (k) keys[k] = false; });
+  document.querySelectorAll(".pad button").forEach(function (b) {
+    var k = b.dataset.k;
+    ["pointerdown", "touchstart"].forEach(function (ev) { b.addEventListener(ev, function (e) { e.preventDefault(); keys[k] = true; ac(); }, { passive: false }); });
+    ["pointerup", "pointerleave", "touchend", "touchcancel"].forEach(function (ev) { b.addEventListener(ev, function (e) { e.preventDefault(); keys[k] = false; }, { passive: false }); });
+  });
+  /* drag on canvas also works: horizontal = time, vertical = mood */
+  var dragging = false, dx0 = 0, dy0 = 0;
+  cv.addEventListener("pointerdown", function (e) { dragging = true; dx0 = e.clientX; dy0 = e.clientY; ac(); });
+  cv.addEventListener("pointermove", function (e) {
+    if (!dragging) return;
+    var dx = e.clientX - dx0, dy = e.clientY - dy0;
+    keys.right = dx > 12; keys.left = dx < -12;
+    keys.up = dy < -12; keys.down = dy > 12;
+  });
+  ["pointerup", "pointerleave", "pointercancel"].forEach(function (ev) { cv.addEventListener(ev, function () { dragging = false; keys.left = keys.right = keys.up = keys.down = false; }); });
+
+  document.fonts && document.fonts.ready.then(function () { frame(); }) || frame();
+})();
+</script>
+</body>
+</html>
