@@ -85,14 +85,14 @@ B["r16"] = ("before-door", band("r16", "What the coach said, and what he did nex
 
 B["lore"] = ("before-main-end", band("lore", "New lore · summer and fall 2026", 'Three new entries <span class="italic">for the book.</span>', '''
     <div class="s3__grid">
-      <div class="s3__card"><span class="when">August 2026</span><h3>Middlesbrough, America's club</h3><p>Berhalter from Vancouver, Arfsten from Columbus. In the English second tier, the Stars and Stripes found a home.</p></div>
+      <div class="s3__card"><span class="when">Summer 2026</span><h3>Middlesbrough, America's club</h3><p>Berhalter from Vancouver, Arfsten from Columbus. In the English second tier, the Stars and Stripes found a home.</p></div>
       <div class="s3__card"><span class="when">Deadline day 2026</span><h3>The U-turn</h3><p>Balogun: the medical, the deal sheet, then the walk. The first man since Zidane to score and see red in the same knockout game also invented a new kind of transfer.</p></div>
       <div class="s3__card"><span class="when">September 17, 2026</span><h3>Sixteen</h3><p>Cavan Sullivan of the Philadelphia Union, called up to the senior team at sixteen, beside a seventeen-year-old from Greenville already playing for Dortmund.</p></div>
     </div>'''))
 
 B["kits"] = ("before-main-end", band("kits", "The shirt, handed on", 'Thirteen players in camp <span class="italic">have never worn it.</span>', '''
     <p class="section__lede">This fall the senior shirt goes on thirteen players who have never worn it in a match, if they get the minutes. Twelve World Cup players are there to show them how it's done.</p>
-    <div class="led led--white"><div class="led__text led__text--m">FIRST CALL-UPS: KOCHEN · SCHWAKE · MILLER · PIERRE · WESTFIELD · ALBERT · GOZO · MEHMETI · RAINES · C. CAMPBELL · ELLIS · HALL · SULLIVAN</div></div>
+    <div class="led led--white"><div class="led__text led__text--m">UNCAPPED: KOCHEN · SCHWAKE · MILLER · PIERRE · WESTFIELD · ALBERT · GOZO · MEHMETI · RAINES · C. CAMPBELL · ELLIS · HALL · SULLIVAN</div></div>
     <p class="s3__src">U.S. Soccer, Sep 17, 2026. Caps as listed at call-up.</p>'''))
 
 B["meta"] = ("before-main-end", band("meta", "Season 3 · how this edition was made", 'September 22, <span class="italic">one night, one pass over everything.</span>', '''
