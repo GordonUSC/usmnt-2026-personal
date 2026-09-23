@@ -1,0 +1,1287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>THE LONG GAME · 1974-2026</title>
+<meta name="description" content="A playable idea: walk right and time moves forward, the game's own graphics evolving from Pong to photograph. Walk left and it all rewinds. Up is joy, down is sorrow. Fifty-two years of loving one game, in one walk. Built by Darby for Gordon." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;600;800&display=swap" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #05070f; color: #F5F1E8; font-family: Inter, system-ui, sans-serif; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 14px; }
+  h1 { font-family: 'Press Start 2P', monospace; font-size: clamp(.8rem, 3.5vw, 1.2rem); color: #FFCD00; text-align: center; line-height: 1.7; }
+  h1 small { display: block; font-size: .55em; color: #F5F1E8; opacity: .75; margin-top: 6px; font-family: Inter; letter-spacing: .04em; }
+  .frame { position: relative; width: min(97vw, 880px); aspect-ratio: 16/9; background: #000; border: 4px solid #2a2f4a; border-radius: 8px; overflow: hidden; box-shadow: 0 24px 70px rgba(0,0,0,.65); }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; }
+  .pad { display: grid; grid-template-columns: repeat(3, 56px); grid-template-rows: repeat(2, 46px); gap: 6px; user-select: none; -webkit-user-select: none; }
+  .pad button { font-family: 'Press Start 2P', monospace; font-size: .8rem; background: #1a2044; color: #FFCD00; border: 2px solid #2a3468; border-radius: 10px; cursor: pointer; touch-action: none; }
+  .pad button:active { background: #BF0A30; color: #fff; }
+  .pad .up { grid-column: 2; grid-row: 1; }
+  .pad .lf { grid-column: 1; grid-row: 2; }
+  .pad .dn { grid-column: 2; grid-row: 2; }
+  .pad .rt { grid-column: 3; grid-row: 2; }
+  .note { font-size: .72rem; opacity: .8; max-width: 760px; text-align: center; line-height: 1.7; }
+  .note a { color: #FFCD00; }
+  @media (min-width: 700px) { .pad { display: none; } }
+</style>
+</head>
+<body>
+<h1>THE LONG GAME<small>walk right: time and realism advance · walk left: it all rewinds · up lifts the heart, down lowers it</small></h1>
+<div class="frame"><canvas id="g" width="960" height="540" aria-label="The Long Game: use arrow keys to walk through fifty-two years of loving soccer, from Pong graphics to a real photograph"></canvas></div>
+<div class="pad" aria-hidden="true">
+  <button class="up" data-k="up">▲</button>
+  <button class="lf" data-k="left">◀</button>
+  <button class="dn" data-k="down">▼</button>
+  <button class="rt" data-k="right">▶</button>
+</div>
+<p class="note">Arrows walk, up and down move the heart. And every other key on the keyboard does something, different in every era: SPACE cheers, M is for Matt, H is for hearts, 1-9 warps time, and each decade hides its own toys (try R in 1988, the Z X C windows in 1994, V in 1997, N in 2014, E in the anime years, P and T in 2026). Eight graphics engines from Pong to anime; the HD and anime worlds stand on commissioned AI environment art; the final era is a real photograph, because that's the most realistic renderer there is. <a href="belamini.html">Belamini '26 demo</a> · <a href="../meta.html">The Making Of</a></p>
+
+<script>
+(function () {
+  "use strict";
+  var cv = document.getElementById("g"), ctx = cv.getContext("2d");
+  var VW = 960, VH = 540;
+
+  /* world span: x 0..8000 maps 1974..2026 */
+  var WORLD = 8000;
+  var px = 120, mood = 0, t = 0;      /* player world-x, mood -1..1 */
+  var keys = { left: false, right: false, up: false, down: false };
+  var walked = false, reachedEnd = false;
+  var cam = { horizon: .47, charMult: 1, mode: 0, t: 0 }; /* PS1-era broadcast cameras: Tele and Wide */
+  var replayT = 0;
+  var win3 = null, bandFlash = 0; /* the Madden passing windows, and the crowd erupting */
+  var animeFx = null; /* the anime kick: ego eye-band when sad, apex time-stop when happy */
+  /* ---------------- the playful keys: every era answers differently ---------------- */
+  var fx2 = [], rain8 = false, forceNight = false, photoI = -1, quoteI = -1;
+  var extra1 = new Image(); extra1.src = "../../assets/board-0625.jpg";
+  var extra2 = new Image(); extra2.src = "../../assets/g-pete-bowl-0625.jpg";
+  var extra3 = new Image(); extra3.src = "../../assets/quinn-soccerhouse-0611.jpg";
+  var REAL_QUOTES = [
+    '"Not me crying in an uber on the way to a soccer game." · Jun 25',
+    '"GO TO THE WORLD CUP?!?!" · Pete, Jun 25',
+    '"Maybe the World Cup was the friends we made along the way." · Jul 6',
+    '"MATCHDAY!!!" · Matt, every matchday'
+  ];
+  function pushFX(o) { o.t0 = o.t; fx2.push(o); if (fx2.length > 12) fx2.shift(); }
+  var couva = false;
+  try { couva = localStorage.getItem("longgame_couva") === "1"; } catch (e) { }
+
+  /* ---------------- eras ---------------- */
+  var ERAS = [
+    { name: "PONG",     sub: "1974",       until: .10, rw: 96,  rh: 54,  smooth: false },
+    { name: "2600",     sub: "1982",       until: .22, rw: 128, rh: 72,  smooth: false },
+    { name: "8-BIT",    sub: "1988",       until: .36, rw: 192, rh: 108, smooth: false },
+    { name: "16-BIT",   sub: "1994",       until: .44, rw: 320, rh: 180, smooth: false },
+    { name: "POLYGON",  sub: "1997",       until: .69, rw: 480, rh: 270, smooth: true  },
+    { name: "HD",       sub: "2010",       until: .865, rw: 960, rh: 540, smooth: true },
+    { name: "ANIME",    sub: "the anime arc", until: .975, rw: 960, rh: 540, smooth: true },
+    { name: "REAL",     sub: "2026",       until: 1.01, rw: 960, rh: 540, smooth: true }
+  ];
+  function progress() { return Math.max(0, Math.min(1, px / WORLD)); }
+  function eraIndex(p) { for (var i = 0; i < ERAS.length; i++) if (p < ERAS[i].until) return i; return ERAS.length - 1; }
+  function year(p) { return Math.round(1974 + p * 52); }
+
+  /* deep links: ?p=0.5, ?era=ANIME&mood=-1 jump the walk to an exact moment */
+  try {
+    var q = new URLSearchParams(location.search);
+    if (q.get("p")) px = Math.max(60, Math.min(WORLD, parseFloat(q.get("p")) * WORLD));
+    if (q.get("era")) {
+      var en = q.get("era").toUpperCase();
+      ERAS.forEach(function (e2, ei) { if (e2.name === en) { var lo = ei ? ERAS[ei - 1].until : 0; px = WORLD * (lo + e2.until) / 2; } });
+    }
+    if (q.get("mood")) mood = Math.max(-1, Math.min(1, parseFloat(q.get("mood"))));
+    if (q.get("p") || q.get("era")) walked = true;
+  } catch (e) { }
+
+  /* ---------------- milestones (all receipts-true) ---------------- */
+  var MILES = [
+    { y: 1974, txt: "AGE 4. NUMBER 4. THE GREEN KIT. RESTON RATTLERS." },
+    { y: 1980, txt: "THE WHITECAPS YEARS." },
+    { y: 1986, txt: "JV WING AT ST. PAUL'S. THE RED JERSEY. RAIN IN OCTOBER." },
+    { y: 1993, txt: "FIFA ON GENESIS. A TESTER NAMED GORDIO BELAMINI." },
+    { y: 1994, txt: "THE DRAW IN VEGAS, WITH MIKE." },
+    { y: 1996, txt: "FIRST MLS MATCH. SPARTAN STADIUM." },
+    { y: 1997, txt: "OLIMPICO NIGHTS, BUILDING THREE LIONS. THE GAME GOES 3D." },
+    { y: 2002, txt: "THE QUARTERFINAL GENERATION." },
+    { y: 2009, txt: "SPAIN FALLS IN BLOEMFONTEIN." },
+    { y: 2010, txt: "DONOVAN. ALGERIA. 91st MINUTE." },
+    { y: 2017, txt: "TRINIDAD. THE NIGHT THE PROGRAM BROKE." },
+    { y: 2020, txt: "THE ANIME ARC. HAIKYUU HEARTS, BLUE LOCK NIGHTS." },
+    { y: 2022, txt: "PULISIC. IRAN. THE RETURN." },
+    { y: 2026, txt: "SOFI. PETE. THE SEAT. FIFTY YEARS." }
+  ];
+  function milestoneFor(yr) {
+    var m = null;
+    for (var i = 0; i < MILES.length; i++) if (yr >= MILES[i].y) m = MILES[i];
+    return m;
+  }
+
+  /* ---------------- offscreen render target ---------------- */
+  var off = document.createElement("canvas"), og = off.getContext("2d");
+  var off2 = document.createElement("canvas"), og2 = off2.getContext("2d");
+
+  /* ---------------- audio: era + mood ---------------- */
+  var AC = null, padOsc = null, padGain = null, lastStep = 0;
+  function ac() { if (!AC) { var A = window.AudioContext || window.webkitAudioContext; if (A) AC = new A(); } return AC; }
+  function beep(f, d, type, v, when) {
+    var c = ac(); if (!c) return;
+    var o = c.createOscillator(), g = c.createGain(), t0 = c.currentTime + (when || 0);
+    o.type = type; o.frequency.value = f;
+    g.gain.setValueAtTime(v, t0); g.gain.exponentialRampToValueAtTime(.001, t0 + d);
+    o.connect(g); g.connect(c.destination); o.start(t0); o.stop(t0 + d + .02);
+  }
+  function stepSound(era) {
+    var now = performance.now();
+    if (now - lastStep < 260) return;
+    lastStep = now;
+    var minor = mood < -0.2;
+    var base = [180, 220, 262, 330, 392, 440, 494][era] || 262;
+    var third = minor ? base * 1.189 : base * 1.26;   /* minor vs major third */
+    var types = ["sine", "square", "square", "square", "triangle", "triangle", "sine"];
+    beep(base, .07, types[era], .045);
+    if (era >= 3) beep(third, .07, types[era], .03, .02);
+  }
+  function milestoneSound(era) {
+    var minor = mood < -0.2;
+    var seq = minor ? [392, 466, 587] : [392, 494, 587, 784];
+    seq.forEach(function (f, i) { beep(f, .12, era < 4 ? "square" : "triangle", .05, i * .08); });
+  }
+  function sfxKick() { beep(160, .12, "square", .1); beep(90, .1, "triangle", .12, .02); }
+  function sfxGoal() { [523, 659, 784, 1047].forEach(function (f, i) { beep(f, .16, "square", .07, i * .09); }); beep(1319, .4, "square", .06, .38); }
+  function sfxSave() { beep(120, .25, "sawtooth", .09); beep(80, .3, "sawtooth", .08, .08); }
+  function whistle() { var c = ac(); if (!c) return; var o = c.createOscillator(), g = c.createGain(), n = c.currentTime; o.type = "square"; o.frequency.setValueAtTime(2200, n); o.frequency.linearRampToValueAtTime(2600, n + .08); o.frequency.linearRampToValueAtTime(2100, n + .22); g.gain.setValueAtTime(.05, n); g.gain.exponentialRampToValueAtTime(.001, n + .3); o.connect(g); g.connect(c.destination); o.start(n); o.stop(n + .32); }
+  function whoosh(up) { var c = ac(); if (!c) return; var o = c.createOscillator(), g = c.createGain(), n = c.currentTime; o.type = "sawtooth"; o.frequency.setValueAtTime(up ? 120 : 900, n); o.frequency.exponentialRampToValueAtTime(up ? 900 : 120, n + .35); g.gain.setValueAtTime(.04, n); g.gain.exponentialRampToValueAtTime(.001, n + .4); o.connect(g); g.connect(c.destination); o.start(n); o.stop(n + .42); }
+  function thunder() { beep(70, .6, "triangle", .12); beep(50, .9, "sine", .1, .1); }
+
+  /* ---------------- palettes with mood ---------------- */
+  function lerp(a, b, u) { return a + (b - a) * u; }
+  function moodColor(happyRGB, sadRGB) {
+    var u = (mood + 1) / 2; /* 0 sad .. 1 happy */
+    return "rgb(" + Math.round(lerp(sadRGB[0], happyRGB[0], u)) + "," + Math.round(lerp(sadRGB[1], happyRGB[1], u)) + "," + Math.round(lerp(sadRGB[2], happyRGB[2], u)) + ")";
+  }
+
+  /* particles: confetti when happy, rain when sad */
+  var parts = [];
+  function emitParticles(w, h) {
+    if (mood > .45 && parts.length < 80) parts.push({ r: false, x: Math.random() * w, y: -4, vx: (Math.random() - .5) * .6, vy: .6 + Math.random(), c: ["#BF0A30", "#FFCD00", "#F5F1E8", "#3C6EF0"][Math.random() * 4 | 0], l: 220 });
+    if (mood < -.45 && parts.length < 120) parts.push({ r: true, x: Math.random() * w, y: -4, vx: -.3, vy: 3.2 + Math.random() * 2, c: "rgba(160,190,230,.7)", l: 200 });
+  }
+  function drawParticles(g2) {
+    parts.forEach(function (p) { p.x += p.vx; p.y += p.vy; p.l--; g2.fillStyle = p.c; if (p.r) g2.fillRect(p.x, p.y, 1, 5); else g2.fillRect(p.x, p.y, 3, 3); });
+    parts = parts.filter(function (p) { return p.l > 0 && p.y < 600; });
+  }
+
+  /* ---------------- the real photo (final era) ---------------- */
+  var photo = new Image(); photo.src = "../../assets/g-sofi-0625.jpg";
+  var stadiumPhoto = new Image(); stadiumPhoto.src = "../../assets/sofi.jpg";
+  var cutout = new Image(); cutout.src = "../../assets/g-cutout.png"; /* real photo of G, background removed */
+  var hdDusk = new Image(); hdDusk.src = "../../assets/art/hd-dusk.jpg";
+  var hdNight = new Image(); hdNight.src = "../../assets/art/hd-night.jpg";
+  var animeBlue = new Image(); animeBlue.src = "../../assets/art/anime-blue.jpg";
+  var animeWarm = new Image(); animeWarm.src = "../../assets/art/anime-warm.jpg";
+  function imOk(img) { return img.complete && img.naturalWidth > 0; }
+  var cutoutFaded = null;
+  function fadedCutout() { /* the photo crops at the thigh; fade the edge so he emerges from light, not amputation */
+    if (cutoutFaded || !imOk(cutout)) return cutoutFaded;
+    var c = document.createElement("canvas"); c.width = cutout.naturalWidth; c.height = cutout.naturalHeight;
+    var g = c.getContext("2d"); g.drawImage(cutout, 0, 0);
+    var gr = g.createLinearGradient(0, c.height * .78, 0, c.height);
+    gr.addColorStop(0, "rgba(0,0,0,0)"); gr.addColorStop(1, "rgba(0,0,0,1)");
+    g.globalCompositeOperation = "destination-out"; g.fillStyle = gr; g.fillRect(0, c.height * .78, c.width, c.height * .22);
+    cutoutFaded = c; return cutoutFaded;
+  }
+  function drawCover(g2, img, w, h) {
+    var sc = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+    g2.drawImage(img, (w - img.naturalWidth * sc) / 2, (h - img.naturalHeight * sc) / 2, img.naturalWidth * sc, img.naturalHeight * sc);
+  }
+
+  /* ---------------- kickable balls through the decades ---------------- */
+  var BALLS = [
+    { wx: 420,  msg: "THE FIRST RALLY!" },
+    { wx: 950,  msg: "FIRST TOUCH!" },
+    { wx: 2300, msg: "SCHOOLYARD DAYS!" },
+    { wx: 3350, msg: "BELAMINI!" },
+    { wx: 4450, msg: "THE 2002 RUN!" },
+    { wx: 5600, msg: "DONOVAN ENERGY!" },
+    { wx: 7350, msg: "DEVOUR!" }
+  ];
+  BALLS.forEach(function (b) { b.kicked = false; b.kt = 0; b.respawn = 0; });
+  var kickFlash = null;
+  function updateBalls() {
+    BALLS.forEach(function (b) {
+      if (b.kicked) {
+        var slowmo = replayT > 0 || (animeFx && animeFx.mode === "apex");
+        if (!(slowmo && (t % 2))) b.kt++; /* replays and apex time-stops run at half speed, as is right and proper */
+        if (b.kt === 40) { /* the ball finds the net */
+          [523, 659, 784].forEach(function (f, i) { beep(f, .1, "square", .05, i * .06); });
+          b.netFlash = 16;
+          if (eraIndex(progress()) === 3) bandFlash = 20; /* big-play crowd, 1993 style */
+        }
+        if (b.netFlash) b.netFlash--;
+        if (b.kt > 70) { b.kicked = false; b.respawn = 260; b.kt = 0; b.netFlash = 0; }
+      } else if (b.respawn > 0) {
+        b.respawn--;
+      } else {
+        var d = b.wx - px;
+        if (d > -4 && d < 30 && keys.right) {
+          b.kicked = true; b.kt = 0;
+          if (eraIndex(progress()) === 4) replayT = 140; /* Konami rule: every strike earns a replay */
+          if (eraIndex(progress()) === 3) win3 = { t: 55, pick: (Math.random() * 3) | 0 }; /* Madden rule: the windows pop */
+          if (eraIndex(progress()) === 6) animeFx = { t: 56, mode: mood < -.15 ? "ego" : "apex" };
+          kickFlash = { msg: b.msg, t: 80 };
+          beep(196, .1, "square", .09);
+          [392, 494, 587].forEach(function (f, i) { beep(f, .12, "square", .05, .06 + i * .07); });
+        }
+      }
+    });
+    if (kickFlash && --kickFlash.t <= 0) kickFlash = null;
+  }
+  function drawBalls(g2, era, w, groundY) {
+    var k = w / 640;
+    BALLS.forEach(function (b) {
+      if (era === 3) { /* Madden view: the ball waits ahead, up-field, and soars with a detached shadow */
+        if (b.respawn > 0) return;
+        var hh = groundY / .9, topY2 = hh * .31;
+        var d3 = (b.wx - px) + (b.kicked ? b.kt * 8 : 0);
+        if (d3 < -30 || d3 > 560) return;
+        var u4 = Math.max(0, Math.min(1, d3 / 520));
+        var byG = hh * .88 - (hh * .88 - (topY2 + hh * .1)) * (1 - Math.pow(1 - u4, 1.55));
+        var arcH = b.kicked ? Math.sin(Math.min(1, b.kt / 55) * Math.PI) * hh * .13 * (1 - .5 * u4) : 0;
+        var r3 = Math.max(2, 5 * (1 - .6 * u4) * (w / 320));
+        var bx3 = w / 2 + w * .05 * (1 - u4);
+        g2.fillStyle = "rgba(0,0,0,.4)"; g2.beginPath(); g2.ellipse(bx3, byG, r3, r3 * .45, 0, 0, 6.29); g2.fill();
+        g2.fillStyle = "#f8f8f0"; g2.fillRect(bx3 - r3, byG - arcH - r3 * 2, r3 * 2, r3 * 2);
+        g2.fillStyle = "#202020"; g2.fillRect(bx3 - 1, byG - arcH - r3 - 1, 2, 2);
+        return;
+      }
+      /* the waiting goal, ~200 world units past each ball */
+      var gx = w * .32 + (b.wx + 200 - px) * k;
+      if (gx > -60 && gx < w + 60 && b.respawn <= 0) {
+        var gh = Math.max(10, groundY * .22), gw = Math.max(14, w * .06);
+        g2.fillStyle = b.netFlash ? "#FFCD00" : "#f0f0e8";
+        g2.fillRect(gx, groundY - gh, 2, gh);
+        g2.fillRect(gx + gw, groundY - gh, 2, gh);
+        g2.fillRect(gx, groundY - gh - 2, gw + 2, 2);
+        if (era >= 2) { g2.fillStyle = b.netFlash ? "rgba(255,205,0,.5)" : "rgba(200,208,200,.35)"; for (var nl = 1; nl < 4; nl++) g2.fillRect(gx + (gw / 4) * nl, groundY - gh, 1, gh); }
+      }
+      if (b.respawn > 0) return;
+      var sx = w * .32 + (b.wx - px) * k, sy = groundY - 3;
+      if (b.kicked) { var kt = b.kt; sx += kt * 5 * k; sy -= Math.sin(Math.min(1, kt / 60) * Math.PI) * (groundY * .5); }
+      if (sx < -20 || sx > w + 40) return;
+      var r = Math.max(2, Math.round(w / 140));
+      if (era <= 1) { g2.fillStyle = "#f0f0e8"; g2.fillRect(sx - r, sy - r, r * 2, r * 2); return; }
+      if (era <= 3) { g2.fillStyle = "#f8f8f0"; g2.fillRect(sx - r, sy - r, r * 2, r * 2); g2.fillStyle = "#202020"; g2.fillRect(sx - 1, sy - 1, 2, 2); return; }
+      g2.fillStyle = "#f8f8f0"; g2.beginPath(); g2.arc(sx, sy, r, 0, 6.29); g2.fill();
+      g2.fillStyle = "rgba(20,20,20,.7)"; g2.beginPath(); g2.arc(sx - r * .3, sy - r * .2, r * .35, 0, 6.29); g2.fill();
+    });
+  }
+
+  /* ---------------- character per era ---------------- */
+  function gait(walkT) { /* one skeleton, every era: thighs swing, knees bend on recovery, arms counter-swing */
+    var c = Math.sin(walkT * .35), s2 = Math.sin(walkT * .35 + Math.PI);
+    return {
+      hipA: c * .55, hipB: s2 * .55,
+      kneeA: Math.max(0, -c) * .9 + .15, kneeB: Math.max(0, -s2) * .9 + .15,
+      armA: s2 * .5, armB: c * .5,
+      bob: Math.abs(Math.sin(walkT * .35)) * 1.2
+    };
+  }
+  function drawChar(g2, x, y, era, s, walkT) {
+    var bob = Math.sin(walkT * .35) * (mood > 0 ? 2.2 : 1) * s;
+    var skin = "#7a4a22", navy = moodColor([40, 60, 160], [22, 28, 60]), white = "#f0f0e8";
+    var green = moodColor([52, 150, 70], [20, 60, 30]); /* the Reston Rattlers kit was green */
+    y += (mood < -.3 ? 1.5 * s : 0) - bob;
+    if (era === 0) { /* pong: a paddle-square being, already wearing green */
+      g2.fillStyle = green; g2.fillRect(x - 3 * s, y - 10 * s, 6 * s, 10 * s);
+      g2.fillStyle = white; g2.fillRect(x - 1 * s, y - 7 * s, 2 * s, 3 * s); /* the 4, abstracted to a block */
+      return;
+    }
+    if (era === 1) { /* atari: chunky biped in white and blue */
+      g2.fillStyle = skin; g2.fillRect(x - 2 * s, y - 12 * s, 4 * s, 3 * s);
+      g2.fillStyle = white; g2.fillRect(x - 3 * s, y - 9 * s, 6 * s, 5 * s);
+      g2.fillStyle = moodColor([50, 80, 200], [24, 32, 80]); g2.fillRect(x - 3 * s, y - 7.6 * s, 6 * s, 1.6 * s); /* the blue hoop */
+      g2.fillStyle = skin; g2.fillRect(x - 3 * s, y - 4 * s, 2 * s, 4 * s); g2.fillRect(x + 1 * s, y - 4 * s, 2 * s, 4 * s);
+      return;
+    }
+    if (era === 3) { /* 16-bit hero from behind, digitized Madden 95 style: proper proportions, real stride */
+      var G = gait(walkT);
+      y -= G.bob * s * .6;
+      g2.fillStyle = "rgba(0,0,0,.35)"; g2.fillRect(x - 4 * s, y - 1, 8 * s, 2);
+      var lA = 6 * s + G.hipA * 2.4 * s, lB = 6 * s + G.hipB * 2.4 * s;
+      g2.fillStyle = skin;
+      g2.fillRect(x - 2.6 * s + G.hipB * s, y - lA, 2 * s, lA);
+      g2.fillRect(x + .6 * s + G.hipA * s, y - lB, 2 * s, lB);
+      g2.fillStyle = navy; /* socks */
+      g2.fillRect(x - 2.6 * s + G.hipB * s, y - 2.2 * s, 2 * s, 2.2 * s);
+      g2.fillRect(x + .6 * s + G.hipA * s, y - 2.2 * s, 2 * s, 2.2 * s);
+      g2.fillStyle = white; g2.fillRect(x - 3.2 * s, y - 9.5 * s, 6.4 * s, 3.6 * s); /* shorts */
+      g2.fillStyle = navy; g2.fillRect(x - 3.2 * s, y - 9.5 * s, Math.max(1, s * .5), 3.6 * s); g2.fillRect(x + 2.7 * s, y - 9.5 * s, Math.max(1, s * .5), 3.6 * s);
+      g2.fillStyle = navy; g2.fillRect(x - 3.6 * s, y - 17 * s, 7.2 * s, 7.5 * s); /* shirt from behind */
+      g2.fillStyle = skin; /* arms pumping */
+      g2.fillRect(x - 5 * s, y - 16 * s + G.armA * 2 * s, 1.5 * s, 4.5 * s);
+      g2.fillRect(x + 3.5 * s, y - 16 * s + G.armB * 2 * s, 1.5 * s, 4.5 * s);
+      g2.fillStyle = white; /* the big 4 on the back */
+      g2.fillRect(x + .6 * s, y - 16 * s, s, 4.5 * s);
+      g2.fillRect(x - 1.6 * s, y - 16 * s, s, 2.5 * s);
+      g2.fillRect(x - 1.6 * s, y - 13.5 * s, 3.2 * s, s);
+      g2.fillStyle = skin; g2.fillRect(x - 1.4 * s, y - 20.4 * s, 2.8 * s, 3.4 * s); /* head, smaller */
+      g2.fillStyle = "#181820"; g2.fillRect(x - 1.6 * s, y - 21 * s, 3.2 * s, 1.4 * s); /* hair */
+      return;
+    }
+    if (era <= 3) { /* 8-bit sprite */
+      g2.fillStyle = skin; g2.fillRect(x - 2 * s, y - 15 * s, 4 * s, 4 * s);
+      g2.fillStyle = era === 3 ? navy : moodColor([190, 40, 60], [70, 20, 28]); g2.fillRect(x - 3 * s, y - 11 * s, 6 * s, 6 * s); /* the red 1988 years, then the USA navy */
+      g2.fillStyle = white; g2.fillRect(x - 1 * s, y - 10 * s, 2 * s, 3 * s); /* the 4 patch, always */
+      g2.fillStyle = white; g2.fillRect(x - 3 * s, y - 5 * s, 6 * s, 2 * s);
+      var leg = Math.sin(walkT * .35) * 2 * s;
+      g2.fillStyle = skin;
+      g2.fillRect(x - 3 * s, y - 3 * s, 2 * s, 3 * s + leg);
+      g2.fillRect(x + 1 * s, y - 3 * s, 2 * s, 3 * s - leg);
+      return;
+    }
+    if (era === 4) { /* polygon: the FIFA 97-99 build. Popeye forearms, cylinder limbs, flat shade, vertex snap */
+      var G4 = gait(walkT);
+      x = Math.round(x) + ((walkT % 47) === 0 ? 1 : 0); y = Math.round(y - G4.bob * s * .5);
+      var g4 = g2;
+      g4.fillStyle = "rgba(0,0,0,.5)";
+      g4.beginPath(); g4.ellipse(x, y + 1.2 * s, 4.5 * s, 1.2 * s, 0, 0, 6.29); g4.fill(); /* hard blob shadow */
+      g4.save(); g4.translate(x, y); g4.lineCap = "butt";
+      var hipY = -7.5 * s;
+      var leg4 = function (hipA, knee, lit) {
+        var kx = Math.sin(hipA) * 4 * s, ky = hipY + Math.cos(hipA) * 4 * s;
+        var fx2 = kx + Math.sin(hipA - knee) * 3.6 * s, fy2 = Math.min(ky + Math.cos(hipA - knee) * 3.6 * s, 0);
+        g4.strokeStyle = lit ? "#8a5a2e" : "#5c3a1c"; g4.lineWidth = 2.2 * s;
+        g4.beginPath(); g4.moveTo(0, hipY); g4.lineTo(kx, ky); g4.stroke();
+        g4.beginPath(); g4.moveTo(kx, ky); g4.lineTo(fx2, fy2); g4.stroke();
+        g4.fillStyle = "#101014"; g4.fillRect(fx2 - 1 * s, fy2 - .6 * s, 2.8 * s, 1.2 * s); /* boot */
+      };
+      var arm4 = function (swing, lit) {
+        var sy4 = -15 * s;
+        var ex4 = Math.sin(swing) * 3.2 * s, ey4 = sy4 + Math.cos(swing) * 3.2 * s;
+        g4.strokeStyle = lit ? moodColor([64, 88, 200], [28, 36, 78]) : moodColor([40, 56, 150], [18, 24, 56]);
+        g4.lineWidth = 1.8 * s;
+        g4.beginPath(); g4.moveTo(0, sy4); g4.lineTo(ex4, ey4); g4.stroke();
+        var fx4 = ex4 + Math.sin(swing + .9) * 2.6 * s, fy4 = ey4 - Math.cos(swing + .9) * 1.2 * s;
+        g4.strokeStyle = lit ? "#8a5a2e" : "#5c3a1c"; g4.lineWidth = 2.4 * s; /* the big forearm */
+        g4.beginPath(); g4.moveTo(ex4, ey4); g4.lineTo(fx4, fy4); g4.stroke();
+        g4.fillStyle = lit ? "#8a5a2e" : "#5c3a1c"; g4.fillRect(fx4 - 1.1 * s, fy4 - 1.1 * s, 2.2 * s, 2.2 * s); /* clenched fist */
+      };
+      leg4(G4.hipB, G4.kneeB, false);
+      arm4(G4.armB - .3, false);
+      /* torso: broad chest, two flat shades, elbows-out build */
+      g4.fillStyle = moodColor([54, 74, 180], [24, 30, 66]);
+      g4.beginPath(); g4.moveTo(-4.4 * s, -16.5 * s); g4.lineTo(0, -17 * s); g4.lineTo(0, -7 * s); g4.lineTo(-2.6 * s, -7 * s); g4.closePath(); g4.fill();
+      g4.fillStyle = moodColor([34, 48, 130], [15, 19, 46]);
+      g4.beginPath(); g4.moveTo(4.4 * s, -16.5 * s); g4.lineTo(0, -17 * s); g4.lineTo(0, -7 * s); g4.lineTo(2.6 * s, -7 * s); g4.closePath(); g4.fill();
+      g4.fillStyle = "#e8e8e0"; g4.fillRect(-2.8 * s, -8 * s, 5.6 * s, 2.6 * s); /* shorts */
+      g4.fillStyle = "#f0f0e8"; g4.font = "bold " + (3.6 * s) + "px Inter"; g4.textAlign = "center"; g4.fillText("4", 0, -10.5 * s);
+      /* head box + hair silhouette (identity by hair, as was the law) */
+      g4.fillStyle = "#7a4a22"; g4.fillRect(-1.8 * s, -21.5 * s, 3.6 * s, 4 * s);
+      g4.fillStyle = "#14141c"; g4.fillRect(-2 * s, -22 * s, 4 * s, 1.6 * s);
+      leg4(G4.hipA, G4.kneeA, true);
+      arm4(G4.armA - .3, true);
+      g4.restore(); g4.textAlign = "left";
+      return;
+    }
+    if (era === 6) { /* the anime years: tall lean cel hero, bold outline, an aura that knows your heart */
+      var GA = gait(walkT);
+      var g6 = g2;
+      g6.save(); g6.translate(x, y - GA.bob * s * .5);
+      if (mood < -.15) { /* the ego aura, boiling blue flame, unmissable now */
+        for (var fl = 0; fl < 2; fl++) {
+          g6.fillStyle = fl ? "rgba(60,130,255,.5)" : "rgba(90,180,255,.28)";
+          g6.beginPath();
+          for (var av = 0; av <= 10; av++) {
+            var aa = Math.PI + (av / 10) * Math.PI;
+            var ar = (fl ? 11 : 16) * s + Math.sin(t * .35 + av * 2.1 + fl) * 3 * s;
+            var axp = Math.cos(aa) * ar * .85, ayp = -12 * s + Math.sin(aa) * ar * 1.6;
+            if (av) g6.lineTo(axp, ayp); else g6.moveTo(axp, ayp);
+          }
+          g6.closePath(); g6.fill();
+        }
+      } else if (mood > .3) { /* warm apex glow */
+        var glow6 = g6.createRadialGradient(0, -12 * s, 2, 0, -12 * s, 18 * s);
+        glow6.addColorStop(0, "rgba(255,220,150,.3)"); glow6.addColorStop(1, "rgba(255,220,150,0)");
+        g6.fillStyle = glow6; g6.fillRect(-18 * s, -30 * s, 36 * s, 36 * s);
+      }
+      g6.rotate(Math.sin(walkT * .35) * .04 + .06);
+      g6.lineCap = "round";
+      var lim = function (x1, y1, a1, l1, a2, l2, wd, col) {
+        var kx = x1 + Math.sin(a1) * l1, ky = y1 + Math.cos(a1) * l1;
+        var ex2 = kx + Math.sin(a2) * l2, ey2 = ky + Math.cos(a2) * l2;
+        g6.strokeStyle = "#101020"; g6.lineWidth = wd + Math.max(1.2, s * .6);
+        g6.beginPath(); g6.moveTo(x1, y1); g6.lineTo(kx, ky); g6.lineTo(ex2, ey2); g6.stroke();
+        g6.strokeStyle = col; g6.lineWidth = wd;
+        g6.beginPath(); g6.moveTo(x1, y1); g6.lineTo(kx, ky); g6.lineTo(ex2, ey2); g6.stroke();
+      };
+      var hip6 = -8.5 * s;
+      lim(0, hip6, GA.hipB, 4.6 * s, GA.hipB - GA.kneeB, 4.2 * s, 1.9 * s, skin);
+      lim(.4 * s, -16 * s, GA.armB + .25, 3.4 * s, GA.armB + 1.1, 3 * s, 1.5 * s, skin);
+      g6.strokeStyle = "#101020"; g6.lineWidth = Math.max(1.5, s * .5);
+      g6.fillStyle = "#1c2a6e";
+      g6.beginPath(); g6.ellipse(0, -12.5 * s, 3.2 * s, 6.4 * s, 0, 0, 6.29); g6.fill(); g6.stroke();
+      g6.fillStyle = "rgba(0,0,20,.35)"; g6.beginPath(); g6.ellipse(1.3 * s, -11.5 * s, 1.8 * s, 5.4 * s, 0, -1.4, 1.4); g6.fill();
+      g6.fillStyle = "rgba(255,255,255,.5)"; g6.fillRect(-2.2 * s, -17.4 * s, 1.1 * s, 3.2 * s);
+      g6.fillStyle = "#fff"; g6.font = "bold " + (4.2 * s) + "px Inter"; g6.textAlign = "center"; g6.fillText("4", 0, -10.5 * s);
+      lim(0, hip6, GA.hipA, 4.6 * s, GA.hipA - GA.kneeA, 4.2 * s, 1.9 * s, skin);
+      lim(-.4 * s, -16 * s, GA.armA + .25, 3.4 * s, GA.armA + 1.1, 3 * s, 1.5 * s, skin);
+      g6.fillStyle = skin; g6.beginPath(); g6.arc(0, -21.5 * s, 2.7 * s, 0, 6.29); g6.fill(); g6.stroke();
+      g6.fillStyle = "#14141e";
+      g6.beginPath(); g6.moveTo(-3.2 * s, -22 * s); g6.lineTo(-2 * s, -26 * s); g6.lineTo(-.7 * s, -23.4 * s); g6.lineTo(.6 * s, -26.6 * s); g6.lineTo(1.8 * s, -23.2 * s); g6.lineTo(3.1 * s, -25 * s); g6.lineTo(3.2 * s, -21.6 * s); g6.closePath(); g6.fill();
+      if (mood < -.15) { g6.strokeStyle = "rgba(140,200,255,.85)"; g6.lineWidth = Math.max(1, s * .5); g6.beginPath(); g6.arc(0, -21.5 * s, 2.9 * s, 3.4, 5.2); g6.stroke(); }
+      g6.restore(); g6.textAlign = "left";
+      return;
+    }
+    /* HD/real: athletic broadcast-era figure. Kit, socks, boots, real stride, rim light at night */
+    var GH = gait(walkT);
+    var g3 = g2;
+    g3.save();
+    g3.translate(x, y - GH.bob * s * .5);
+    g3.fillStyle = "rgba(0,0,0,.32)";
+    g3.beginPath(); g3.ellipse(0, 1.5 * s, 5 * s, 1.4 * s, 0, 0, 6.29); g3.fill();
+    g3.rotate(Math.sin(walkT * .35) * .04 + .05);
+    g3.lineCap = "round";
+    var limb = function (x1, y1, a1, l1, a2, l2, wd, c1, c2, cBoot) {
+      var kx = x1 + Math.sin(a1) * l1, ky = y1 + Math.cos(a1) * l1;
+      var ex2 = kx + Math.sin(a2) * l2, ey2 = ky + Math.cos(a2) * l2;
+      g3.strokeStyle = c1; g3.lineWidth = wd;
+      g3.beginPath(); g3.moveTo(x1, y1); g3.lineTo(kx, ky); g3.stroke();
+      g3.strokeStyle = c2; g3.lineWidth = wd * .92;
+      g3.beginPath(); g3.moveTo(kx, ky); g3.lineTo(ex2, ey2); g3.stroke();
+      if (cBoot) { g3.fillStyle = cBoot; g3.beginPath(); g3.ellipse(ex2 + .8 * s, ey2, 1.4 * s, .7 * s, 0, 0, 6.29); g3.fill(); }
+    };
+    var hipH = -8 * s, shH = -15.5 * s;
+    var sockN = moodColor([30, 42, 120], [16, 20, 52]);
+    limb(0, hipH, GH.hipB, 4.4 * s, GH.hipB - GH.kneeB, 4 * s, 2 * s, "#6b4423", sockN, "#0c0c12");
+    limb(.3 * s, shH, GH.armB + .3, 3 * s, GH.armB + 1.2, 2.8 * s, 1.4 * s, moodColor([48, 66, 170], [22, 28, 62]), "#6b4423", null);
+    g3.fillStyle = "#e8e8e2"; /* shorts */
+    g3.beginPath(); g3.moveTo(-2.6 * s, hipH - 1.6 * s); g3.lineTo(2.6 * s, hipH - 1.6 * s); g3.lineTo(2.2 * s, hipH + 2 * s); g3.lineTo(-2.2 * s, hipH + 2 * s); g3.closePath(); g3.fill();
+    var grad = g3.createLinearGradient(0, shH - 3 * s, 0, hipH);
+    grad.addColorStop(0, moodColor([60, 84, 200], [26, 32, 70]));
+    grad.addColorStop(1, moodColor([28, 40, 120], [14, 18, 42]));
+    g3.fillStyle = grad;
+    g3.beginPath(); g3.ellipse(0, -12 * s, 3.1 * s, 5.4 * s, 0, 0, 6.29); g3.fill();
+    g3.fillStyle = "#f0f0e8"; g3.font = "600 " + (3.4 * s) + "px Inter"; g3.textAlign = "center"; g3.fillText("4", 0, -10.4 * s);
+    limb(0, hipH, GH.hipA, 4.4 * s, GH.hipA - GH.kneeA, 4 * s, 2 * s, "#7a4a22", sockN, "#0c0c12");
+    limb(-.3 * s, shH, GH.armA + .3, 3 * s, GH.armA + 1.2, 2.8 * s, 1.4 * s, moodColor([64, 90, 210], [28, 36, 78]), "#7a4a22", null);
+    g3.fillStyle = "#7a4a22"; g3.beginPath(); g3.arc(0, -18.8 * s, 2.3 * s, 0, 6.29); g3.fill();
+    g3.fillStyle = "#181820"; g3.beginPath(); g3.arc(0, -19.4 * s, 2.3 * s, Math.PI, 0); g3.fill();
+    if (mood < 0 && era === 5) { /* floodlight rim so the night never swallows you again */
+      g3.strokeStyle = "rgba(200,225,255,.75)"; g3.lineWidth = Math.max(1, s * .45);
+      g3.beginPath(); g3.arc(0, -18.8 * s, 2.5 * s, 3.3, 5.1); g3.stroke();
+      g3.beginPath(); g3.moveTo(-3 * s, -15.5 * s); g3.lineTo(-3.3 * s, -9 * s); g3.stroke();
+    }
+    g3.strokeStyle = "#f0f0e8"; g3.lineWidth = .5 * s;
+    g3.beginPath();
+    if (mood >= 0) g3.arc(0, -18.4 * s, 1 * s, .3, 2.8);
+    else g3.arc(0, -17.4 * s, 1 * s, 3.6, 5.8);
+    g3.stroke();
+    g3.restore(); g3.textAlign = "left";
+  }
+
+  /* ---------------- scenes per era ---------------- */
+  function drawScene(era, w, h, p) {
+    var g2 = og;
+    var groundY = h * .82;
+    var scrollX = px * (w / 640);
+
+    if (era === 0) { /* PONG-minimal, but it was always soccer */
+      g2.fillStyle = mood < -.3 ? "#000000" : "#04040a"; g2.fillRect(0, 0, w, h);
+      g2.fillStyle = "#f0f0f0";
+      var gy = groundY + 8;
+      g2.fillRect(0, gy, w, 1); /* the ground, one perfect line */
+      for (var tk = 0; tk < w + 20; tk += 20) g2.fillRect(tk - (scrollX % 20), gy + 3, 6, 1); /* pitch ticks scroll as you walk */
+      var hx = ((600 - scrollX) % (w + 300) + w + 300) % (w + 300) - 150; /* a dashed halfway line drifts past */
+      for (var y0 = gy - 34; y0 < gy; y0 += 8) g2.fillRect(hx, y0, 2, 4);
+      return gy;
+    }
+
+    var skyHappy = [[70, 110, 200], [110, 150, 230], [140, 190, 250], [110, 160, 250], [120, 170, 250], [110, 165, 245]];
+    var skySad = [[10, 12, 24], [16, 18, 34], [24, 26, 44], [20, 24, 46], [26, 30, 52], [24, 30, 54]];
+    var idx = Math.min(era - 1, 5);
+    g2.fillStyle = moodColor(skyHappy[idx], skySad[idx]);
+    g2.fillRect(0, 0, w, h);
+
+    if (era === 1) { /* ATARI 2600: the field IS the screen, solid bands, one blocky sun */
+      g2.fillStyle = moodColor([88, 132, 220], [24, 30, 60]); g2.fillRect(0, 0, w, h * .5);
+      g2.fillStyle = "#f0f0e8"; g2.fillRect(w * .78, h * .1, 12, 12); /* the sun, a square, obviously */
+      g2.fillStyle = moodColor([150, 100, 60], [60, 40, 30]);
+      for (var hb = 0; hb < 4; hb++) { var hx1 = ((hb * 190 - scrollX * .3) % (w + 80) + w + 80) % (w + 80) - 40; g2.fillRect(hx1, h * .5 - 9, 46, 9); }
+      g2.fillStyle = moodColor([60, 140, 60], [22, 40, 26]); g2.fillRect(0, h * .5, w, h - h * .5);
+      g2.fillStyle = moodColor([50, 122, 52], [18, 34, 22]);
+      var fgap = (h * .5) / 6;
+      for (var fb = 0; fb < 7; fb++) g2.fillRect(0, h * .5 + fb * fgap + ((scrollX * .5) % fgap), w, 2); /* field bands scroll underfoot */
+      return groundY;
+    }
+
+    if (era === 2) { /* 8-BIT: clouds, tiled grass, small stand */
+      g2.fillStyle = "#f8f8f8";
+      for (var c = 0; c < 4; c++) { var cx = ((c * 160 - scrollX * .25) % (w + 160) + w + 160) % (w + 160) - 60; g2.fillRect(cx, 14 + c * 8, 26, 8); g2.fillRect(cx + 6, 8 + c * 8, 16, 8); }
+      g2.fillStyle = "#1a1c30"; g2.fillRect(0, h * .13, w, h * .03); /* the roof line */
+      g2.fillStyle = moodColor([170, 60, 60], [50, 26, 30]); g2.fillRect(0, h * .16, w, h * .17); /* stands always overhead */
+      for (var cw2 = 0; cw2 < w; cw2 += 3) {
+        if (((cw2 * 131) % 17) < 8) {
+          g2.fillStyle = ["#f8d848", "#f0f0e8", "#3040a0", "#c0243c"][(cw2 / 3 | 0) % 4];
+          g2.fillRect(cw2, h * .18 + ((cw2 * 53) % Math.max(4, Math.round(h * .12))), 2, 2);
+        }
+      }
+      for (var gx2 = 0; gx2 < w; gx2 += 16) { g2.fillStyle = (gx2 / 16) % 2 ? moodColor([70, 160, 70], [24, 46, 30]) : moodColor([56, 140, 60], [20, 40, 26]); g2.fillRect(gx2, groundY, 16, h - groundY); }
+      return groundY;
+    }
+
+    if (era === 3) { /* 16-BIT 1994: the Madden view, brought home to soccer */
+      var topY = h * .31, topW = w * .78;
+      /* the dark beyond, then the crowd confetti band past the goal */
+      g2.fillStyle = "#0a0c1c"; g2.fillRect(0, 0, w, topY);
+      for (var cf = 0; cf < w; cf += 2) {
+        var rr2 = (cf * 2654435761) % 100;
+        if (rr2 < 78) {
+          g2.fillStyle = ["#c0243c", "#e8e8e0", "#3040a0", "#d0a020", "#7a4a22", "#508050"][(cf / 2 | 0) % 6];
+          if (bandFlash > 0 && ((cf + t) % 4) < 2) g2.fillStyle = "#fff8dc"; /* big-play crowd, erupting */
+          g2.fillRect(cf, 4 + ((cf * 37) % (topY - 24)), 2, 2);
+        }
+      }
+      /* hoardings behind the goal, with a familiar name on the boards */
+      g2.fillStyle = "#05070f"; g2.fillRect(0, topY - 12, w, 10);
+      g2.fillStyle = "#f0c020"; g2.font = "7px 'Press Start 2P'";
+      var msg3 = "GORDIO BELAMINI ON SPAIN · 1993 · EA ROOKIE OF THE YEAR 1994 · ";
+      g2.save(); g2.beginPath(); g2.rect(0, topY - 12, w, 10); g2.clip();
+      g2.fillText(msg3 + msg3, -(t * .5 % 480), topY - 4); g2.restore();
+      /* the pitch trapezoid: full width at your feet, narrowing toward the goal */
+      g2.fillStyle = moodColor([20, 70, 34], [10, 34, 18]); g2.fillRect(0, topY, w, h - topY);
+      var yy3 = h + ((scrollX * .9) % 64) * (34 / 64) * (h / 224), band = 0;
+      while (yy3 > topY + 1) {
+        var u3 = Math.max(0, (h - yy3) / (h - topY));
+        var gap3 = Math.max(6, (34 - 16 * u3) * (h / 224));
+        g2.fillStyle = band % 2 ? moodColor([46, 138, 66], [16, 50, 26]) : moodColor([56, 156, 78], [22, 62, 34]);
+        var wHere = w - (w - topW) * u3, xHere = (w - wHere) / 2;
+        g2.fillRect(xHere, Math.max(topY, yy3 - gap3), wHere, Math.min(gap3 + 1, yy3 - topY));
+        yy3 -= gap3; band++;
+      }
+      /* touchlines converging on the goal */
+      g2.strokeStyle = "#e8f0e0"; g2.lineWidth = Math.max(1, h / 180);
+      g2.beginPath(); g2.moveTo(0, h); g2.lineTo((w - topW) / 2, topY); g2.stroke();
+      g2.beginPath(); g2.moveTo(w, h); g2.lineTo(w - (w - topW) / 2, topY); g2.stroke();
+      /* distance-to-goal markers, sideways white bitmap digits, the loving transplant */
+      g2.fillStyle = "rgba(232,240,224,.85)"; g2.font = "7px 'Press Start 2P'";
+      for (var dm = 0; dm < 3; dm++) {
+        var dY = h * (.84 - dm * .19), lbl3 = ["30", "20", "10"][dm];
+        g2.save(); g2.translate(w * .105 + dm * w * .014, dY); g2.rotate(-Math.PI / 2); g2.fillText(lbl3, 0, 0); g2.restore();
+        g2.save(); g2.translate(w * .895 - dm * w * .014, dY); g2.rotate(Math.PI / 2); g2.fillText(lbl3, 0, 0); g2.restore();
+      }
+      /* the far goal: posts, bar, crosshatch net, the box */
+      var gw3 = w * .2, gx3 = (w - gw3) / 2, gy3 = topY + h * .09, gh3 = h * .075;
+      g2.strokeStyle = "rgba(232,240,224,.9)"; g2.lineWidth = 1;
+      g2.strokeRect(w * .33, topY + 1, w * .34, h * .055);
+      g2.fillStyle = "#f0f0e8";
+      g2.fillRect(gx3, gy3 - gh3, 2, gh3); g2.fillRect(gx3 + gw3 - 2, gy3 - gh3, 2, gh3); g2.fillRect(gx3, gy3 - gh3, gw3, 2);
+      g2.strokeStyle = bandFlash > 0 ? "#f0c020" : "rgba(200,208,200,.5)";
+      for (var nx3 = gx3 + 4; nx3 < gx3 + gw3 - 3; nx3 += 4) { g2.beginPath(); g2.moveTo(nx3, gy3 - gh3 + 2); g2.lineTo(nx3, gy3); g2.stroke(); }
+      for (var ny3 = gy3 - gh3 + 3; ny3 < gy3; ny3 += 3) { g2.beginPath(); g2.moveTo(gx3 + 2, ny3); g2.lineTo(gx3 + gw3 - 2, ny3); g2.stroke(); }
+      /* halfway line and center circle sail past underfoot as you advance */
+      var hwy = h - ((scrollX * .9 + 300) % (h * 1.6));
+      if (hwy > topY + h * .06 && hwy < h) {
+        var uH = (h - hwy) / (h - topY), wH = w - (w - topW) * uH;
+        g2.strokeStyle = "rgba(232,240,224,.8)";
+        g2.beginPath(); g2.moveTo((w - wH) / 2, hwy); g2.lineTo((w + wH) / 2, hwy); g2.stroke();
+        g2.beginPath(); g2.ellipse(w / 2, hwy, w * .11 * (1 - .3 * uH), h * .028 * (1 - .5 * uH), 0, 0, 6.29); g2.stroke();
+      }
+      return h * .9;
+    }
+
+    if (era === 4) { /* POLYGON 1997-2010: PS1 broadcast soccer, studied from FIFA 98-99 and ISS Pro Evolution */
+      var horizon = h * cam.horizon;
+      /* far stand: three stacked flat-shaded trapezoid tiers, crowd as tiled speckle wallpaper */
+      g2.fillStyle = "#05060f"; g2.fillRect(0, 0, w, horizon); /* the ISS dark void above the bowl */
+      var tierHt = Math.max(14, Math.round(h * .085));
+      var tierH = [[66, 72, 114], [58, 63, 98], [50, 54, 82]], tierS = [[26, 30, 58], [22, 25, 48], [18, 20, 38]];
+      for (var tr = 0; tr < 3; tr++) {
+        var ty = horizon - 6 - (tr + 1) * (tierHt + 2), tw2 = w * (.97 - tr * .08), tx2 = (w - tw2) / 2;
+        g2.fillStyle = moodColor(tierH[tr], tierS[tr]);
+        g2.fillRect(tx2, ty, tw2, tierHt);
+        for (var cs = 0; cs < tw2; cs += 2) {
+          if (((cs * 7919 + tr * 104729) % 97) < 55) {
+            g2.fillStyle = ["#c0243c", "#e8e8e0", "#3040a0", "#d0a020", "#7a4a22"][((cs / 2 + tr) | 0) % 5];
+            g2.fillRect(tx2 + cs, ty + 2 + ((cs * 31 + tr * 7) % (tierHt - 4)), 1, 1);
+          }
+        }
+      }
+      /* roofline slab */
+      g2.fillStyle = "rgba(6,8,18,.95)"; g2.fillRect(0, horizon - 6 - 3 * (tierHt + 2) - 9, w, 10);
+      /* floodlight pylons, the classic four (two visible), pitch lit like a stage */
+      [w * .11, w * .89].forEach(function (fx2) {
+        g2.fillStyle = "#10142a"; g2.fillRect(fx2 - 1.5, horizon - 46, 3, 34);
+        var gl = g2.createRadialGradient(fx2, horizon - 48, 1, fx2, horizon - 48, 15);
+        gl.addColorStop(0, "rgba(255,250,220," + (mood < 0 ? .95 : .8) + ")"); gl.addColorStop(1, "rgba(255,250,220,0)");
+        g2.fillStyle = gl; g2.fillRect(fx2 - 15, horizon - 63, 30, 30);
+        g2.fillStyle = "#fff8dc"; g2.fillRect(fx2 - 5, horizon - 51, 10, 5);
+      });
+      /* mowing stripes, perspective-spaced, with affine texture warble */
+      var yy = horizon;
+      for (var bd = 0; bd < 9; bd++) {
+        var bh = 2 + Math.pow(bd, 1.6), wob = Math.sin(t * .11 + bd * 1.3) * (1 + bd * .22);
+        g2.fillStyle = bd % 2 ? moodColor([38, 116, 56], [14, 42, 24]) : moodColor([58, 162, 84], [24, 64, 38]);
+        g2.fillRect(wob, yy, w, bh + 1);
+        yy += bh;
+      }
+      g2.fillStyle = moodColor([48, 140, 70], [18, 52, 30]); g2.fillRect(0, yy, w, h - yy);
+      /* touchlines + a passing halfway line converging on the vanishing point, swimming slightly */
+      g2.strokeStyle = "rgba(240,240,232,.8)"; g2.lineWidth = Math.max(1, h / 210);
+      var vx = w / 2;
+      [.05, .95].forEach(function (fx3) {
+        g2.beginPath(); g2.moveTo(w * fx3 + Math.sin(t * .13) * 1.5, h); g2.lineTo(vx + (w * fx3 - vx) * .16, horizon); g2.stroke();
+      });
+      var hwx = ((w * 1.1 - scrollX * .7) % (w * 1.8) + w * 1.8) % (w * 1.8) - w * .4;
+      g2.beginPath(); g2.moveTo(hwx + Math.sin(t * .17) * 2, h); g2.lineTo(vx + (hwx - vx) * .16, horizon); g2.stroke();
+      g2.beginPath(); g2.ellipse(hwx, h * .93, w * .085, h * .024, 0, 0, 6.29); g2.stroke();
+      g2.beginPath(); g2.ellipse(hwx, h * .93, w * .012, h * .004, 0, 0, 6.29); g2.stroke(); /* the spot */
+      return h * (.63 + cam.horizon * .5);
+    }
+
+    if (era === 5 && imOk(hdDusk) && imOk(hdNight)) { /* HD: the FIFA-2010s environment plates, live layers on top */
+      drawCover(g2, hdDusk, w, h);
+      var nA = forceNight ? 1 : Math.max(0, Math.min(1, .25 - mood * 1.2));
+      if (nA > .02) { g2.globalAlpha = nA; drawCover(g2, hdNight, w, h); g2.globalAlpha = 1; }
+      if (mood < -.2) { g2.fillStyle = "rgba(6,10,26," + (-mood * .3).toFixed(3) + ")"; g2.fillRect(0, 0, w, h); }
+      var sheen2 = g2.createRadialGradient(w / 2, h * .8, 10, w / 2, h * .8, w * .55);
+      sheen2.addColorStop(0, "rgba(255,255,255,.07)"); sheen2.addColorStop(1, "rgba(255,255,255,0)");
+      g2.fillStyle = sheen2; g2.fillRect(0, h * .55, w, h * .45);
+      if (mood > .25) { /* the long dusk shadow raking off your feet */
+        g2.fillStyle = "rgba(10,14,30,.28)";
+        g2.beginPath(); g2.ellipse(w * .32 + w * .1, h * .885, w * .12, h * .013, -.05, 0, 6.29); g2.fill();
+      }
+      g2.fillStyle = "rgba(8,10,20,.78)"; g2.fillRect(w * .72, h * .055, w * .21, h * .048);
+      g2.fillStyle = "#BF0A30"; g2.fillRect(w * .72, h * .055, w * .011, h * .048);
+      g2.fillStyle = "#FFCD00"; g2.fillRect(w * .919, h * .055, w * .011, h * .048);
+      g2.fillStyle = "#f0f0e8"; g2.font = "600 " + Math.round(h * .028) + "px Inter";
+      g2.fillText("USA 26 · LIVE · " + year(p), w * .74, h * .0885);
+      return h * .88;
+    }
+    if (era === 5) { /* HD fallback: soft gradients, glow, vignette */
+      var sk = g2.createLinearGradient(0, 0, 0, h);
+      sk.addColorStop(0, moodColor([120, 170, 250], [18, 24, 48]));
+      sk.addColorStop(1, moodColor([230, 200, 160], [30, 34, 60]));
+      g2.fillStyle = sk; g2.fillRect(0, 0, w, h);
+      /* stadium arc silhouette */
+      g2.fillStyle = "rgba(20,26,52," + (mood > 0 ? .8 : .95) + ")";
+      g2.beginPath(); g2.ellipse(w / 2, h * .58, w * .62, h * .3, 0, Math.PI, 0); g2.fill();
+      /* the crowd in the bowl: team-color clusters that bob when the day is good */
+      for (var cr5 = 0; cr5 < 3; cr5++) {
+        for (var cd = 0; cd < 90; cd++) {
+          var ca = Math.PI + (cd / 90) * Math.PI;
+          var cxp = w / 2 + Math.cos(ca) * w * (.42 + cr5 * .065), cyp = h * .56 + Math.sin(ca) * h * (.2 + cr5 * .033);
+          if (cyp > h * .17 && cyp < h * .56) {
+            g2.fillStyle = ["#8a1c30", "#d8d8e0", "#26307a", "#c8a028"][((cd / 6) | 0) % 4];
+            g2.globalAlpha = mood < .1 ? .3 : .8;
+            g2.fillRect(cxp, cyp - (mood > .35 ? Math.sin(t * .25 + cd) * 1.5 : 0), 3, 3);
+            g2.globalAlpha = 1;
+          }
+        }
+      }
+      /* Frostbite dusk: a low sun and long raking light when the heart is up */
+      if (mood > .25) {
+        var sun5 = g2.createRadialGradient(w * .12, h * .5, 4, w * .12, h * .5, w * .2);
+        sun5.addColorStop(0, "rgba(255,220,150,.8)"); sun5.addColorStop(1, "rgba(255,220,150,0)");
+        g2.fillStyle = sun5; g2.fillRect(0, h * .3, w * .35, h * .4);
+      }
+      /* floodlight glow */
+      var glow = g2.createRadialGradient(w / 2, h * .34, 10, w / 2, h * .34, w * .5);
+      glow.addColorStop(0, "rgba(255,240,200," + (mood > 0 ? .5 : .16) + ")");
+      glow.addColorStop(1, "rgba(255,240,200,0)");
+      g2.fillStyle = glow; g2.fillRect(0, 0, w, h);
+      var pg = g2.createLinearGradient(0, h * .62, 0, h);
+      pg.addColorStop(0, moodColor([52, 150, 78], [20, 56, 34]));
+      pg.addColorStop(1, moodColor([26, 100, 48], [10, 34, 20]));
+      g2.fillStyle = pg; g2.fillRect(0, h * .62, w, h);
+      /* mow bands sliding past, and the broadcast sheen on the grass */
+      g2.fillStyle = "rgba(255,255,255,.05)";
+      for (var ms5 = 0; ms5 < 8; ms5 += 2) {
+        var mx5 = ((ms5 * w / 4 - scrollX * .8) % (w * 2) + w * 2) % (w * 2) - w * .5;
+        g2.fillRect(mx5, h * .62, w / 8, h * .38);
+      }
+      var sheen = g2.createRadialGradient(w / 2, h * .8, 10, w / 2, h * .8, w * .55);
+      sheen.addColorStop(0, "rgba(255,255,255,.09)"); sheen.addColorStop(1, "rgba(255,255,255,0)");
+      g2.fillStyle = sheen; g2.fillRect(0, h * .62, w, h * .38);
+      /* the long dusk shadow raking off your feet */
+      if (mood > .25) {
+        g2.fillStyle = "rgba(10,14,30,.28)";
+        g2.beginPath(); g2.ellipse(w * .32 + w * .1, h * .885, w * .12, h * .013, -.05, 0, 6.29); g2.fill();
+      }
+      g2.strokeStyle = "rgba(240,240,232,.8)"; g2.lineWidth = 2;
+      var cx2 = ((w * 1.2 - scrollX * .8) % (w * 1.6) + w * 1.6) % (w * 1.6) - w * .3;
+      g2.beginPath(); g2.arc(cx2, h * .82, 60, 0, 6.29); g2.stroke();
+      /* the slim broadcast scorebug, team-color end caps, very 2019 */
+      g2.fillStyle = "rgba(8,10,20,.78)"; g2.fillRect(w * .72, h * .055, w * .21, h * .048);
+      g2.fillStyle = "#BF0A30"; g2.fillRect(w * .72, h * .055, w * .011, h * .048);
+      g2.fillStyle = "#FFCD00"; g2.fillRect(w * .919, h * .055, w * .011, h * .048);
+      g2.fillStyle = "#f0f0e8"; g2.font = "600 " + Math.round(h * .028) + "px Inter";
+      g2.fillText("USA 26 · LIVE · " + year(p), w * .74, h * .0885);
+      if (mood < .1) { /* Frostbite night: phone flashlights twinkling through the dark bowl */
+        g2.fillStyle = "rgba(255,255,240,.85)";
+        for (var ph = 0; ph < 70; ph++) {
+          if (((ph * 7 + (t >> 3)) % 11) < 4) {
+            var pa = Math.PI + (ph / 70) * Math.PI, pr5 = (.72 + ((ph * 29) % 22) / 100);
+            g2.fillRect(w / 2 + Math.cos(pa) * w * .58 * pr5, h * .58 + Math.sin(pa) * h * .27 * pr5, 1.5, 1.5);
+          }
+        }
+      }
+      return h * .88;
+    }
+
+    if (era === 6) { /* THE ANIME ARC 2019-2026: Haikyuu when the heart is up, Blue Lock when it drops, violet dusk between */
+      var au = (mood + 1) / 2; /* 0 = Blue Lock, 1 = Haikyuu */
+      if (imOk(animeBlue) && imOk(animeWarm)) { /* painted background plates, the shows crossfading with the heart */
+        drawCover(g2, animeBlue, w, h);
+        if (au > .02) { g2.globalAlpha = Math.min(1, au); drawCover(g2, animeWarm, w, h); g2.globalAlpha = 1; }
+        var midA = Math.max(0, .3 - Math.abs(au - .5) * 1.2); /* violet anime dusk between the worlds */
+        if (midA > .02) { g2.fillStyle = "rgba(122,82,198," + midA.toFixed(3) + ")"; g2.fillRect(0, 0, w, h); }
+        if (keys.left || keys.right) {
+          for (var st7 = 0; st7 < 14; st7++) {
+            var sw7 = 60 + (st7 * 53) % 200, sx7 = ((st7 * 211 + t * 26) % (w + sw7)) - sw7;
+            g2.fillStyle = au < .5 ? "rgba(90,170,255," + (.05 + (st7 % 3) * .04).toFixed(3) + ")" : "rgba(255,230,180," + (.06 + (st7 % 3) * .04).toFixed(3) + ")";
+            g2.fillRect(keys.right ? w - sx7 - sw7 : sx7, (st7 * 79) % h, sw7, 1 + st7 % 3);
+          }
+        }
+        g2.fillStyle = au < .5 ? "rgba(80,140,255,.05)" : "rgba(180,120,60,.05)";
+        for (var ht7 = 0; ht7 < w; ht7 += 16) for (var hy7 = ((ht7 / 16) % 2) * 8; hy7 < h; hy7 += 16) g2.fillRect(ht7, hy7, 2, 2);
+        return h * .9;
+      }
+      var L3 = function (c1, c2, u2) { return "rgb(" + Math.round(c1[0] + (c2[0] - c1[0]) * u2) + "," + Math.round(c1[1] + (c2[1] - c1[1]) * u2) + "," + Math.round(c1[2] + (c2[2] - c1[2]) * u2) + ")"; };
+      var tTop = au < .5 ? L3([8, 12, 48], [122, 82, 198], au * 2) : L3([122, 82, 198], [255, 236, 205], (au - .5) * 2);
+      var tBot = au < .5 ? L3([14, 24, 78], [185, 120, 195], au * 2) : L3([185, 120, 195], [255, 205, 140], (au - .5) * 2);
+      var sky6 = g2.createLinearGradient(0, 0, 0, h);
+      sky6.addColorStop(0, tTop); sky6.addColorStop(1, tBot);
+      g2.fillStyle = sky6; g2.fillRect(0, 0, w, h);
+      /* the cel sun-or-moon disc: flat, outlined, unmistakably drawn */
+      g2.beginPath(); g2.arc(w * .78, h * (.4 - au * .18), h * .075, 0, 6.29);
+      g2.fillStyle = au < .5 ? "rgba(195,222,255,.92)" : "rgba(255,214,90,.95)"; g2.fill();
+      g2.lineWidth = 3; g2.strokeStyle = "rgba(255,255,255,.85)"; g2.stroke();
+      var gridA = Math.max(0, .32 * (.62 - au)); /* the facility fades in as the heart drops */
+      if (gridA > .015) {
+        g2.strokeStyle = "rgba(60,140,255," + gridA.toFixed(3) + ")"; g2.lineWidth = 1;
+        for (var gx6 = (t * .4) % 48; gx6 < w; gx6 += 48) { g2.beginPath(); g2.moveTo(gx6, 0); g2.lineTo(gx6 - 30, h * .62); g2.stroke(); }
+        for (var gy6 = 20; gy6 < h * .6; gy6 += 36) { g2.beginPath(); g2.moveTo(0, gy6); g2.lineTo(w, gy6); g2.stroke(); }
+        [w * .25, w * .75].forEach(function (lx6) {
+          var cone = g2.createLinearGradient(lx6, 0, lx6, h * .7);
+          cone.addColorStop(0, "rgba(120,200,255," + (gridA * .9).toFixed(3) + ")"); cone.addColorStop(1, "rgba(120,200,255,0)");
+          g2.fillStyle = cone;
+          g2.beginPath(); g2.moveTo(lx6 - 8, 0); g2.lineTo(lx6 + 8, 0); g2.lineTo(lx6 + w * .13, h * .68); g2.lineTo(lx6 - w * .13, h * .68); g2.fill();
+        });
+      }
+      var bokA = Math.max(0, au - .38) * .55; /* and the warm gym fades in as it lifts */
+      if (bokA > .02) {
+        for (var bk = 0; bk < 46; bk++) {
+          var bkr = 8 + (bk * 37) % 14;
+          g2.fillStyle = "rgba(" + (220 + bk % 30) + "," + (150 + (bk * 13) % 70) + "," + (80 + (bk * 7) % 60) + "," + bokA.toFixed(3) + ")";
+          g2.beginPath(); g2.arc(((bk * 149) % w) + Math.sin(t * .02 + bk) * 3, 20 + ((bk * 83) % (h * .38)), bkr, 0, 6.29); g2.fill();
+        }
+      }
+      var pitchY6 = h * .62;
+      g2.fillStyle = "rgb(" + Math.round(20 + au * 60) + "," + Math.round(70 + au * 85) + "," + Math.round(90 - au * 24) + ")";
+      g2.fillRect(0, pitchY6, w, h - pitchY6);
+      g2.fillStyle = au < .5 ? "#9fd8ff" : "#fff6e0"; g2.fillRect(0, pitchY6, w, 3); /* the bold cel line */
+      g2.strokeStyle = "rgba(255,255,255,.85)"; g2.lineWidth = 2;
+      var hw6 = ((w * 1.2 - scrollX * .8) % (w * 1.7) + w * 1.7) % (w * 1.7) - w * .35;
+      g2.beginPath(); g2.moveTo(hw6, h); g2.lineTo(hw6 + 14, pitchY6); g2.stroke();
+      g2.beginPath(); g2.ellipse(hw6, h * .86, w * .1, h * .03, 0, 0, 6.29); g2.stroke();
+      if (keys.left || keys.right) { /* directional streak background while running */
+        for (var st6 = 0; st6 < 14; st6++) {
+          var sw6 = 60 + (st6 * 53) % 200, sx6 = ((st6 * 211 + t * 26) % (w + sw6)) - sw6;
+          g2.fillStyle = au < .5 ? "rgba(90,170,255," + (.05 + (st6 % 3) * .04).toFixed(3) + ")" : "rgba(255,230,180," + (.06 + (st6 % 3) * .04).toFixed(3) + ")";
+          g2.fillRect(keys.right ? w - sx6 - sw6 : sx6, (st6 * 79) % h, sw6, 1 + st6 % 3);
+        }
+      }
+      g2.fillStyle = au < .5 ? "rgba(80,140,255,.05)" : "rgba(180,120,60,.05)"; /* a breath of screen-tone */
+      for (var htx = 0; htx < w; htx += 16) for (var hty = ((htx / 16) % 2) * 8; hty < h; hty += 16) g2.fillRect(htx, hty, 2, 2);
+      return h * .9;
+    }
+
+    /* era 7 REAL: the photograph takes over */
+    var pr = ERAS[6].until, u = Math.min(1, (p - pr) / (1 - pr)); /* 0..1 inside final era */
+    /* base: hd-ish dark room */
+    g2.fillStyle = "#0b0e1a"; g2.fillRect(0, 0, w, h);
+    if (stadiumPhoto.complete && stadiumPhoto.naturalWidth) {
+      g2.globalAlpha = Math.min(1, .35 + u * .65);
+      var s1 = Math.max(w / stadiumPhoto.naturalWidth, h / stadiumPhoto.naturalHeight);
+      g2.drawImage(stadiumPhoto, (w - stadiumPhoto.naturalWidth * s1) / 2, (h - stadiumPhoto.naturalHeight * s1) / 2, stadiumPhoto.naturalWidth * s1, stadiumPhoto.naturalHeight * s1);
+      g2.globalAlpha = 1;
+    }
+    if (u > .55 && photo.complete && photo.naturalWidth) {
+      var a = Math.min(1, (u - .55) / .4);
+      g2.globalAlpha = a;
+      var s2 = Math.max((w * .26) / photo.naturalWidth, (h * .5) / photo.naturalHeight);
+      var pw = photo.naturalWidth * s2, ph2 = photo.naturalHeight * s2;
+      g2.drawImage(photo, w - pw - w * .03, h * .08, pw, ph2);
+      g2.globalAlpha = 1;
+      g2.strokeStyle = "rgba(245,241,232," + a * .9 + ")"; g2.lineWidth = 3;
+      g2.strokeRect(w - pw - w * .03, h * .08, pw, ph2);
+    }
+    /* mood grade over the photo world */
+    if (mood < 0) { g2.fillStyle = "rgba(10,14,30," + (-mood * .45) + ")"; g2.fillRect(0, 0, w, h); }
+    if (mood > 0) { g2.fillStyle = "rgba(255,205,0," + (mood * .08) + ")"; g2.fillRect(0, 0, w, h); }
+    return h * .9;
+  }
+
+  /* ---------------- HUD ---------------- */
+  function drawHUD(era, p) {
+    var yr = year(p);
+    ctx.textAlign = "left";
+    if (era <= 3) {
+      ctx.fillStyle = "#05070f"; ctx.fillRect(10, 10, 240, 34);
+      ctx.fillStyle = "#FFCD00"; ctx.font = "14px 'Press Start 2P'";
+      ctx.fillText(yr + " · " + ERAS[era].name, 20, 33);
+    } else {
+      ctx.fillStyle = "rgba(5,7,15,.55)"; ctx.fillRect(10, 10, 260, 40);
+      ctx.fillStyle = "#FFCD00"; ctx.font = "600 20px Inter";
+      ctx.fillText(yr + "  ·  " + ERAS[era].name, 22, 37);
+    }
+    /* mood meter */
+    ctx.fillStyle = "rgba(5,7,15,.55)"; ctx.fillRect(VW - 40, VH / 2 - 62, 14, 124);
+    ctx.fillStyle = mood >= 0 ? "#FFCD00" : "#6080c0";
+    var mh = mood * 56;
+    ctx.fillRect(VW - 38, VH / 2 - (mh > 0 ? mh : 0), 10, Math.abs(mh) || 2);
+    /* era key hints */
+    var HINTS = ["B · R", "U · V · J", "R = RAIN · O · P", "Z X C · Q · E · T", "R · C · V · L", "F · G · N", "E · T · I · K", "P · T · C"];
+    ctx.fillStyle = "rgba(245,241,232,.55)";
+    ctx.font = era <= 3 ? "9px 'Press Start 2P'" : "600 13px Inter";
+    ctx.fillText("KEYS · " + (HINTS[era] || "") + " · SPACE · M · H · 1-9 WARP", 20, era <= 3 ? 62 : 70);
+    /* milestone caption */
+    var m = milestoneFor(yr);
+    if (m) {
+      ctx.textAlign = "center";
+      if (era <= 3) {
+        ctx.font = "12px 'Press Start 2P'"; ctx.fillStyle = "#F5F1E8";
+        ctx.fillText(m.txt, VW / 2, VH - 26);
+      } else {
+        ctx.font = "italic 600 24px Fraunces"; ctx.fillStyle = "#F5F1E8";
+        ctx.shadowColor = "rgba(0,0,0,.7)"; ctx.shadowBlur = 8;
+        ctx.fillText(m.txt, VW / 2, VH - 28);
+        ctx.shadowBlur = 0;
+      }
+      ctx.textAlign = "left";
+    }
+    /* intro + finale */
+    if (!walked) {
+      ctx.textAlign = "center"; ctx.fillStyle = "#FFCD00";
+      ctx.font = "12px 'Press Start 2P'";
+      if ((t / 30 | 0) % 2) ctx.fillText("WALK RIGHT →", VW / 2, 80);
+      ctx.textAlign = "left";
+    }
+    if (kickFlash) {
+      ctx.textAlign = "center";
+      var kEra = eraIndex(progress());
+      if (kEra <= 3) { ctx.font = "14px 'Press Start 2P'"; ctx.fillStyle = "#FFCD00"; ctx.fillText(kickFlash.msg, VW / 2, 110); }
+      else { ctx.font = "italic 700 30px Fraunces"; ctx.fillStyle = "#FFCD00"; ctx.shadowColor = "rgba(0,0,0,.7)"; ctx.shadowBlur = 8; ctx.fillText(kickFlash.msg, VW / 2, 110); ctx.shadowBlur = 0; }
+      ctx.textAlign = "left";
+    }
+    if (reachedEnd) {
+      ctx.textAlign = "center";
+      ctx.fillStyle = "rgba(5,7,15,.6)"; ctx.fillRect(VW * .06, 66, VW * .5, 88);
+      ctx.fillStyle = "#FFCD00"; ctx.font = "italic 700 30px Fraunces";
+      ctx.fillText("June 25, 2026.", VW * .31, 102);
+      ctx.fillStyle = "#F5F1E8"; ctx.font = "italic 600 22px Fraunces";
+      ctx.fillText("You are here. It was real.", VW * .31, 136);
+      ctx.font = "italic 400 15px Fraunces"; ctx.fillStyle = "rgba(245,241,232,.75)";
+      ctx.fillText("Walk left, and it all rewinds.", VW * .31, 146 + 14);
+      ctx.textAlign = "left";
+    }
+    if (couva) { ctx.fillStyle = "#FFCD00"; ctx.font = "14px Inter"; ctx.fillText("★", 278, era <= 3 ? 33 : 37); }
+  }
+
+  /* ---------------- main loop ---------------- */
+  var lastMile = null;
+  function update() {
+    t++;
+    var speed = 9 + (mood > 0 ? mood * 2 : 0);
+    var moved = false;
+    if (keys.right) { px = Math.min(WORLD, px + speed); moved = true; }
+    if (keys.left) { px = Math.max(60, px - speed); moved = true; }
+    if (keys.up) mood = Math.min(1, mood + .02);
+    if (keys.down) mood = Math.max(-1, mood - .02);
+    if (!keys.up && !keys.down) mood *= .998;
+    /* the PS1 broadcast truck cuts between cameras */
+    cam.t++;
+    if (cam.t > 300) { cam.t = 0; cam.mode = 1 - cam.mode; }
+    cam.horizon += ((cam.mode ? .36 : .47) - cam.horizon) * .03;
+    cam.charMult += ((cam.mode ? .72 : 1) - cam.charMult) * .03;
+    if (replayT > 0) replayT--;
+    if (bandFlash > 0) bandFlash--;
+    if (win3) { win3.t--; if (win3.t <= 0) win3 = null; }
+    if (animeFx) { animeFx.t--; if (animeFx.t <= 0) animeFx = null; }
+    var p = progress(), era = eraIndex(p);
+    if (moved) { walked = true; stepSound(era); }
+    reachedEnd = p > .985;
+    var m = milestoneFor(year(p));
+    if (m && m !== lastMile && walked) { lastMile = m; milestoneSound(era); }
+    /* the Couva secret: only the heartbroken find it */
+    var yr2 = year(p);
+    if (yr2 >= 2016 && yr2 <= 2018 && mood < -.75 && !couva) {
+      couva = true;
+      try { localStorage.setItem("longgame_couva", "1"); } catch (e) { }
+      kickFlash = { msg: "IT RAINED IN COUVA. WE STAYED FANS ANYWAY.", t: 220 };
+      beep(196, .5, "triangle", .06); beep(165, .6, "triangle", .05, .3); beep(220, .9, "sine", .05, .7);
+    }
+    return { p: p, era: era, moved: moved };
+  }
+
+  function renderCore(idx, p, tickFx) { /* tickFx: only the first render of a blended frame advances effect clocks */
+    var era = ERAS[idx];
+    off.width = era.rw; off.height = era.rh;
+    og.imageSmoothingEnabled = era.smooth;
+    var groundY = drawScene(idx, era.rw, era.rh, p);
+    drawBalls(og, idx, era.rw, groundY);
+    /* character holds ~1/3 of frame height in every era so the upgrades read */
+    var PSCALE = [2, 2, 2, 3];
+    var charScale = PSCALE[idx] || 3;
+    var vecScale = era.rh / 72;
+    if (idx === 7) {
+      var u = Math.min(1, (p - ERAS[6].until) / (1 - ERAS[6].until));
+      var a = Math.min(1, u / .2); /* the anime figure dissolves, the real man walks in */
+      if (a < 1) {
+        og.globalAlpha = 1 - a;
+        drawChar(og, era.rw * .32, groundY, 6, vecScale, t);
+        og.globalAlpha = 1;
+      }
+      if (cutout.complete && cutout.naturalWidth) {
+        var ch = era.rh * .52, cwid = ch * (cutout.naturalWidth / cutout.naturalHeight);
+        var bob = Math.sin(t * .35) * (mood > 0 ? 4 : 2);
+        og.save();
+        og.globalAlpha = a;
+        og.translate(era.rw * .32, groundY - bob);
+        og.rotate(Math.sin(t * .35) * .02 + (mood < -.3 ? .05 : 0));
+        og.fillStyle = "rgba(0,0,0,.3)";
+        og.beginPath(); og.ellipse(0, 4, cwid * .4, 7, 0, 0, 6.29); og.fill();
+        og.drawImage(fadedCutout() || cutout, -cwid / 2, -ch, cwid, ch);
+        og.restore();
+        og.globalAlpha = 1;
+      } else if (a >= 1) {
+        drawChar(og, era.rw * .32, groundY, 6, vecScale, t);
+      }
+    } else {
+      var cs2 = idx >= 4 ? vecScale : charScale;
+      if (idx === 4) cs2 *= cam.charMult; /* the Wide cam sees a smaller you */
+      var cx3 = idx === 3 ? era.rw * .5 : era.rw * .32; /* Madden view: hero center-bottom */
+      drawChar(og, cx3, groundY, idx, cs2, t);
+    }
+    drawParticles(og);
+    if (idx === 3 && win3) { /* the passing windows, reborn as shot windows, lovingly in the way */
+      var bw = era.rw * .3, bh2 = era.rh * .26, gp3 = era.rw * .025;
+      for (var wi = 0; wi < 3; wi++) {
+        var wx3 = gp3 + wi * (bw + gp3), wy3 = 4;
+        og.fillStyle = "#05070f"; og.fillRect(wx3 - 2, wy3 - 2, bw + 4, bh2 + 4);
+        og.strokeStyle = (wi === win3.pick && (t % 14) < 8) ? "#f0c020" : "#e8f0e0";
+        og.lineWidth = 2; og.strokeRect(wx3 - 1, wy3 - 1, bw + 2, bh2 + 2);
+        og.fillStyle = "#2a7a3e"; og.fillRect(wx3, wy3, bw, bh2);
+        og.fillStyle = "#f0f0e8";
+        og.fillRect(wx3 + bw * .1, wy3 + bh2 * .2, 2, bh2 * .5);
+        og.fillRect(wx3 + bw * .9 - 2, wy3 + bh2 * .2, 2, bh2 * .5);
+        og.fillRect(wx3 + bw * .1, wy3 + bh2 * .2, bw * .8, 2);
+        og.fillStyle = "#d0a020"; /* the keeper, guarding the wrong zone if you picked well */
+        og.fillRect(wx3 + bw * (wi === 0 ? .66 : wi === 1 ? .44 : .2), wy3 + bh2 * .34, bw * .12, bh2 * .36);
+        og.fillStyle = "#05070f"; og.fillRect(wx3, wy3, 13, 12);
+        og.fillStyle = "#f0c020"; og.font = "8px 'Press Start 2P'"; og.fillText(["A", "B", "C"][wi], wx3 + 3, wy3 + 10);
+        if (wi === win3.pick) {
+          var bp = 1 - win3.t / 55;
+          og.fillStyle = "#f8f8f0"; og.fillRect(wx3 + bw * .5 - 1, wy3 + bh2 * (.92 - .6 * bp), 3, 3);
+        }
+      }
+    }
+    if (idx === 6 && animeFx) { /* the anime kick: impact frames, then the ego eye or the apex time-stop */
+      if (animeFx.t > 52) { /* 1-3 inversion impact frames */
+        og.fillStyle = animeFx.mode === "ego" ? "#04060f" : "#ffffff";
+        og.fillRect(0, 0, era.rw, era.rh);
+        og.strokeStyle = animeFx.mode === "ego" ? "#7ab8ff" : "#101020"; og.lineWidth = 2;
+        for (var rb = 0; rb < 46; rb++) {
+          var ra = rb * 2.39996, r0 = 60 + (rb * 37) % 80, r1 = r0 + 120 + (rb * 53) % 300;
+          og.beginPath(); og.moveTo(era.rw / 2 + Math.cos(ra) * r0, era.rh / 2 + Math.sin(ra) * r0);
+          og.lineTo(era.rw / 2 + Math.cos(ra) * r1, era.rh / 2 + Math.sin(ra) * r1); og.stroke();
+        }
+      } else if (animeFx.mode === "ego") { /* the letterboxed glowing eye, iris ignited */
+        var by6 = era.rh * .26, bh6 = era.rh * .3;
+        og.fillStyle = "rgba(2,4,12,.92)"; og.fillRect(0, by6, era.rw, bh6);
+        for (var sl = 0; sl < 20; sl++) {
+          og.fillStyle = "rgba(80,150,255," + (.06 + (sl % 3) * .05).toFixed(3) + ")";
+          og.fillRect(((sl * 173 + t * 30) % (era.rw + 200)) - 200, by6 + (sl * 29) % bh6, 120 + (sl * 31) % 160, 2);
+        }
+        [era.rw * .36, era.rw * .64].forEach(function (ex) {
+          var ey = by6 + bh6 / 2;
+          og.fillStyle = "#e8f4ff"; og.beginPath(); og.ellipse(ex, ey, era.rw * .07, bh6 * .3, 0, 0, 6.29); og.fill();
+          var ir = og.createRadialGradient(ex, ey, 2, ex, ey, bh6 * .26);
+          ir.addColorStop(0, "#0a1030"); ir.addColorStop(.5, "#2f7cff"); ir.addColorStop(1, "#0a1030");
+          og.fillStyle = ir; og.beginPath(); og.arc(ex, ey, bh6 * .26, 0, 6.29); og.fill();
+          og.fillStyle = "#04060f"; og.fillRect(ex - 1.5, ey - bh6 * .2, 3, bh6 * .4);
+        });
+        og.fillStyle = "#7ab8ff"; og.font = "italic 700 26px Inter"; og.textAlign = "center";
+        og.fillText("DEVOUR.", era.rw / 2, by6 + bh6 + 34); og.textAlign = "left";
+      } else { /* the apex: background falls away warm, dust motes hang, time floats */
+        var wash = og.createRadialGradient(era.rw / 2, era.rh * .4, 40, era.rw / 2, era.rh * .4, era.rw * .6);
+        wash.addColorStop(0, "rgba(255,240,210,.32)"); wash.addColorStop(1, "rgba(255,200,130,.12)");
+        og.fillStyle = wash; og.fillRect(0, 0, era.rw, era.rh);
+        for (var mt = 0; mt < 16; mt++) {
+          og.fillStyle = "rgba(255,250,230," + (.25 + (mt % 4) * .1).toFixed(3) + ")";
+          og.beginPath(); og.arc((mt * 199) % era.rw, ((mt * 131) % era.rh) + Math.sin(t * .04 + mt) * 4, 1.6 + mt % 3, 0, 6.29); og.fill();
+        }
+      }
+    }
+    if (idx === 4 && replayT > 0) { /* the Konami letterboxed replay */
+      og.fillStyle = "#000";
+      og.fillRect(0, 0, era.rw, era.rh * .1); og.fillRect(0, era.rh * .9, era.rw, era.rh * .1);
+      og.fillStyle = "#f0c020"; og.font = "8px 'Press Start 2P'"; og.textAlign = "right";
+      og.fillText("● REPLAY", era.rw - 8, era.rh * .1 + 12);
+      og.textAlign = "left";
+    }
+    if (idx === 2 && rain8) { /* rain in October, St. Paul's */
+      og.fillStyle = "rgba(40,50,70,.28)"; og.fillRect(0, 0, era.rw, era.rh);
+      og.strokeStyle = "rgba(200,220,240,.55)"; og.lineWidth = 1;
+      for (var rn = 0; rn < 26; rn++) {
+        var rx = ((rn * 83 + t * 7) % era.rw), ry = ((rn * 47 + t * 11) % era.rh);
+        og.beginPath(); og.moveTo(rx, ry); og.lineTo(rx - 2, ry + 7); og.stroke();
+      }
+    }
+    /* the playful keys, rendered in the era's own hand */
+    var w2 = era.rw, h2 = era.rh, pix = idx <= 3;
+    for (var fi = fx2.length - 1; fi >= 0; fi--) {
+      var F = fx2[fi];
+      if (tickFx) { F.t--; if (F.t <= 0) { fx2.splice(fi, 1); continue; } }
+      else if (F.t <= 0) continue;
+      var pgs = F.t / F.t0;
+      og.textAlign = "center";
+      if (F.type === "glyph") {
+        og.fillStyle = "rgba(240,240,232," + Math.min(1, pgs * 2).toFixed(2) + ")";
+        og.font = pix ? Math.round(h2 * .12) + "px 'Press Start 2P'" : "italic 700 " + Math.round(h2 * .12) + "px Fraunces";
+        og.fillText(F.ch, F.x * w2, h2 * .4 - (1 - pgs) * h2 * .18);
+      } else if (F.type === "slam") {
+        og.save(); og.translate(w2 / 2, h2 * .3); og.rotate(-.06);
+        var sc3 = 1 + Math.max(0, 1 - (F.t0 - F.t) / 6) * .8; og.scale(sc3, sc3);
+        og.fillStyle = idx === 6 ? "#7ab8ff" : "#f0c020";
+        og.font = pix ? Math.round(h2 * .08) + "px 'Press Start 2P'" : "italic 800 " + Math.round(h2 * .1) + "px Fraunces";
+        og.fillText(F.msg, 0, 0); og.restore();
+      } else if (F.type === "cheer") {
+        for (var ci2 = 0; ci2 < 24; ci2++) {
+          og.fillStyle = ["#c0243c", "#f0f0e8", "#3040a0", "#f0c020"][ci2 % 4];
+          og.fillRect((ci2 / 24) * w2 + Math.sin(t * .3 + ci2) * 4, h2 * .08 + ((ci2 * 37) % (h2 * .22)) + (1 - pgs) * h2 * .3, pix ? 3 : 5, pix ? 3 : 8);
+        }
+      } else if (F.type === "hearts") {
+        og.fillStyle = "rgba(240,80,110," + (pgs * .9).toFixed(2) + ")";
+        for (var hi = 0; hi < 10; hi++) {
+          og.font = Math.round(h2 * (.04 + (hi % 3) * .02)) + "px Inter";
+          og.fillText("♥", (hi / 10) * w2 + w2 * .05, h2 * .8 - (1 - pgs) * h2 * (.4 + (hi % 4) * .1));
+        }
+      } else if (F.type === "pongball") {
+        if (tickFx) {
+          F.x += F.vx * .004; F.vy += .09; F.py += F.vy;
+          if (F.py > h2 * .88) { F.py = h2 * .88; F.vy = -Math.abs(F.vy) * .95; beep(880, .04, "square", .04); }
+          if (F.x < .02 || F.x > .98) F.vx *= -1;
+        }
+        og.fillStyle = "#f0f0e8"; og.fillRect(F.x * w2, F.py, 4, 4);
+      } else if (F.type === "sunhop") {
+        og.fillStyle = "#f0f0e8"; og.fillRect(w2 * .78, h2 * .1 - Math.sin(pgs * Math.PI) * 12, 12, 12);
+      } else if (F.type === "wave1") {
+        og.fillStyle = "rgba(240,240,232,.16)";
+        for (var wv = 0; wv < 6; wv++) og.fillRect(0, h2 * .52 + wv * h2 * .08 + Math.sin(t * .3 + wv) * 3, w2, 2);
+      } else if (F.type === "juggle") {
+        og.fillStyle = "#f0f0e8";
+        og.fillRect(w2 * .32 - 2, h2 * .55 - Math.abs(Math.sin(pgs * Math.PI * 3)) * h2 * .16, 5, 5);
+      } else if (F.type === "ole") {
+        og.fillStyle = "#f0f0e8"; og.font = Math.round(h2 * .05) + "px 'Press Start 2P'";
+        for (var oi = 0; oi < 3; oi++) og.fillText("OLE!", w2 * (.25 + oi * .25), h2 * .24 - (1 - pgs) * 10 - oi * 4);
+      } else if (F.type === "ea") {
+        og.fillStyle = "rgba(5,7,15," + Math.min(.85, pgs * 2).toFixed(2) + ")"; og.fillRect(0, h2 * .36, w2, h2 * .18);
+        og.fillStyle = "#f0c020"; og.font = Math.round(h2 * .05) + "px 'Press Start 2P'";
+        og.fillText("GORDIO. IT'S IN HIS GAME.", w2 / 2, h2 * .47);
+      } else if (F.type === "cart") {
+        if (tickFx) { F.x += .008; if ((F.t % 26) === 0) beep(220, .08, "square", .04); }
+        var cx4 = F.x * w2;
+        og.fillStyle = "#e8e8e0"; og.fillRect(cx4, h2 * .78, w2 * .1, h2 * .055);
+        og.fillStyle = "#c0243c"; og.fillRect(cx4 + w2 * .062, h2 * .755, w2 * .038, h2 * .028);
+        og.fillStyle = "#101014";
+        og.beginPath(); og.arc(cx4 + w2 * .02, h2 * .845, h2 * .014, 0, 6.29); og.arc(cx4 + w2 * .08, h2 * .845, h2 * .014, 0, 6.29); og.fill();
+      } else if (F.type === "vcr") {
+        og.fillStyle = "rgba(0,0,0,.25)"; og.fillRect(0, 0, w2, h2);
+        og.fillStyle = "#f0f0e8"; og.font = Math.round(h2 * .055) + "px 'Press Start 2P'";
+        og.fillText("▌▌ PAUSE", w2 * .8, h2 * .13);
+      } else if (F.type === "flare") {
+        og.strokeStyle = "rgba(255,250,220," + (pgs * .8).toFixed(2) + ")"; og.lineWidth = 2;
+        [[1, 0], [-1, 0], [0, 1], [0, -1], [.7, .7], [-.7, .7], [.7, -.7], [-.7, -.7]].forEach(function (dxy) {
+          og.beginPath(); og.moveTo(w2 * .5, h2 * .3); og.lineTo(w2 * .5 + dxy[0] * w2 * .2 * pgs, h2 * .3 + dxy[1] * w2 * .2 * pgs); og.stroke();
+        });
+      } else if (F.type === "flashwave") {
+        og.fillStyle = "#fff";
+        for (var fw = 0; fw < 40; fw++) {
+          if (((fw * 7 + F.t) % 5) < 2) og.fillRect((fw / 40) * w2, h2 * (.12 + (fw % 5) * .05), 2, 2);
+        }
+        if (F.t >= F.t0 - 2) { og.fillStyle = "rgba(255,255,255,.5)"; og.fillRect(0, 0, w2, h2); }
+      } else if (F.type === "banner") {
+        var bx5 = w2 * (pgs > .85 ? .06 + (pgs - .85) * 6 : .06);
+        og.fillStyle = "rgba(8,10,20,.9)"; og.fillRect(bx5, h2 * .8, w2 * .5, h2 * .09);
+        og.fillStyle = "#BF0A30"; og.fillRect(bx5, h2 * .8, w2 * .012, h2 * .09);
+        og.fillStyle = "#f0f0e8"; og.font = "700 " + Math.round(h2 * .042) + "px Inter"; og.textAlign = "left";
+        og.fillText(F.msg, bx5 + w2 * .03, h2 * .862);
+      } else if (F.type === "impact") {
+        og.fillStyle = F.t % 2 ? "#fff" : "#04060f"; og.fillRect(0, 0, w2, h2);
+      } else if (F.type === "flash") {
+        og.fillStyle = "rgba(255,255,255," + (pgs * .8).toFixed(2) + ")"; og.fillRect(0, 0, w2, h2);
+      } else if (F.type === "warp") {
+        og.strokeStyle = "rgba(255,205,0," + (pgs * .7).toFixed(2) + ")"; og.lineWidth = 2;
+        for (var wr = 0; wr < 10; wr++) {
+          var wa = wr * .63;
+          og.beginPath(); og.moveTo(w2 / 2, h2 / 2);
+          og.lineTo(w2 / 2 + Math.cos(wa) * w2 * (1 - pgs), h2 / 2 + Math.sin(wa) * w2 * (1 - pgs)); og.stroke();
+        }
+      } else if (F.type === "photo") {
+        var pim = [extra1, extra2, extra3][F.i];
+        if (pim && pim.complete && pim.naturalWidth) {
+          var ps5 = Math.min((w2 * .28) / pim.naturalWidth, (h2 * .5) / pim.naturalHeight);
+          var pw5 = pim.naturalWidth * ps5, ph5 = pim.naturalHeight * ps5;
+          var py5 = h2 * .12 - Math.max(0, 1 - (F.t0 - F.t) / 12) * h2 * .3;
+          og.save(); og.translate(w2 * .07 + pw5 / 2, py5 + ph5 / 2); og.rotate(-.05);
+          og.fillStyle = "#F5F1E8"; og.fillRect(-pw5 / 2 - 6, -ph5 / 2 - 6, pw5 + 12, ph5 + 26);
+          og.drawImage(pim, -pw5 / 2, -ph5 / 2, pw5, ph5);
+          og.restore();
+        }
+      } else if (F.type === "quote") {
+        var qmsg = REAL_QUOTES[F.i];
+        og.fillStyle = "rgba(30,120,240,.92)";
+        var qw = Math.min(w2 * .62, qmsg.length * h2 * .016 + 30);
+        og.fillRect(w2 * .06, h2 * .66, qw, h2 * .12);
+        og.fillStyle = "#fff"; og.font = "500 " + Math.round(h2 * .028) + "px Inter"; og.textAlign = "left";
+        og.fillText(qmsg, w2 * .08, h2 * .735);
+      }
+      og.textAlign = "left";
+    }
+  }
+
+  function frame() {
+    var s = update();
+    updateBalls();
+    emitParticles(ERAS[s.era].rw, ERAS[s.era].rh);
+    /* smoother transitions: near every era boundary, render BOTH worlds and dissolve */
+    var T = .018, i = s.era, i2 = -1, blend = 0, p = s.p;
+    if (i < ERAS.length - 1 && ERAS[i].until - p < T / 2) {
+      i2 = i + 1; blend = (p - (ERAS[i].until - T / 2)) / T;
+    } else if (i > 0 && p - ERAS[i - 1].until < T / 2) {
+      i2 = i; i = i - 1; blend = (p - (ERAS[i].until - T / 2)) / T;
+    }
+    renderCore(i, p, true);
+    ctx.clearRect(0, 0, VW, VH);
+    ctx.imageSmoothingEnabled = ERAS[i].smooth;
+    ctx.drawImage(off, 0, 0, VW, VH);
+    if (i2 >= 0 && blend > 0) {
+      var keepOff = off, keepOg = og;
+      off = off2; og = og2;
+      renderCore(i2, p, false);
+      off = keepOff; og = keepOg;
+      ctx.globalAlpha = Math.min(1, Math.max(0, blend));
+      ctx.imageSmoothingEnabled = ERAS[i2].smooth;
+      ctx.drawImage(off2, 0, 0, VW, VH);
+      ctx.globalAlpha = 1;
+    }
+    drawHUD(s.era, s.p);
+    requestAnimationFrame(frame);
+  }
+
+  /* ---------------- the era keys: a playground on the keyboard ---------------- */
+  function eraKey(k) {
+    ac();
+    var e = eraIndex(progress());
+    if (k >= "1" && k <= "9") { /* time warp across the decades */
+      var d = +k;
+      px = Math.max(60, Math.min(WORLD, WORLD * (d === 9 ? .999 : (d - 1) / 8 + .02)));
+      walked = true; whoosh(d > 5); pushFX({ type: "warp", t: 30 });
+      return;
+    }
+    if (k === " ") { /* the cheer, answered in every era's own style */
+      pushFX({ type: "cheer", t: 45 });
+      if (e === 3) bandFlash = 20;
+      [523, 659, 784].forEach(function (f, i) { beep(f, .12, e <= 3 ? "square" : "triangle", .05, i * .06); });
+      return;
+    }
+    if (k === "m") { pushFX({ type: "slam", msg: "MATCHDAY!!!", t: 70 }); [392, 494, 587, 784].forEach(function (f, i) { beep(f, .12, "square", .05, i * .07); }); return; }
+    if (k === "h") { pushFX({ type: "hearts", t: 80 }); beep(659, .25, "sine", .05); beep(784, .3, "sine", .05, .12); return; }
+    var handled = true;
+    if (e === 0) {
+      if (k === "b") { pushFX({ type: "pongball", x: .2 + Math.random() * .6, py: 0, vy: 1 + Math.random() * 2, vx: (Math.random() - .5) * 3, t: 300 }); beep(880, .06, "square", .06); }
+      else if (k === "r") { pushFX({ type: "flash", t: 10 }); [523, 659, 880].forEach(function (f, i) { beep(f, .08, "square", .06, i * .06); }); }
+      else handled = false;
+    } else if (e === 1) {
+      if (k === "u") { pushFX({ type: "sunhop", t: 40 }); beep(330, .1, "square", .07); beep(440, .1, "square", .07, .1); }
+      else if (k === "v") { pushFX({ type: "wave1", t: 60 }); whoosh(true); }
+      else if (k === "j") { pushFX({ type: "juggle", t: 90 }); beep(700, .05, "square", .05); }
+      else handled = false;
+    } else if (e === 2) {
+      if (k === "r") { rain8 = !rain8; rain8 ? thunder() : beep(660, .15, "square", .05); }
+      else if (k === "o") { pushFX({ type: "ole", t: 70 }); [440, 440, 494].forEach(function (f, i) { beep(f, .1, "square", .05, i * .12); }); }
+      else if (k === "p") { var gg = Math.random() < .6; pushFX({ type: "slam", msg: gg ? "GOAL!" : "SAVED!", t: 60 }); gg ? sfxGoal() : sfxSave(); }
+      else handled = false;
+    } else if (e === 3) {
+      if (k === "z" || k === "x" || k === "c") { /* Genesis A/B/C, as the emulators taught us */
+        win3 = { t: 55, pick: k === "z" ? 0 : k === "x" ? 1 : 2 };
+        var nb = null;
+        BALLS.forEach(function (b) { if (!nb && !b.kicked && b.respawn <= 0 && Math.abs(b.wx - px) < 500) nb = b; });
+        if (nb) { nb.kicked = true; nb.kt = 0; kickFlash = { msg: "CALLED IT!", t: 60 }; sfxKick(); }
+        beep(660, .08, "square", .06);
+      }
+      else if (k === "q") { pushFX({ type: "slam", msg: "SWITCH!", t: 50 }); whistle(); }
+      else if (k === "e") { pushFX({ type: "ea", t: 110 }); [262, 330, 392, 523].forEach(function (f, i) { beep(f, .14, "square", .06, i * .12); }); }
+      else if (k === "t") { pushFX({ type: "cart", x: -0.12, t: 170 }); beep(196, .3, "square", .06); beep(196, .3, "square", .06, .35); }
+      else handled = false;
+    } else if (e === 4) {
+      if (k === "r") { replayT = 140; beep(494, .1, "square", .05); }
+      else if (k === "c") { cam.t = 0; cam.mode = 1 - cam.mode; beep(880, .05, "square", .06); }
+      else if (k === "v") { pushFX({ type: "vcr", t: 80 }); beep(220, .1, "square", .06); }
+      else if (k === "l") { pushFX({ type: "flare", t: 50 }); beep(1320, .2, "sine", .04); }
+      else handled = false;
+    } else if (e === 5) {
+      if (k === "f") { pushFX({ type: "flashwave", t: 70 }); beep(1047, .06, "sine", .05); beep(1319, .06, "sine", .05, .08); }
+      else if (k === "g") { pushFX({ type: "banner", msg: "GOOOAL · BELAMINI 4'", t: 130 }); sfxGoal(); }
+      else if (k === "n") { forceNight = !forceNight; pushFX({ type: "flash", t: 12 }); whoosh(!forceNight); }
+      else handled = false;
+    } else if (e === 6) {
+      if (k === "e") { animeFx = { t: 56, mode: "ego" }; beep(147, .3, "sawtooth", .08); }
+      else if (k === "t") { animeFx = { t: 56, mode: "apex" }; beep(784, .3, "sine", .05); }
+      else if (k === "i") { pushFX({ type: "impact", t: 3 }); beep(98, .15, "sawtooth", .1); }
+      else if (k === "k") { pushFX({ type: "slam", msg: ["WHAM!!", "DOOM!!", "ZOOM!!", "THOOM!!"][(Math.random() * 4) | 0], t: 55 }); beep(147, .2, "sawtooth", .09); }
+      else handled = false;
+    } else {
+      if (k === "p") { photoI = (photoI + 1) % 3; pushFX({ type: "photo", i: photoI, t: 220 }); beep(659, .12, "sine", .05); beep(880, .15, "sine", .05, .1); }
+      else if (k === "t") { quoteI = (quoteI + 1) % REAL_QUOTES.length; pushFX({ type: "quote", i: quoteI, t: 260 }); beep(880, .08, "sine", .05); }
+      else if (k === "c") { pushFX({ type: "hearts", t: 90 }); pushFX({ type: "slam", msg: "50 YEARS.", t: 80 }); sfxGoal(); }
+      else handled = false;
+    }
+    if (!handled && /^[a-z]$/.test(k)) {
+      pushFX({ type: "glyph", ch: k.toUpperCase(), x: .2 + Math.random() * .6, t: 60 });
+      beep(300 + (k.charCodeAt(0) % 26) * 40, .12, e <= 3 ? "square" : "triangle", .05);
+    }
+  }
+
+  /* ---------------- input ---------------- */
+  var KEYMAP = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", d: "right", w: "up", s: "down" };
+  document.addEventListener("keydown", function (e) {
+    var k = KEYMAP[e.key];
+    if (k) { e.preventDefault(); keys[k] = true; ac(); return; }
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === " " || e.key.length === 1) { e.preventDefault(); eraKey(e.key === " " ? " " : e.key.toLowerCase()); }
+  });
+  document.addEventListener("keyup", function (e) { var k = KEYMAP[e.key]; if (k) keys[k] = false; });
+  document.querySelectorAll(".pad button").forEach(function (b) {
+    var k = b.dataset.k;
+    ["pointerdown", "touchstart"].forEach(function (ev) { b.addEventListener(ev, function (e) { e.preventDefault(); keys[k] = true; ac(); }, { passive: false }); });
+    ["pointerup", "pointerleave", "touchend", "touchcancel"].forEach(function (ev) { b.addEventListener(ev, function (e) { e.preventDefault(); keys[k] = false; }, { passive: false }); });
+  });
+  /* drag on canvas also works: horizontal = time, vertical = mood */
+  var dragging = false, dx0 = 0, dy0 = 0;
+  cv.addEventListener("pointerdown", function (e) { dragging = true; dx0 = e.clientX; dy0 = e.clientY; ac(); });
+  cv.addEventListener("pointermove", function (e) {
+    if (!dragging) return;
+    var dx = e.clientX - dx0, dy = e.clientY - dy0;
+    keys.right = dx > 12; keys.left = dx < -12;
+    keys.up = dy < -12; keys.down = dy > 12;
+  });
+  ["pointerup", "pointerleave", "pointercancel"].forEach(function (ev) { cv.addEventListener(ev, function () { dragging = false; keys.left = keys.right = keys.up = keys.down = false; }); });
+
+  document.fonts && document.fonts.ready.then(function () { frame(); }) || frame();
+})();
+</script>
+</body>
+</html>

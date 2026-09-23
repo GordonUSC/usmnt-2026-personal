@@ -1,0 +1,134 @@
+/* ============================================================================
+   USMNT 2026 · kit-2026
+   Loaded LAST on every page, after styles.css and effects.css. It re-founds the
+   existing tokens rather than replacing the design: the palette becomes a real
+   color space, the body face becomes self-hosted, and the archive gains the
+   modern interaction layer it was hand-rolling in JavaScript.
+
+   Each numbered TECHNIQUE is one of the 2026 techniques researched 2026-08-11.
+   ========================================================================= */
+
+/* TECHNIQUE 1 · a self-hosted variable body face. This replaces Inter, which
+   was both a third-party request and the single most over-used typeface on the
+   web right now. General Sans has actual character at reading size and ships
+   as one 37KB variable file covering every weight the site uses. */
+@font-face{
+  font-family:'General Sans';
+  src:url('../fonts/GeneralSans-Variable.woff2') format('woff2-variations');
+  font-weight:200 700; font-style:normal; font-display:swap;
+}
+
+:root{
+  /* TECHNIQUE 2 · OKLCH, converted exactly from the original hex values so the
+     team colors are preserved to the eye while becoming manipulable. Gold at
+     L=0.87 and red at L=0.51 now say plainly what was invisible in hex: the
+     gold is more than a third lighter, which is why it always won the page. */
+  --bg:   oklch(0.1673 0.0257 272.6);
+  --bg2:  oklch(0.2039 0.0423 273.9);
+  --ink:  oklch(0.9588 0.0127  86.8);
+  --gold: oklch(0.8672 0.1773  90.8);
+  --red:  oklch(0.5117 0.2016  20.6);
+  --blue: oklch(0.3794 0.0855 282.4);
+  --warm: oklch(0.7298 0.1702  37.2);
+  --paper:oklch(0.9588 0.0127  86.8);
+  --ink-on-paper: oklch(0.2363 0.0330 275.9);
+
+  /* TECHNIQUE 3 · color-mix() derives the dim ink and the rules from the ink
+     itself. Two more rgba() literals that can no longer drift out of step. */
+  --ink-dim: color-mix(in oklab, var(--ink) 66%, transparent);
+  --rule:    color-mix(in oklab, var(--ink) 14%, transparent);
+
+  /* TECHNIQUE 4 · relative color syntax for state, derived from the token. */
+  --gold-hot:  oklch(from var(--gold) calc(l + 0.06) c h);
+  --red-deep:  oklch(from var(--red)  calc(l - 0.14) c h);
+  --gold-wash: oklch(from var(--gold) l c h / 0.10);
+
+  color-scheme: dark;
+}
+
+body{ font-family:'General Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+
+/* TECHNIQUE 5 · balance on headings kills orphaned last words in the big
+   display type; pretty does the same job for running copy. */
+.display, h1, h2, h3, .section__title, .hero__title{ text-wrap:balance; }
+p, .hero__sub, .section__lede{ text-wrap:pretty; }
+
+/* TECHNIQUE 6 · variable-font axes as animatable CSS. The hero settles from
+   light to full weight once on load, which reads as the page taking a breath
+   before it starts talking. */
+@media (prefers-reduced-motion: no-preference){
+  .hero__title{ animation:usmnt-settle 900ms cubic-bezier(.2,.7,.2,1) both; }
+  @keyframes usmnt-settle{
+    from{ font-variation-settings:'wght' 300; opacity:0; transform:translateY(.10em); }
+    to  { font-variation-settings:'wght' 600; opacity:1; transform:none; }
+  }
+}
+
+/* TECHNIQUE 7 · scroll-driven reveals via view(), replacing the JS reveal
+   observer for these elements. animation-fill-mode:both is what stops them
+   snapping back when you scroll up.
+   TECHNIQUE 8 · wrapped in @supports so a browser without scroll timelines
+   shows everything, already visible. */
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion: no-preference){
+    .section, .card, .polaroid, .ticket{
+      animation:usmnt-rise linear both;
+      animation-timeline:view();
+      animation-range:entry 5% entry 40%;
+    }
+    @keyframes usmnt-rise{
+      from{ opacity:0; transform:translateY(16px); }
+      to  { opacity:1; transform:none; }
+    }
+  }
+}
+
+/* TECHNIQUE 9 · container queries. Cards answer to their own width, so the
+   polaroid wall and the roster grid stay correct at any column count instead
+   of at the three viewport widths someone happened to test. */
+.card, .polaroid, .ticket, .stat{ container-type:inline-size; }
+@container (max-width: 260px){
+  .card p, .polaroid figcaption{ font-size:.8125rem; }
+  .ticket .ticket__meta{ display:none; }
+}
+
+/* TECHNIQUE 10 · :has(). A section that actually contains a photo wall gets
+   the warm ground; one that contains a scoreline gets the cool one. The page
+   responds to what is really in it. */
+.section:has(.polaroid){ background:linear-gradient(180deg,transparent,var(--gold-wash) 160%); }
+.section:has(.scoreline){ border-left:2px solid var(--red-deep); }
+
+/* TECHNIQUE 11 · Popover API + TECHNIQUE 12 · anchor positioning.
+   The site is full of claims with receipts behind them. Now a claim can carry
+   its own source, tethered to itself, with no positioning library and no
+   modal that swallows the page. */
+.src-btn{
+  font-family:'JetBrains Mono',ui-monospace,monospace; font-size:.625rem;
+  letter-spacing:.08em; text-transform:uppercase; cursor:pointer;
+  color:var(--ink-dim); background:none; border:1px solid var(--rule);
+  border-radius:3px; padding:.15em .45em; margin-left:.5em;
+  transition:color .15s, border-color .15s;
+}
+.src-btn:hover{ color:var(--gold); border-color:var(--gold); }
+.src-pop{
+  margin:0; border:1px solid var(--rule); background:var(--bg2); color:var(--ink);
+  border-radius:8px; padding:14px 16px; max-width:min(32ch,80vw);
+  font-size:.875rem; line-height:1.5; box-shadow:0 24px 60px -30px #000;
+  position-area:block-end span-inline-start;
+  position-try-fallbacks:flip-block, flip-inline;
+  /* TECHNIQUE 13 · @starting-style + allow-discrete: animate out of display:none. */
+  opacity:0; translate:0 -6px;
+  transition:opacity .18s, translate .18s, display .18s allow-discrete;
+}
+.src-pop:popover-open{ opacity:1; translate:0 0; }
+@starting-style{ .src-pop:popover-open{ opacity:0; translate:0 -6px; } }
+
+/* TECHNIQUE 14 · tabular figures anywhere numbers are compared: scorelines,
+   minutes, caps, dates. */
+.scoreline, .stat__num, .minute, time, [data-count]{ font-variant-numeric:tabular-nums; }
+
+/* TECHNIQUE 15 · reduced motion honored for everything added here. */
+@media (prefers-reduced-motion: reduce){
+  .section,.card,.polaroid,.ticket{ animation:none; opacity:1; transform:none; }
+  .hero__title{ animation:none; opacity:1; transform:none; }
+}
