@@ -2,3 +2,5 @@
 Thumbs.db
 .idea/
 .vscode/
+next/**/*.rubric.json
+next/*.rubric.json
