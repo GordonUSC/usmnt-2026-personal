@@ -148,26 +148,35 @@
   function persist() { try { localStorage.setItem(KEY, JSON.stringify(save)); storageOK = true; savedThisSession = true; } catch (e) { storageOK = false; } }
 
   /* ---------------- audio ---------------- */
-  var AC = null, crowdGain = null, soundOn = false;
+  var AC = null, crowdGain = null, masterGain = null, voices = new Set(), audioOpen = false, soundOn = false;
   var reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var practice = false, uiLast = "";
   function ac() {
     if (!soundOn) return null;
     if (!AC) {
       var A = window.AudioContext || window.webkitAudioContext; if (!A) return null;
-      AC = new A();
+      AC = new A(); masterGain = AC.createGain(); masterGain.gain.value = 0; masterGain.connect(AC.destination);
       // a filtered noise bed as the crowd, swelling on chances and goals
       var len = AC.sampleRate * 2, buf = AC.createBuffer(1, len, AC.sampleRate), d = buf.getChannelData(0);
       for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * .5;
       var src = AC.createBufferSource(); src.buffer = buf; src.loop = true;
       var f = AC.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = 900; f.Q.value = .6;
       crowdGain = AC.createGain(); crowdGain.gain.value = 0;
-      src.connect(f); f.connect(crowdGain); crowdGain.connect(AC.destination); src.start();
+      src.connect(f); f.connect(crowdGain); crowdGain.connect(masterGain); src.start();
     }
     if (AC.state === "suspended") AC.resume();
+    syncAudio();
     return AC;
   }
-  function beep(f, d, type, v, w) { var c = AC; if (!c || !soundOn) return; var o = c.createOscillator(), n = c.createGain(), t0 = c.currentTime + (w || 0); o.type = type || "square"; o.frequency.value = f; n.gain.setValueAtTime(v || .06, t0); n.gain.exponentialRampToValueAtTime(.001, t0 + d); o.connect(n); n.connect(c.destination); o.start(t0); o.stop(t0 + d + .02); }
+  function syncAudio() {
+    var open = soundOn && !document.hidden && !(mode === "play" && match && match.paused);
+    if (!AC || open === audioOpen) return;
+    audioOpen = open; var now = AC.currentTime;
+    masterGain.gain.cancelScheduledValues(now); masterGain.gain.setValueAtTime(masterGain.gain.value, now); masterGain.gain.linearRampToValueAtTime(open ? 1 : 0, now + .008);
+    if (!open) { voices.forEach(function(o){try{o.stop(now + .01);}catch(e){}}); voices.clear(); if(crowdGain)crowdGain.gain.value=0; }
+  }
+  function trackVoice(o,n) { voices.add(o); o.onended=function(){voices.delete(o);o.disconnect();n.disconnect();}; }
+  function beep(f, d, type, v, w) { var c = AC; syncAudio(); if (!c || !audioOpen) return; var o = c.createOscillator(), n = c.createGain(), t0 = c.currentTime + (w || 0); o.type = type || "square"; o.frequency.value = f; n.gain.setValueAtTime(v || .06, t0); n.gain.exponentialRampToValueAtTime(.001, t0 + d); o.connect(n); n.connect(masterGain); trackVoice(o,n); o.start(t0); o.stop(t0 + d + .02); }
   var sfx = {
     kick: function (p) { beep(140 + (p || 0) * 80, .09, "square", .08); beep(80, .08, "triangle", .1, .01); },
     pass: function () { beep(220, .05, "square", .05); },
@@ -743,7 +752,7 @@
   save.results.forEach(function (r, i) { if (r) { run.lines[i] = r; run.points[i] = r.pts; } });
 
   function tick() {
-    t++;
+    t++; syncAudio();
     crowdLevel += (crowdTarget - crowdLevel) * .05;
     conf.forEach(function (c) { c.x += c.vx; c.y += c.vy; c.vy += .02; c.l--; });
     conf = conf.filter(function (c) { return c.l > 0 && c.y < H; }).slice(-240);
@@ -754,7 +763,7 @@
       if (pressed.D) { sel = (sel + 1) % 5; sfx.blip(); }
       if (pressed.START || pressed.PASS || pressed.SHOOT) startChapter(sel);
     } else if (mode === "play") {
-      if (pressed.PAUSE) { match.paused = !match.paused; clearInput(); }
+      if (pressed.PAUSE) { match.paused = !match.paused; clearInput(); syncAudio(); }
       if (pressed.MENU) { mode = "menu"; }
       else if (!match.paused) step();
     } else if (mode === "practiceResult") {
@@ -787,15 +796,15 @@
   /* Native controls mirror canvas states; saves keep their original v2 key. */
   var statusEl=document.getElementById("status"), recordEl=document.getElementById("record"), startBtn=document.getElementById("bStart"), pauseBtn=document.getElementById("bPause"), picker=document.getElementById("matchPicker");
   function clearInput() { Object.keys(keys).forEach(function(k){keys[k]=false;}); pressed={}; btnPass=btnShoot=false; stick.x=stick.y=0; if(knob) knob.style.transform=""; if(match) match.charging=false; }
-  function leaveFocus() { clearInput(); if(mode === "play" && match) match.paused=true; if(crowdGain) crowdGain.gain.value=0; }
+  function leaveFocus() { clearInput(); if(mode === "play" && match) match.paused=true; syncAudio(); }
   window.addEventListener("blur",leaveFocus);
   document.addEventListener("visibilitychange",function(){if(document.hidden) leaveFocus();});
   cv.addEventListener("blur",function(e){ if(!document.getElementById("cabinet").contains(e.relatedTarget)) leaveFocus(); else clearInput(); });
   function choose() { clearInput(); practice=false; mode="menu"; cv.focus(); }
   document.getElementById("bMenu").onclick=choose;
   document.getElementById("bPractice").onclick=function(){startChapter(0,true);};
-  pauseBtn.onclick=function(){if(mode === "play") {match.paused=!match.paused;clearInput();cv.focus();}};
-  document.getElementById("bSound").onclick=function(){soundOn=!soundOn;this.textContent=soundOn?"Sound on":"Sound off";this.setAttribute("aria-pressed",String(soundOn));if(soundOn)ac();else if(crowdGain)crowdGain.gain.value=0;};
+  pauseBtn.onclick=function(){if(mode === "play") {match.paused=!match.paused;clearInput();syncAudio();cv.focus();}};
+  document.getElementById("bSound").onclick=function(){soundOn=!soundOn;this.textContent=soundOn?"Sound on":"Sound off";this.setAttribute("aria-pressed",String(soundOn));if(soundOn)ac();syncAudio();};
   startBtn.onclick=function(){
     if(mode === "result") {if(match.i<4)startChapter(match.i+1);else{mode="end";endT=0;cv.focus();}}
     else if(mode === "play") {match.paused=false;clearInput();cv.focus();}

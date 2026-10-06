@@ -17,6 +17,9 @@ Real isolated headless Chromium screenshots, including a direct live baseline. M
 
 Kit selections/details/favorites/photo controls tested on both URLs; no-JS baseline retained. Long Game:8eras,28toys,22regression checks plus real touch hold/release. BelaMini: real-time warm-up and full Bosnia chapter, progression to Belgium, save restoration and ending media; no game errors reported. Existing game records/custom fields survived, warm-up did not change records.
 
+## Final audio regression
+Both game routes and their archived counterparts now send all voices through a shared master gain. Sound off, pause, and the hidden-tab handler fade output to zero in 8 ms and stop queued oscillators, so resuming cannot replay stale fanfares. The Long Game explicitly defines its eighth-era timbre and a fallback. Isolated Chromium checks confirmed zero analyser output after muting a goal, pausing a whistle, and dispatching the visibility handler with hidden state; no queued voices remained after resuming. All eight eras accepted sound-enabled movement in both directions without runtime errors. Sound quality has not been independently heard.
+
 ## Limits
 No physical-phone, console-controller, Safari/Firefox, screen-reader or extended balance test. Canvas games are not equivalent nonvisual experiences; their DOM controls/status/transcripts improve access but do not replace the playfield. No claim of full-film tactical analysis or every archival personal detail being independently verified. No measured engagement improvement. No publication or messages to friends performed.
 

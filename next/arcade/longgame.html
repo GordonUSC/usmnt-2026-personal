@@ -185,23 +185,31 @@
   var off2 = document.createElement("canvas"), og2 = off2.getContext("2d");
 
   /* ---------------- audio: era + mood ---------------- */
-  var AC = null, padOsc = null, padGain = null, lastStep = 0;
-  function ac() { if (!soundOn) return null; if (!AC) { var A = window.AudioContext || window.webkitAudioContext; if (A) AC = new A(); } return AC; }
+  var AC = null, masterGain = null, voices = new Set(), audioOpen = false, lastStep = 0;
+  function ac() { if (!soundOn || paused || document.hidden) return null; if (!AC) { var A = window.AudioContext || window.webkitAudioContext; if (A) { AC = new A(); masterGain = AC.createGain(); masterGain.gain.value = 0; masterGain.connect(AC.destination); } } syncAudio(); return AC; }
+  function syncAudio() {
+    var open = soundOn && !paused && !document.hidden;
+    if (!AC || open === audioOpen) return;
+    audioOpen = open; var now = AC.currentTime;
+    masterGain.gain.cancelScheduledValues(now); masterGain.gain.setValueAtTime(masterGain.gain.value, now); masterGain.gain.linearRampToValueAtTime(open ? 1 : 0, now + .008);
+    if (!open) { voices.forEach(function(o){try{o.stop(now + .01);}catch(e){}}); voices.clear(); }
+  }
+  function trackVoice(o,g) { voices.add(o); o.onended=function(){voices.delete(o);o.disconnect();g.disconnect();}; }
   function beep(f, d, type, v, when) {
     var c = ac(); if (!c) return;
     var o = c.createOscillator(), g = c.createGain(), t0 = c.currentTime + (when || 0);
-    o.type = type; o.frequency.value = f;
+    o.type = type || "sine"; o.frequency.value = f;
     g.gain.setValueAtTime(v, t0); g.gain.exponentialRampToValueAtTime(.001, t0 + d);
-    o.connect(g); g.connect(c.destination); o.start(t0); o.stop(t0 + d + .02);
+    o.connect(g); g.connect(masterGain); trackVoice(o,g); o.start(t0); o.stop(t0 + d + .02);
   }
   function stepSound(era) {
     var now = performance.now();
     if (now - lastStep < 260) return;
     lastStep = now;
     var minor = mood < -0.2;
-    var base = [180, 220, 262, 330, 392, 440, 494][era] || 262;
+    var base = [180, 220, 262, 330, 392, 440, 494, 523][era] || 262;
     var third = minor ? base * 1.189 : base * 1.26;   /* minor vs major third */
-    var types = ["sine", "square", "square", "square", "triangle", "triangle", "sine"];
+    var types = ["sine", "square", "square", "square", "triangle", "triangle", "sine", "sine"];
     beep(base, .07, types[era], .045);
     if (era >= 3) beep(third, .07, types[era], .03, .02);
   }
@@ -213,8 +221,8 @@
   function sfxKick() { beep(160, .12, "square", .1); beep(90, .1, "triangle", .12, .02); }
   function sfxGoal() { [523, 659, 784, 1047].forEach(function (f, i) { beep(f, .16, "square", .07, i * .09); }); beep(1319, .4, "square", .06, .38); }
   function sfxSave() { beep(120, .25, "sawtooth", .09); beep(80, .3, "sawtooth", .08, .08); }
-  function whistle() { var c = ac(); if (!c) return; var o = c.createOscillator(), g = c.createGain(), n = c.currentTime; o.type = "square"; o.frequency.setValueAtTime(2200, n); o.frequency.linearRampToValueAtTime(2600, n + .08); o.frequency.linearRampToValueAtTime(2100, n + .22); g.gain.setValueAtTime(.05, n); g.gain.exponentialRampToValueAtTime(.001, n + .3); o.connect(g); g.connect(c.destination); o.start(n); o.stop(n + .32); }
-  function whoosh(up) { var c = ac(); if (!c) return; var o = c.createOscillator(), g = c.createGain(), n = c.currentTime; o.type = "sawtooth"; o.frequency.setValueAtTime(up ? 120 : 900, n); o.frequency.exponentialRampToValueAtTime(up ? 900 : 120, n + .35); g.gain.setValueAtTime(.04, n); g.gain.exponentialRampToValueAtTime(.001, n + .4); o.connect(g); g.connect(c.destination); o.start(n); o.stop(n + .42); }
+  function whistle() { var c = ac(); if (!c) return; var o = c.createOscillator(), g = c.createGain(), n = c.currentTime; o.type = "square"; o.frequency.setValueAtTime(2200, n); o.frequency.linearRampToValueAtTime(2600, n + .08); o.frequency.linearRampToValueAtTime(2100, n + .22); g.gain.setValueAtTime(.05, n); g.gain.exponentialRampToValueAtTime(.001, n + .3); o.connect(g); g.connect(masterGain); trackVoice(o,g); o.start(n); o.stop(n + .32); }
+  function whoosh(up) { var c = ac(); if (!c) return; var o = c.createOscillator(), g = c.createGain(), n = c.currentTime; o.type = "sawtooth"; o.frequency.setValueAtTime(up ? 120 : 900, n); o.frequency.exponentialRampToValueAtTime(up ? 900 : 120, n + .35); g.gain.setValueAtTime(.04, n); g.gain.exponentialRampToValueAtTime(.001, n + .4); o.connect(g); g.connect(masterGain); trackVoice(o,g); o.start(n); o.stop(n + .42); }
   function thunder() { beep(70, .6, "triangle", .12); beep(50, .9, "sine", .1, .1); }
 
   /* ---------------- palettes with mood ---------------- */
@@ -1348,7 +1356,7 @@
   });
   MILES.forEach(function(m){var p=document.createElement("p"),b=document.createElement("b");b.textContent=m.y;p.appendChild(b);p.appendChild(document.createTextNode(m.txt));document.getElementById("read-story").appendChild(p);});
   function releaseKeys() { Object.keys(keys).forEach(function(k){keys[k]=false;}); dragging=false; }
-  function setPaused(value) { paused=value;releaseKeys();needsRender=true;document.getElementById("pause").textContent=paused?"Resume":"Pause";document.getElementById("pause").setAttribute("aria-pressed",String(paused));if(paused)saveJourney(); }
+  function setPaused(value) { paused=value;syncAudio();releaseKeys();needsRender=true;document.getElementById("pause").textContent=paused?"Resume":"Pause";document.getElementById("pause").setAttribute("aria-pressed",String(paused));if(paused)saveJourney(); }
   function jumpEra(i) { releaseKeys(); var lo=i?ERAS[i-1].until:0;px=i===7?WORLD:WORLD*(lo+Math.min(1,ERAS[i].until))/2;walked=true;visited[i]=true;dirty=true;needsRender=true;parts=[];fx2=[];uiEra=-1;syncUI(i);document.getElementById("feedback").textContent="Explore "+ERAS[i].name+". Try a toy or walk onward."; }
   function syncUI(era) {
     var yr=year(progress()), mile=milestoneFor(yr), text=mile?mile.txt:"";
@@ -1366,7 +1374,7 @@
     TOYS[era].concat([[" ","Cheer"],["m","Matchday"],["h","Hearts"]]).forEach(function(toy){var b=document.createElement("button");b.type="button";var key=document.createElement("kbd");key.textContent=toy[0]===" "?"SPC":toy[0].toUpperCase();b.appendChild(key);b.appendChild(document.createTextNode(toy[1]));b.dataset.key=toy[0];b.setAttribute("aria-label",toy[1]+" ("+(toy[0]===" "?"Space":toy[0].toUpperCase())+")");b.dataset.found=String(!!found[era+":"+toy[0]]);b.addEventListener("click",function(){eraKey(toy[0]);syncUI(eraIndex(progress()));});container.appendChild(b);});
   }
   document.getElementById("pause").addEventListener("click",function(){setPaused(!paused);});
-  document.getElementById("sound").addEventListener("click",function(){soundOn=!soundOn;this.textContent=soundOn?"Sound on":"Sound off";this.setAttribute("aria-pressed",String(soundOn));if(soundOn){var c=ac();if(c)c.resume();beep(523,.12,"sine",.05);}else if(AC)AC.suspend();});
+  document.getElementById("sound").addEventListener("click",function(){soundOn=!soundOn;this.textContent=soundOn?"Sound on":"Sound off";this.setAttribute("aria-pressed",String(soundOn));if(soundOn){var c=ac();if(c)c.resume();beep(523,.12,"sine",.05);}else syncAudio();});
   document.getElementById("motion").setAttribute("aria-pressed",String(calm));
   document.getElementById("motion").addEventListener("click",function(){calm=!calm;this.setAttribute("aria-pressed",String(calm));needsRender=true;parts=[];fx2=[];animeFx=null;});
   document.getElementById("restart").addEventListener("click",function(){releaseKeys();px=60;mood=0;walked=false;reachedEnd=false;dirty=true;needsRender=true;fx2=[];parts=[];uiEra=-1;setPaused(false);syncUI(0);document.getElementById("feedback").textContent="Back to the green kit. Your discoveries are still yours.";});
@@ -1389,8 +1397,8 @@
   cv.addEventListener("pointerdown",function(e){cv.focus({preventScroll:true});cv.setPointerCapture(e.pointerId);if(paused)setPaused(false);dragging=true;dx0=e.clientX;dy0=e.clientY;});
   cv.addEventListener("pointermove",function(e){if(!dragging)return;var dx=e.clientX-dx0,dy=e.clientY-dy0;keys.right=dx>12;keys.left=dx<-12;keys.up=dy<-12;keys.down=dy>12;needsRender=true;});
   ["pointerup","pointercancel","lostpointercapture"].forEach(function(ev){cv.addEventListener(ev,releaseKeys);});
-  window.addEventListener("blur",function(){releaseKeys();saveJourney();});
-  document.addEventListener("visibilitychange",function(){releaseKeys();saveJourney();});
+  window.addEventListener("blur",function(){setPaused(true);saveJourney();});
+  document.addEventListener("visibilitychange",function(){if(document.hidden)setPaused(true);syncAudio();releaseKeys();saveJourney();});
   window.addEventListener("pagehide",saveJourney);
   syncUI(eraIndex(progress()));
 
