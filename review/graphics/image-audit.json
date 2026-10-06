@@ -877,11 +877,6 @@
     "damion-downs",
     "frankie-westfield"
   ],
-  "legacyCreditsUnresolved": [
-    "assets/azteca.jpg",
-    "assets/levis.jpg",
-    "assets/lumen.jpg",
-    "assets/olimpico.jpg",
-    "assets/sofi.jpg"
-  ]
+  "legacyCreditsUnresolved": [],
+  "verifiedVenueRegister": "assets/venue-credits.json"
 }

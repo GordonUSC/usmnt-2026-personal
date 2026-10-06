@@ -21,7 +21,7 @@ No autoplay or tutorial gate. Arrow/Home/End keys navigate the tabs; visible con
 - Seven existing personal photographs were sideways. Upright WebP display copies are used while originals and author captions remain. No generative alteration to photographs.
 - Intrinsic image dimensions corrected throughout the root pages; a public image-credit register is linked from the footer. The arcade preview is an actual capture of the revised HD stage.
 - Every local raster was visually inspected in contact sheets; the inventory records dimensions, byte size, classification and referring pages in `image-audit.json`.
-- Five pre-existing venue photographs lack recorded source/license details in this repository: Azteca, Levi's, Lumen, Olimpico and SoFi. These remain explicit attribution gaps. No license or independent authentication is invented. The existing MetLife aerial matches the already credited Commons version.
+- All five legacy venue photographs now have verified source links, authors, dates and reuse terms in `assets/venue-credits.json` and the public image-credit page. Original image bytes are unchanged. The earlier audit overstated the gap: the original commit and surviving inline captions already recorded authors/licenses; the missing source-link verification is now complete.
 
 ## Verification
 
@@ -37,3 +37,11 @@ Evidence bundle: `evidence/graphics-fix/` in the delivery package.
 - Changed scripts pass syntax checks.
 
 The unrelated `next/fall-2026.ics` working-tree normalization is excluded. No native Chrome, messages, credentials, deployment, merge or public push were used in this pass.
+
+## Venue-source follow-up
+
+SoFi: Troutfarm27, CC BY-SA 4.0 (2021-11-14). Levi’s: Matthew Roth, CC BY-SA 2.0 (2014-08-12). Azteca: AnatGutman, CC0 (2017-06-11). Olimpico: romazone, CC BY 2.0 (2014-05-11). Lumen: SounderBruce / Bruce Englehardt, CC BY-SA 4.0 (2019-07-20). All five match the existing assets visually; source metadata and local hashes are retained. A similarly named Lumen photograph was rejected because it did not match.
+
+Audit lesson: inspect original commits, existing inline credits and embedded metadata before labeling an image unattributed. A missing central register is not the same as missing authorship or a missing license.
+
+Follow-up checks: all five source photos visually matched; linked credit screens checked at 1440, 390 and 320 pixels; all five venue assets and existing player/art/display assets are byte-identical to the prior review. The compact review demos were exercised from `file://` with zero HTTP(S) requests and zero runtime errors. The Canada states, portrait decode, five venue images, actual game pass and HD/anime/photo rendering passed. The compact kit contains self-contained demos plus the complete production patch; it is explicitly not a deployment directory.
