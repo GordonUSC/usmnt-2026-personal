@@ -1,5 +1,7 @@
 # October 6 revision · draft for review
 
+Historical review record: this initial revision was published through PR #2. The later, unpublished expansion is documented in [next-pass/REVIEW.md](next-pass/REVIEW.md).
+
 ## Audience and first useful action
 Gordon and dedicated U.S. soccer friends. Within a minute: get the dated team update, enter the summer's personal story, choose an explorable kit, or play a complete game.
 

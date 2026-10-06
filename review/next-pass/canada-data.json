@@ -1,0 +1,336 @@
+{
+  "snapshot": "Canada pregame notebook · October 6, 2026. Clubs: federation window context and later call-up releases. International caps/goals are not asserted here.",
+  "players": [
+    {
+      "id": "can-jonathan-david",
+      "name": "Jonathan David",
+      "position": "FWD",
+      "club": "Atlético Madrid · loan from Juventus",
+      "role": "Forward",
+      "cohort": "camp",
+      "status": "Opponent watch · starting XI unannounced",
+      "facts": [
+        "Scored the winner against Chile at 12 minutes."
+      ],
+      "analysis": {
+        "strength": "Movement between midfield and centre-backs can precede a second run into the box.",
+        "question": "Does the dropping movement draw a defender before the next run?",
+        "watch": "His second movement after connecting the attack."
+      },
+      "sources": [
+        "announcement",
+        "chile"
+      ]
+    },
+    {
+      "id": "can-jacob-shaffelburg",
+      "name": "Jacob Shaffelburg",
+      "position": "MID",
+      "club": "LAFC",
+      "role": "Wide midfielder",
+      "cohort": "camp",
+      "status": "Opponent watch · starting XI unannounced",
+      "facts": [
+        "Scored both goals against Peru, at 19 and 35 minutes."
+      ],
+      "analysis": {
+        "strength": "A wide runner arriving beyond the ball can turn a regain into depth.",
+        "question": "Who sees the run while the first defender is drawn toward the ball?",
+        "watch": "The far-side run after Canada wins possession."
+      },
+      "sources": [
+        "announcement",
+        "peru"
+      ]
+    },
+    {
+      "id": "can-stephen-eustaquio",
+      "name": "Stephen Eustáquio",
+      "position": "MID",
+      "club": "Swansea City",
+      "role": "Central midfielder",
+      "cohort": "camp",
+      "status": "Opponent watch · starting XI unannounced",
+      "facts": [
+        "Listed with Swansea City in the federation’s window context."
+      ],
+      "analysis": {
+        "strength": "The first forward pass after a regain can exploit a defence before it resets.",
+        "question": "Can the U.S. make him receive facing his own goal?",
+        "watch": "His body orientation and the first pass after possession changes."
+      },
+      "sources": [
+        "announcement"
+      ]
+    },
+    {
+      "id": "can-nathan-saliba",
+      "name": "Nathan Saliba",
+      "position": "MID",
+      "club": "Villarreal",
+      "role": "Central midfielder",
+      "cohort": "camp",
+      "status": "Opponent watch · starting XI unannounced",
+      "facts": [
+        "Started both completed matches in this window."
+      ],
+      "analysis": {
+        "strength": "The second midfield connection links pressure with the next attacking action.",
+        "question": "Who supports the first presser and protects the space behind?",
+        "watch": "The second pass and the covering position as teammates go forward."
+      },
+      "sources": [
+        "announcement",
+        "chile",
+        "peru"
+      ]
+    },
+    {
+      "id": "can-tani-oluwaseyi",
+      "name": "Tani Oluwaseyi",
+      "position": "FWD",
+      "club": "Villarreal",
+      "role": "Forward",
+      "cohort": "camp",
+      "status": "Opponent watch · starting XI unannounced",
+      "facts": [
+        "A former Minnesota player, now listed at Villarreal."
+      ],
+      "analysis": {
+        "strength": "Runs behind a stepping defender can stretch the first line of pressure.",
+        "question": "Does the forward run create room for another player to receive short?",
+        "watch": "Pressure on the first U.S. pass, then the run once Canada wins it."
+      },
+      "sources": [
+        "announcement"
+      ]
+    },
+    {
+      "id": "can-liam-millar",
+      "name": "Liam Millar",
+      "position": "MID",
+      "club": "Birmingham City · loan from Hull",
+      "role": "Wide midfielder",
+      "cohort": "camp",
+      "status": "Opponent watch · starting XI unannounced",
+      "facts": [
+        "Started against Peru."
+      ],
+      "analysis": {
+        "strength": "An opposite-side outlet can matter as the defence shifts toward the ball.",
+        "question": "When should he stay wide rather than join the ball-side combination?",
+        "watch": "The outlet left behind as Canada pulls the defence across."
+      },
+      "sources": [
+        "announcement",
+        "peru"
+      ]
+    },
+    {
+      "id": "can-niko-sigur",
+      "name": "Niko Sigur",
+      "position": "DEF",
+      "club": "Toulouse",
+      "role": "Defender",
+      "cohort": "camp",
+      "status": "Opponent watch · starting XI unannounced",
+      "facts": [
+        "Listed at Toulouse in the federation’s window context."
+      ],
+      "analysis": {
+        "strength": "A defender advancing behind pressure can keep the team compact.",
+        "question": "What space appears behind that advance?",
+        "watch": "His support of pressure and the U.S. option into the vacated channel."
+      },
+      "sources": [
+        "announcement"
+      ]
+    },
+    {
+      "id": "can-richie-laryea",
+      "name": "Richie Laryea",
+      "position": "DEF",
+      "club": "Toronto FC",
+      "role": "Defender",
+      "cohort": "camp",
+      "status": "Opponent watch · starting XI unannounced",
+      "facts": [
+        "Listed at Toronto FC in the federation’s window context."
+      ],
+      "analysis": {
+        "strength": "The timing of a wide defender’s arrival can change the attacking numbers.",
+        "question": "Can the recovery begin before the U.S. switch reaches the far side?",
+        "watch": "His arrival into attack and his first recovery steps."
+      },
+      "sources": [
+        "announcement"
+      ]
+    },
+    {
+      "id": "can-luc-de-fougerolles",
+      "name": "Luc de Fougerolles",
+      "position": "DEF",
+      "club": "Real Salt Lake · loan from Fulham",
+      "role": "Defender",
+      "cohort": "camp",
+      "status": "Opponent watch · starting XI unannounced",
+      "facts": [
+        "Started both completed window matches."
+      ],
+      "analysis": {
+        "strength": "A centre-back may contest a dropping receiver before that player can turn.",
+        "question": "Follow the forward, or preserve the space behind?",
+        "watch": "The cover accompanying his decision to step up."
+      },
+      "sources": [
+        "announcement",
+        "chile",
+        "peru"
+      ]
+    },
+    {
+      "id": "can-ralph-priso",
+      "name": "Ralph Priso",
+      "position": "DEF",
+      "club": "Vancouver Whitecaps",
+      "role": "Defender",
+      "cohort": "camp",
+      "status": "Opponent watch · starting XI unannounced",
+      "facts": [
+        "Vancouver confirms his starts against Chile and Peru."
+      ],
+      "analysis": {
+        "strength": "The other defender’s position determines whether a step into midfield is protected.",
+        "question": "Who takes responsibility for the space the first challenger leaves?",
+        "watch": "The other side of the defensive step-up."
+      },
+      "sources": [
+        "announcement",
+        "vancouver"
+      ]
+    },
+    {
+      "id": "can-dayne-st.-clair",
+      "name": "Dayne St. Clair",
+      "position": "GK",
+      "club": "Inter Miami",
+      "role": "Goalkeeper",
+      "cohort": "camp",
+      "status": "Opponent watch · starting XI unannounced",
+      "facts": [
+        "Started against Chile. A former Minnesota player."
+      ],
+      "analysis": {
+        "strength": "Goalkeeper involvement can create another passing option against the U.S. press.",
+        "question": "Is the next pass prepared for the receiver, or merely away from pressure?",
+        "watch": "The goalkeeper’s starting position and first decision."
+      },
+      "sources": [
+        "announcement",
+        "chile"
+      ]
+    },
+    {
+      "id": "can-marcus-caldeira",
+      "name": "Marcus Caldeira",
+      "position": "FWD",
+      "club": "Minnesota United",
+      "role": "Forward · first senior call-up",
+      "cohort": "camp",
+      "status": "Opponent watch · starting XI unannounced",
+      "facts": [
+        "Minnesota records five goals and three assists in 11 first-team appearances, all competitions, at its published snapshot."
+      ],
+      "analysis": {
+        "strength": "The club profile identifies near-post runs, headers and poacher-style finishes.",
+        "question": "What is his first senior job if used from the bench?",
+        "watch": "The first move across a defender before the delivery."
+      },
+      "sources": [
+        "caldeira",
+        "caldeira-story",
+        "changes"
+      ]
+    },
+    {
+      "id": "can-theo-corbeanu",
+      "name": "Theo Corbeanu",
+      "position": "FWD",
+      "club": "Toronto FC",
+      "role": "Wide attacking option · late addition",
+      "cohort": "camp",
+      "status": "Opponent watch · starting XI unannounced",
+      "facts": [
+        "Joined the camp after the Buchanan and Larin withdrawals."
+      ],
+      "analysis": {
+        "strength": "An additional wide option can change the route into the final third.",
+        "question": "Will he supply width or play as an advanced second-line attacker?",
+        "watch": "The role Marsch actually gives him; a late call-up is not a starting prediction."
+      },
+      "sources": [
+        "changes",
+        "announcement"
+      ]
+    }
+  ],
+  "sources": {
+    "camp": {
+      "label": "Canada Soccer · updated camp roster",
+      "url": "https://www.canadasoccer.com/camp/1957/mens-international-series-in-canada-and-usa/",
+      "note": "Camp participation is not an exhaustive matchday availability list."
+    },
+    "announcement": {
+      "label": "Canada Soccer · September/October squad announcement",
+      "url": "https://news.canadasoccer.com/canmnt-squad-named-for-september-october-international-window-following-historic-fifa-world-cup-26",
+      "note": "Club context and the World Cup sequence; later changes are reconciled below."
+    },
+    "changes": {
+      "label": "MLS · Caldeira and Corbeanu added",
+      "url": "https://www.mlssoccer.com/news/caldeira-corbeanu-added-to-canada-squad-for-usmnt-game",
+      "note": "Buchanan and Larin withdrew injured. The article’s Corbeanu age is not repeated."
+    },
+    "caldeira": {
+      "label": "Minnesota · Caldeira’s first senior call-up",
+      "url": "https://www.mnufc.com/news/forward-marcus-caldeira-called-up-to-canada-men-s-national-team-camp"
+    },
+    "caldeira-story": {
+      "label": "Minnesota · Caldeira’s club breakthrough",
+      "url": "https://www.mnufc.com/news/storylines-marcus-caldeira-s-journey-to-major-league-success"
+    },
+    "vancouver": {
+      "label": "Vancouver · international call-up tracker",
+      "url": "https://www.whitecapsfc.com/news/whitecaps-september-october-international-call-up-tracker",
+      "note": "Badwal returned with a hamstring strain; also documents Priso’s starts."
+    },
+    "knight-lebel": {
+      "label": "Motherwell · Knight-Lebel camp confirmation, Sep 22",
+      "url": "https://www.motherwellfc.co.uk/2026/09/22/jamie-knight-lebel-in-canada-squad/"
+    },
+    "chile": {
+      "label": "Canada Soccer · Canada 1–0 Chile, Sep 26",
+      "url": "https://canadasoccer.com/match/6620/",
+      "note": "David 12′. Chile dismissals at 35′ and 49′ matter when interpreting the clean sheet."
+    },
+    "peru": {
+      "label": "Canada Soccer · Canada 2–0 Peru, Oct 3",
+      "url": "https://canadasoccer.com/match/6619/",
+      "note": "Shaffelburg 19′ and 35′; Jebbison assisted the first; Goodman started."
+    },
+    "series": {
+      "label": "Canada Soccer · window viewing notes",
+      "url": "https://news.canadasoccer.com/5-things-to-watch-during-the-september-october-fifa-international-window",
+      "note": "Previous U.S. meetings were 2–1 Canada wins in September 2024 and March 2025. Its weekday typo is not repeated."
+    },
+    "marsch": {
+      "label": "Jesse Marsch · a national identity",
+      "url": "https://elitesoccercoaching.net/player-and-coach-development/jesse-marsch-a-national-identity",
+      "note": "Primary coaching explanation of pressure, support, stepping centre-backs and forward transitions."
+    },
+    "usa-preview": {
+      "label": "U.S. Soccer · match preview, Oct 5",
+      "url": "https://www.ussoccer.com/stories/2026/10/usmnt/canada-match-st-paul-minnesota",
+      "note": "Fixture and viewing information; later Canadian squad changes take precedence for availability."
+    }
+  }
+}

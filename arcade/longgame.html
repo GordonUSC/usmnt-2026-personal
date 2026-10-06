@@ -71,26 +71,36 @@
   .movement .pad .lf {grid-column:1;grid-row:1}.movement .pad .rt{grid-column:2;grid-row:1}.movement .pad .up{grid-column:3;grid-row:1}.movement .pad .dn{grid-column:4;grid-row:1}
   .movement .mood {flex:1;min-width:150px;margin:0;}
   @media(max-width:600px){.movement{gap:8px}.movement .control-label{display:none}.movement .pad{grid-template-columns:repeat(4,1fr);width:100%;grid-template-rows:48px}.movement .mood{font-size:11px}.transport{gap:6px}.transport button{padding:8px;font-size:11px}}
+
+  .trial-entry{border-top:1px solid #6e775f;border-bottom:1px solid #6e775f;padding:16px 0;margin:20px 0;background:linear-gradient(90deg,#36452c33,transparent)}
+  .trial-entry h2{font:800 18px Inter,system-ui;margin-bottom:7px;letter-spacing:.05em}.trial-entry p{font-size:13px;line-height:1.5;color:#c5cbbd;margin-bottom:12px}.trial-options{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.trial-options label{font-size:12px}.trial-options button:first-of-type{background:#f5d267;color:#18221d}
+  #trial-panel{border-left:4px solid #f5d267;padding:4px 0 4px 15px;margin:12px 0}#trial-panel[hidden],#trial-actions[hidden]{display:none}#trial-panel h2{font:800 clamp(18px,3vw,28px) Inter,system-ui}#trial-goal{font-size:14px;line-height:1.5;margin:8px 0;max-width:850px}.trial-stats{display:flex;gap:15px;flex-wrap:wrap;font:600 13px Inter,system-ui;color:#f5d267}#trial-cue{font-size:12px;line-height:1.4;margin-top:7px;color:#ecf2e0}#trial-feedback{font-size:14px;line-height:1.5;min-height:42px;margin:10px 0;color:#f3d370}#trial-craft,#trial-save{font-size:11px;color:#b3bdb1;line-height:1.5;margin-top:8px}
+  #trial-actions .action-row{display:flex;gap:8px;flex-wrap:wrap}#trial-action{background:#f5d267;color:#10271c;min-width:155px;touch-action:none}button:disabled{opacity:.42;cursor:default}#trial-next{border-color:#f5d267}#trial-scoreboard{font-size:13px;margin:12px 0;line-height:1.5;color:#d1d6c8}.trials-active .trial-entry,.trials-active .intro,.trials-active .topline,.trials-active #chapters,.trials-active .readout,.trials-active .controls,.trials-active .collection,.trials-active main>details,.trials-active #restart{display:none}.trials-active .movement .mood{display:none}.trials-active .movement{justify-content:center}.trials-active .movement .control-label{display:none}.trials-active .transport{margin:10px 0}.trials-active h1{font-size:clamp(15px,3vw,23px)}
+  @media(max-width:600px){.trial-options{gap:6px}.trial-options select{max-width:180px}.trials-active body{padding-top:10px}#trial-panel{padding-left:10px}#trial-goal{font-size:12px}.trial-stats{font-size:11px;gap:10px}#trial-actions .action-row>button{flex:1;padding:8px;font-size:12px;min-width:100px}#trial-action{min-width:100px}#trial-craft{font-size:10px}#trial-cue{font-size:12px;line-height:1.4;margin-top:7px;color:#ecf2e0}#trial-feedback{font-size:13px}}
 </style>
 </head>
 <body>
 <main class="shell">
 <nav class="topline" aria-label="Arcade navigation"><a href="../meta.html">← The arcade / Making of</a><a href="belamini.html">Belamini ’26 →</a></nav>
-<header><h1>THE LONG GAME</h1><p class="intro"><strong>Playable experiment / Gordon’s idea.</strong> Fifty-two years. Eight ways to see the game. Walk from a green kit in 1974 to a real seat in 2026. Every era has something to play with.</p></header>
+<header><h1>THE LONG GAME</h1><p class="intro"><strong>Playable experiment / Gordon’s idea.</strong> Explore freely, or play the eight-era challenge run below. Fifty-two years. Eight ways to see the game. Walk from a green kit in 1974 to a real seat in 2026. Every era has something to play with.</p></header>
 <div class="transport" aria-label="Playback settings"><button id="pause" aria-pressed="false">Pause</button><button id="sound" aria-pressed="false">Sound off</button><button id="motion" aria-pressed="false">Calm motion</button><button id="restart">Walk again ↺</button></div>
+<section class="trial-entry" aria-label="Challenge modes"><h2>THE EIGHT ERA RUN</h2><p>Eight short games. Three chances per stage. One score to bring home. These are fictional training challenges in historical visual styles, not recreations of real matches or console emulation.</p><div class="trial-options"><label for="trial-level">Pace</label><select id="trial-level"><option value="club">Club · generous windows</option><option value="pro">Pro · tighter, ×1.5 points</option></select><button id="trial-run">Play all 8 eras</button><button id="trial-resume" hidden>Resume run</button><label for="trial-era">Practice</label><select id="trial-era"></select><button id="trial-practice">Play this era</button></div><p id="trial-record">Your best run stays on this device.</p></section>
+<section id="trial-panel" hidden aria-label="Current challenge"><h2 id="trial-title"></h2><p id="trial-goal"></p><div class="trial-stats"><span id="trial-progress"></span><span id="trial-lives"></span><span id="trial-time"></span><span id="trial-total"></span></div><p id="trial-cue" aria-live="polite"></p></section>
 <div class="frame"><canvas id="g" width="960" height="540" tabindex="0" aria-label="Playable journey. Arrow keys move through time and change mood. Escape pauses." aria-describedby="instructions story">Use the chapter buttons and the story transcript below to explore this journey.</canvas></div>
 <section class="movement" aria-label="Movement"><p class="control-label">Hold to explore</p><div class="pad">
 <button class="up" data-k="up" aria-label="Lift the heart">↑<small>JOY</small></button><button class="lf" data-k="left" aria-label="Walk backward in time">←<small>REWIND</small></button><button class="dn" data-k="down" aria-label="Lower the heart">↓<small>SORROW</small></button><button class="rt" data-k="right" aria-label="Walk forward in time">→<small>FORWARD</small></button>
 </div><p class="mood" id="mood-readout">Heart: somewhere in between.</p></section>
+<section id="trial-actions" hidden aria-label="Challenge controls"><div class="action-row"><button id="trial-action" disabled>Action</button><button id="trial-next">Start stage</button><button id="trial-retry">Retry era</button><button id="trial-exit">Free exploration</button></div><p id="trial-feedback" role="status"></p><p id="trial-craft"></p><p id="trial-scoreboard"></p><p id="trial-save">Challenge records are separate from your original discoveries.</p></section>
 <nav id="chapters" class="chapters" aria-label="Jump to a graphics era"></nav>
 <div class="readout"><div><div id="year">1974</div><div id="engine">PONG</div></div><div><p id="story" aria-live="polite"></p><p id="discovery">Walk right to find the next memory.</p></div></div>
 <div class="controls"><section aria-label="Era toys"><p class="control-label" id="toy-title">Play in this era</p><div id="toys"></div><p id="feedback" role="status">Try a toy. Then walk into another world.</p></section></div>
 <div class="collection"><span id="collection">0 / 8 eras explored</span><span id="save-state">Progress stays on this device.</span></div>
-<details><summary>How to play · why the world changes</summary><p id="instructions">Focus the scene to use arrows or W A S D. Left rewinds, right advances; up and down change the heart and the atmosphere. Walk into a ball to shoot. On a phone, hold the direction buttons or drag the scene. Tap an era to explore directly. No memory is locked behind a score.</p><p>Space cheers, M calls MATCHDAY, H sends hearts. The toy buttons reveal each era’s keys. Escape pauses. Your discoveries and place are saved locally; “Walk again” keeps discoveries. Sound is opt-in.</p><p><strong>Playable experiment:</strong> time changes the renderer, and mood changes the world. The graphics grow from Pong to polygon to anime, ending in a real photograph. This keeps the act of remembering at the center of the game. HD and anime environments use the existing commissioned AI art; the finale uses Gordon’s existing photographs.</p></details>
+<details><summary>How to play · why the world changes</summary><p id="instructions">Focus the scene to use arrows or W A S D. Left rewinds, right advances; up and down change the heart and the atmosphere. Walk into a ball to shoot. On a phone, hold the direction buttons or drag the scene. Tap an era to explore directly. No memory is locked behind a score.</p><p>Space cheers, M calls MATCHDAY, H sends hearts. The toy buttons reveal each era’s keys. Escape pauses. Your discoveries and place are saved locally; “Walk again” keeps discoveries. Sound is opt-in.</p><p><strong>Playable experiment:</strong> time changes the renderer, and mood changes the world. The graphics grow from a Pong-inspired paddle era to polygon rendering. Anime is a stylistic branch, not a hardware generation. The journey ends in a real photograph. This keeps the act of remembering at the center of the game. HD and anime environments use the existing commissioned AI art; the finale uses Gordon’s existing photographs.</p></details>
 <details><summary>Just read the journey</summary><div id="read-story"></div></details>
 <p class="note">A playable idea by Gordon, built by Darby. <a href="../meta.html">The Making Of</a> · <a href="../index.html">Back to the USMNT story</a></p>
 </main>
 
+<script src="longgame-trials.js"></script>
 <script>
 (function () {
   "use strict";
@@ -903,7 +913,7 @@
     if (era <= 3) {
       ctx.fillStyle = "#05070f"; ctx.fillRect(10, 10, 240, 34);
       ctx.fillStyle = "#FFCD00"; ctx.font = "14px 'Press Start 2P'";
-      ctx.fillText(yr + " · " + ERAS[era].name, 20, 33);
+      ctx.fillText(yr + " · " + (era===0?"PADDLE":ERAS[era].name), 20, 33);
     } else {
       ctx.fillStyle = "rgba(5,7,15,.55)"; ctx.fillRect(10, 10, 260, 40);
       ctx.fillStyle = "#FFCD00"; ctx.font = "600 20px Inter";
@@ -1226,7 +1236,9 @@
     requestAnimationFrame(frame);
     if (document.hidden || (paused && !needsRender)) return;
     if (now && now - lastFrame < 1000 / 60 - 1) return;
+    var trialDelta = Math.min(.05, Math.max(0, ((now || 0) - lastFrame) / 1000 || 1/60));
     lastFrame = now || 0;
+    if (trial) { trialFrame(trialDelta); return; }
     if (calm && !needsRender && !Object.keys(keys).some(function(k){return keys[k];}) && !fx2.length && !kickFlash) return;
     needsRender = false;
     var s = paused ? {p:progress(),era:eraIndex(progress())} : update();
@@ -1352,16 +1364,16 @@
   var uiEra = -1, uiStory = "";
   var chapterLabels = ["1974","1982","1988","1994","1997","2010","2020","2026"];
   ERAS.forEach(function(era, i) {
-    var b=document.createElement("button");b.type="button";b.innerHTML=chapterLabels[i]+"<span>"+era.name+"</span>";b.setAttribute("aria-label", "Explore " + era.name + " graphics era");b.addEventListener("click",function(){jumpEra(i);});document.getElementById("chapters").appendChild(b);
+    var b=document.createElement("button");b.type="button";b.innerHTML=chapterLabels[i]+"<span>"+(i===0?"PADDLE":era.name)+"</span>";b.setAttribute("aria-label", "Explore " + era.name + " graphics era");b.addEventListener("click",function(){jumpEra(i);});document.getElementById("chapters").appendChild(b);
   });
   MILES.forEach(function(m){var p=document.createElement("p"),b=document.createElement("b");b.textContent=m.y;p.appendChild(b);p.appendChild(document.createTextNode(m.txt));document.getElementById("read-story").appendChild(p);});
-  function releaseKeys() { Object.keys(keys).forEach(function(k){keys[k]=false;}); dragging=false; }
+  function releaseKeys() { Object.keys(keys).forEach(function(k){keys[k]=false;}); dragging=false; trialActionHeld=false;trialActionTap=false;trialTapKeys={}; if(trial) Trials.release(trial); }
   function setPaused(value) { paused=value;syncAudio();releaseKeys();needsRender=true;document.getElementById("pause").textContent=paused?"Resume":"Pause";document.getElementById("pause").setAttribute("aria-pressed",String(paused));if(paused)saveJourney(); }
   function jumpEra(i) { releaseKeys(); var lo=i?ERAS[i-1].until:0;px=i===7?WORLD:WORLD*(lo+Math.min(1,ERAS[i].until))/2;walked=true;visited[i]=true;dirty=true;needsRender=true;parts=[];fx2=[];uiEra=-1;syncUI(i);document.getElementById("feedback").textContent="Explore "+ERAS[i].name+". Try a toy or walk onward."; }
   function syncUI(era) {
     var yr=year(progress()), mile=milestoneFor(yr), text=mile?mile.txt:"";
     document.getElementById("year").textContent=yr;
-    document.getElementById("engine").textContent=ERAS[era].name + " / " + (era+1) + " OF 8";
+    document.getElementById("engine").textContent=(era===0?"PADDLE-INSPIRED":ERAS[era].name) + " / " + (era+1) + " OF 8";
     if(text!==uiStory){document.getElementById("story").textContent=text;uiStory=text;}
     var count=TOYS[era].filter(function(toy){return found[era+":"+toy[0]];}).length;
     document.getElementById("discovery").textContent=count+" / "+TOYS[era].length+" era toys discovered"+(era===7?" · You are here. Walk left to rewind.":" · Walk into a ball to shoot.");
@@ -1383,14 +1395,20 @@
     if(e.metaKey||e.ctrlKey||e.altKey)return;
     if(e.key==="Escape"){e.preventDefault();setPaused(!paused);return;}
     if(e.target.closest("button,a,summary,input,select,textarea"))return;
-    var k=KEYMAP[e.key];if(k){e.preventDefault();if(paused)setPaused(false);keys[k]=true;needsRender=true;return;}
-    if(!e.repeat&&(e.key===" "||e.key.length===1)){e.preventDefault();eraKey(e.key.toLowerCase());}
+    if(trial) {
+      if(e.key===" "){e.preventDefault();if(!e.repeat){trialActionHeld=true;trialActionTap=true;}return;}
+      if(e.key==="Enter"&&!e.repeat){e.preventDefault();trialAdvance();return;}
+      if(e.key.toLowerCase()==="r"&&!e.repeat){e.preventDefault();trialRetry();return;}
+      if(["1","2","3"].indexOf(e.key)>=0&&(trial.era===3||trial.era===5)){e.preventDefault();trial.lane=Number(e.key)-1;return;}
+    }
+    var k=KEYMAP[e.key];if(k){e.preventDefault();if(paused)setPaused(false);keys[k]=true;if(trial)trialTapKeys[k]=true;needsRender=true;return;}
+    if(!trial&&!e.repeat&&(e.key===" "||e.key.length===1)){e.preventDefault();eraKey(e.key.toLowerCase());}
   });
-  document.addEventListener("keyup",function(e){var k=KEYMAP[e.key];if(k)keys[k]=false;});
+  document.addEventListener("keyup",function(e){var k=KEYMAP[e.key];if(k)keys[k]=false;if(e.key===" ")trialActionHeld=false;});
   document.querySelectorAll(".pad button").forEach(function(b){var k=b.dataset.k;
-    b.addEventListener("pointerdown",function(e){e.preventDefault();b.setPointerCapture(e.pointerId);if(paused)setPaused(false);keys[k]=true;needsRender=true;});
+    b.addEventListener("pointerdown",function(e){e.preventDefault();b.setPointerCapture(e.pointerId);if(paused)setPaused(false);keys[k]=true;if(trial)trialTapKeys[k]=true;needsRender=true;});
     ["pointerup","pointercancel","lostpointercapture"].forEach(function(ev){b.addEventListener(ev,function(){keys[k]=false;});});
-    b.addEventListener("keydown",function(e){if(e.key===" "||e.key==="Enter"){e.preventDefault();if(paused)setPaused(false);keys[k]=true;needsRender=true;}});
+    b.addEventListener("keydown",function(e){if(e.key===" "||e.key==="Enter"){e.preventDefault();if(paused)setPaused(false);keys[k]=true;if(trial)trialTapKeys[k]=true;needsRender=true;}});
     b.addEventListener("keyup",function(e){if(e.key===" "||e.key==="Enter"){e.preventDefault();keys[k]=false;}});b.addEventListener("blur",function(){keys[k]=false;});
   });
   var dragging=false,dx0=0,dy0=0;
@@ -1400,6 +1418,36 @@
   window.addEventListener("blur",function(){setPaused(true);saveJourney();});
   document.addEventListener("visibilitychange",function(){if(document.hidden)setPaused(true);syncAudio();releaseKeys();saveJourney();});
   window.addEventListener("pagehide",saveJourney);
+  /* Optional campaign; the original world position and discovery keys remain separate. */
+  var Trials=window.LongGameTrials, trial=null, trialMode="practice", trialScores=[], trialActionHeld=false, trialActionTap=false, trialTapKeys={}, trialEvent=-1, trialUiKey="", trialCanvas=document.createElement("canvas"), trialCtx=trialCanvas.getContext("2d");
+  var TRIAL_KEY="longgame_trials_v1", trialRecord={club:0,pro:0,stages:{},checkpoint:null};
+  try{var tr=JSON.parse(localStorage.getItem(TRIAL_KEY)||"null");if(tr&&typeof tr==="object"){trialRecord.club=Number(tr.club)||0;trialRecord.pro=Number(tr.pro)||0;trialRecord.stages=tr.stages&&typeof tr.stages==="object"?tr.stages:{};var cp=tr.checkpoint;if(cp&&Number.isInteger(cp.era)&&cp.era>=0&&cp.era<8&&Array.isArray(cp.scores))trialRecord.checkpoint={era:cp.era,scores:cp.scores.slice(0,8).map(function(n){return Math.max(0,Number(n)||0);}),pro:!!cp.pro};}}catch(e){}
+  var padOriginal=[];document.querySelectorAll(".pad button").forEach(function(b){padOriginal.push({b:b,html:b.innerHTML,label:b.getAttribute("aria-label")});});
+  var trialLabels=["Paddle era · 1974","2600-inspired · 1982","8-bit · 1988","16-bit · 1994","Early-3D-inspired · 1997","HD · 2010","Anime style · 2020","Photograph · 2026"];
+  Trials.stages.forEach(function(stage,i){var option=document.createElement("option");option.value=i;option.textContent=trialLabels[i]+" / "+stage.verb;document.getElementById("trial-era").appendChild(option);});
+  function saveTrials(){try{localStorage.setItem(TRIAL_KEY,JSON.stringify(trialRecord));document.getElementById("trial-save").textContent="Challenge checkpoint & records saved on this device. Original discoveries stay separate.";}catch(e){document.getElementById("trial-save").textContent="Storage unavailable. This session still plays; records cannot be saved.";}refreshTrialRecord();}
+  function refreshTrialRecord(){document.getElementById("trial-record").textContent="Best full run · Club "+trialRecord.club+" / Pro "+trialRecord.pro+" points. Practice any era without playing the whole run.";document.getElementById("trial-resume").hidden=!trialRecord.checkpoint;}
+  function checkpointTrials(){if(!trial||trialMode!=="run")return;var next=trial.era+(trial.phase==="won"?1:0);trialRecord.checkpoint=next<8?{era:next,scores:trialScores.slice(),pro:trial.pro}:null;saveTrials();}
+  function trialSum(){return trialScores.slice(0,trial?trial.era:8).reduce(function(a,b){return a+(Number(b)||0);},0)+(trial?trial.score:0);}
+  function setupTrial(era,mode,pro,scores){releaseKeys();trialMode=mode;trialScores=scores?scores.slice():[];trial=Trials.create(era,pro);trialEvent=-1;trialUiKey="";document.body.classList.add("trials-active");cv.setAttribute("aria-label","Eight-era challenge game. Arrow keys move or select. Space performs the stage action. Escape pauses.");cv.setAttribute("aria-describedby","trial-goal trial-feedback");document.getElementById("trial-panel").hidden=false;document.getElementById("trial-actions").hidden=false;setPaused(false);needsRender=true;configureTrialPad();updateTrialUI();checkpointTrials();document.getElementById("trial-next").focus({preventScroll:true});document.getElementById("trial-panel").scrollIntoView({block:"start",behavior:"instant"});}
+  function configureTrialPad(){var e=trial.era;var labels=e===0?{up:"UP",down:"DOWN"}:e===1?{left:"LEFT",right:"RIGHT"}:e===2?{up:"JUMP",right:"SPRINT"}:e===3||e===5?{left:"SELECT",right:"SELECT"}:e===4?{left:"AIM",right:"AIM"}:{left:"LEFT",right:"RIGHT",up:"UP",down:"DOWN"};padOriginal.forEach(function(p){var name=labels[p.b.dataset.k];p.b.disabled=!name;p.b.innerHTML={left:"←",right:"→",up:"↑",down:"↓"}[p.b.dataset.k]+"<small>"+(name||"—")+"</small>";p.b.setAttribute("aria-label",name?name+" "+p.b.dataset.k:"Unused direction");});}
+  function trialExit(){checkpointTrials();releaseKeys();trial=null;document.body.classList.remove("trials-active");cv.setAttribute("aria-label","Playable journey. Arrow keys move through time and change mood. Escape pauses.");cv.setAttribute("aria-describedby","instructions story");document.getElementById("trial-panel").hidden=true;document.getElementById("trial-actions").hidden=true;padOriginal.forEach(function(p){p.b.innerHTML=p.html;p.b.disabled=false;p.b.setAttribute("aria-label",p.label);});needsRender=true;setPaused(false);syncUI(eraIndex(progress()));document.getElementById("g").focus({preventScroll:true});}
+  function trialRetry(){if(!trial)return;setupTrial(trial.era,trialMode,trial.pro,trialScores.slice(0,trial.era));}
+  function trialAdvance(){if(!trial)return;if(trial.phase==="ready"){releaseKeys();Trials.start(trial);setPaused(false);updateTrialUI();cv.focus({preventScroll:true});}else if(trial.phase==="lost")trialRetry();else if(trial.phase==="won"){if(trialMode==="run"&&trial.era<7)setupTrial(trial.era+1,"run",trial.pro,trialScores);else trialExit();}}
+  function updateTrialUI(){if(!trial)return;var uiKey=[trial.era,trial.phase,trial.event,Math.floor(trial.elapsed*4),Trials.openLane(trial),trial.lane,trial.choice,trial.hits,trial.lives,trial.score,trialActionHeld].join(":");if(uiKey===trialUiKey)return;trialUiKey=uiKey;var d=Trials.stages[trial.era];document.getElementById("trial-title").textContent=(trial.era+1)+" / 8 · "+d.name;document.getElementById("trial-goal").textContent=d.hint;document.getElementById("trial-progress").textContent=trial.hits+" / "+d.target+" complete";document.getElementById("trial-lives").textContent=trial.lives+" chances";document.getElementById("trial-time").textContent=Math.max(0,Math.ceil(d.limit-trial.elapsed))+"s";document.getElementById("trial-total").textContent=(trialMode==="run"?"Run ":"Score ")+trialSum();document.getElementById("trial-craft").textContent=trialLabels[trial.era]+" · "+d.craft+". 4:3 through early 3D; 16:9 from HD. Buffers are production choices, not hardware specifications.";
+    var cue="";if(trial.era===3){var open=Trials.openLane(trial);cue="Selected "+["A","B","C"][trial.lane]+" · OPEN route "+["A","B","C"][open]+". Space passes; 1 / 2 / 3 also select.";}else if(trial.era===5){var open=Trials.openLane(trial),role=trial.lane===open?"line-breaking pass +150":trial.lane===(open+1)%3?"safe recycle +75":"marked / interception risk";cue="Selected #"+["7","10","11"][trial.lane]+" · "+role+".";}else if(trial.era===6)cue="Match "+Trials.direction(trial).toUpperCase()+" · "+(trial.choice?"you selected "+trial.choice.toUpperCase():"choose a direction first")+".";else if(trial.era===1)cue="Selected "+["left","center","right"][trial.lane]+" lane · empty lane: "+["left","center","right"][Trials.openLane(trial)]+".";var cueEl=document.getElementById("trial-cue");if(cueEl.textContent!==cue)cueEl.textContent=cue;
+    var action=document.getElementById("trial-action");action.textContent=d.action;action.disabled=trial.phase!=="playing"||trial.era===0;action.setAttribute("aria-pressed",String(trialActionHeld));
+    var next=document.getElementById("trial-next");next.hidden=trial.phase==="playing";next.textContent=trial.phase==="ready"?"Start stage":trial.phase==="lost"?"Try again":trialMode==="run"&&trial.era<7?"Next era →":"Return to your story";
+    document.getElementById("trial-scoreboard").textContent=trial.phase==="won"&&trial.era===7&&trialMode==="run"?"RUN COMPLETE · "+trialSum()+" points · "+(trial.pro?"Pro":"Club")+". Play again to improve your score, or return to the real moment.":"Fictional challenge · "+(trial.pro?"Pro: tighter windows, ×1.5 action points":"Club: generous windows")+" · Best this era: "+(trialRecord.stages[(trial.pro?"pro":"club")+":"+trial.era]||0)+" · R retries · Escape pauses.";
+    if(trial.event!==trialEvent){trialEvent=trial.event;document.getElementById("trial-feedback").textContent=trial.feedback;if(trial.phase==="won"){trialScores[trial.era]=trial.score;var recordKey=(trial.pro?"pro":"club")+":"+trial.era;trialRecord.stages[recordKey]=Math.max(trialRecord.stages[recordKey]||0,trial.score);if(trialMode==="run"&&trial.era===7){var level=trial.pro?"pro":"club";trialRecord[level]=Math.max(trialRecord[level],trialSum());}checkpointTrials();saveTrials();trialUiKey="";sfxGoal();}else if(trial.phase==="lost")sfxSave();else if(trial.lastGood)beep(660,.08,trial.era<4?"square":"sine",.045);}}
+  function trialFrame(dt){if(!trial)return;if(!paused)Trials.step(trial,dt,{left:keys.left||trialTapKeys.left,right:keys.right||trialTapKeys.right,up:keys.up||trialTapKeys.up,down:keys.down||trialTapKeys.down,action:trialActionHeld||trialActionTap});trialActionTap=false;trialTapKeys={};var d=Trials.stages[trial.era];if(trialCanvas.width!==d.w||trialCanvas.height!==d.h){trialCanvas.width=d.w;trialCanvas.height=d.h;}Trials.render(trialCtx,trial,photo,calm);ctx.imageSmoothingEnabled=trial.era>=5;ctx.clearRect(0,0,VW,VH);ctx.fillStyle="#03080c";ctx.fillRect(0,0,VW,VH);var contentWidth=trial.era<5?VH*4/3:VW;ctx.drawImage(trialCanvas,(VW-contentWidth)/2,0,contentWidth,VH);needsRender=false;updateTrialUI();}
+  document.getElementById("trial-run").addEventListener("click",function(){setupTrial(0,"run",document.getElementById("trial-level").value==="pro",[]);});
+  document.getElementById("trial-practice").addEventListener("click",function(){setupTrial(Number(document.getElementById("trial-era").value),"practice",document.getElementById("trial-level").value==="pro",[]);});
+  document.getElementById("trial-resume").addEventListener("click",function(){var cp=trialRecord.checkpoint;if(cp)setupTrial(cp.era,"run",cp.pro,cp.scores);});
+  document.getElementById("trial-next").addEventListener("click",trialAdvance);document.getElementById("trial-retry").addEventListener("click",trialRetry);document.getElementById("trial-exit").addEventListener("click",trialExit);
+  var actionButton=document.getElementById("trial-action");actionButton.addEventListener("pointerdown",function(e){e.preventDefault();actionButton.setPointerCapture(e.pointerId);trialActionHeld=true;trialActionTap=true;});["pointerup","pointercancel","lostpointercapture"].forEach(function(event){actionButton.addEventListener(event,function(){trialActionHeld=false;});});actionButton.addEventListener("keydown",function(e){if(e.key===" "||e.key==="Enter"){e.preventDefault();e.stopPropagation();trialActionHeld=true;trialActionTap=true;}});actionButton.addEventListener("keyup",function(e){if(e.key===" "||e.key==="Enter"){e.preventDefault();e.stopPropagation();trialActionHeld=false;}});actionButton.addEventListener("blur",function(){trialActionHeld=false;});
+  window.addEventListener("pagehide",checkpointTrials);
+  refreshTrialRecord();
   syncUI(eraIndex(progress()));
 
   document.fonts && document.fonts.ready.then(function () { frame(); }) || frame();
