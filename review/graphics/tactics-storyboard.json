@@ -1,0 +1,1107 @@
+{
+  "sources": {
+    "coach": [
+      "Jesse Marsch: a national identity",
+      "https://elitesoccercoaching.net/player-and-coach-development/jesse-marsch-a-national-identity"
+    ],
+    "peru": [
+      "Canada Soccer: Canada 2–0 Peru, October 3",
+      "https://canadasoccer.com/match/6619/"
+    ],
+    "mexico": [
+      "U.S. Soccer: USA–Mexico match report",
+      "https://www.ussoccer.com/stories/2026/10/usmnt-vs-mexico-match-recap-highlights-arizona"
+    ],
+    "preview": [
+      "U.S. Soccer: Canada match preview",
+      "https://www.ussoccer.com/stories/2026/10/usmnt/canada-match-st-paul-minnesota"
+    ]
+  },
+  "scenes": [
+    {
+      "tab": "Draw pressure",
+      "title": "One pass can bring a crowd.",
+      "take": "Watch the next Canadian player as well as the first one. The U.S. needs an exit before the pressure arrives.",
+      "actors": [
+        [
+          "usa",
+          "GK",
+          8,
+          50
+        ],
+        [
+          "usa",
+          "CB",
+          22,
+          30
+        ],
+        [
+          "usa",
+          "CB",
+          22,
+          70
+        ],
+        [
+          "usa",
+          "6",
+          37,
+          50
+        ],
+        [
+          "usa",
+          "FB",
+          30,
+          10
+        ],
+        [
+          "can",
+          "9",
+          36,
+          29
+        ],
+        [
+          "can",
+          "9",
+          41,
+          61
+        ],
+        [
+          "can",
+          "MID",
+          48,
+          45
+        ],
+        [
+          "can",
+          "W",
+          43,
+          15
+        ]
+      ],
+      "states": [
+        {
+          "title": "The invitation",
+          "copy": "A short pass brings the ball toward the first challenger. Keep an eye on the players behind that challenger, too.",
+          "ball": [
+            10,
+            47
+          ],
+          "moves": {},
+          "routes": [
+            [
+              "pass",
+              [
+                [
+                  8,
+                  50
+                ],
+                [
+                  22,
+                  30
+                ]
+              ]
+            ]
+          ],
+          "space": null,
+          "cover": null
+        },
+        {
+          "title": "The crowd arrives",
+          "copy": "The first presser approaches the centre-back; a teammate approaches the wide outlet. The pressure is a team action.",
+          "ball": [
+            24,
+            27
+          ],
+          "moves": {
+            "5": [
+              27,
+              30
+            ],
+            "8": [
+              34,
+              15
+            ]
+          },
+          "routes": [
+            [
+              "press",
+              [
+                [
+                  36,
+                  29
+                ],
+                [
+                  27,
+                  30
+                ]
+              ]
+            ],
+            [
+              "press",
+              [
+                [
+                  43,
+                  15
+                ],
+                [
+                  34,
+                  15
+                ]
+              ]
+            ]
+          ],
+          "space": null,
+          "cover": null
+        },
+        {
+          "title": "Look at the next receiver",
+          "copy": "The holding midfielder may look free before the pass. Watch whether the supporting Canadian midfielder can arrive as the ball does.",
+          "ball": [
+            24,
+            27
+          ],
+          "moves": {
+            "5": [
+              27,
+              30
+            ],
+            "8": [
+              34,
+              15
+            ]
+          },
+          "routes": [
+            [
+              "pass",
+              [
+                [
+                  22,
+                  30
+                ],
+                [
+                  37,
+                  50
+                ]
+              ]
+            ],
+            [
+              "press",
+              [
+                [
+                  48,
+                  45
+                ],
+                [
+                  39,
+                  49
+                ]
+              ]
+            ]
+          ],
+          "space": [
+            31,
+            40,
+            15,
+            20
+          ],
+          "cover": null
+        }
+      ],
+      "fact": "Marsch describes ball-focused pressure with nearby teammates supporting the first challenge.",
+      "question": "Does the U.S. receiver have a useful next action before the second challenger arrives?",
+      "source": [
+        "coach"
+      ],
+      "gloss": "Pressing means moving toward the ball to make an opponent hurry."
+    },
+    {
+      "tab": "Find the exit",
+      "title": "Use the next player to find the open side.",
+      "take": "The first receiver does not always need to turn. A quick return can help move the ball away from the crowd.",
+      "actors": [
+        [
+          "usa",
+          "CB",
+          22,
+          30
+        ],
+        [
+          "usa",
+          "GK",
+          8,
+          50
+        ],
+        [
+          "usa",
+          "6",
+          36,
+          42
+        ],
+        [
+          "usa",
+          "CB",
+          23,
+          72
+        ],
+        [
+          "usa",
+          "FB",
+          40,
+          91
+        ],
+        [
+          "can",
+          "9",
+          28,
+          31
+        ],
+        [
+          "can",
+          "MID",
+          44,
+          42
+        ],
+        [
+          "can",
+          "9",
+          40,
+          63
+        ],
+        [
+          "can",
+          "W",
+          51,
+          82
+        ]
+      ],
+      "states": [
+        {
+          "title": "Invite the challenge",
+          "copy": "The centre-back passes into midfield. The receiving player checks whether turning would bring them into pressure.",
+          "ball": [
+            24,
+            27
+          ],
+          "moves": {},
+          "routes": [
+            [
+              "pass",
+              [
+                [
+                  22,
+                  30
+                ],
+                [
+                  36,
+                  42
+                ]
+              ]
+            ]
+          ],
+          "space": null,
+          "cover": null
+        },
+        {
+          "title": "Return, then reset",
+          "copy": "As the challenger arrives, a return pass goes back through the centre-back to the goalkeeper. This can reset possession; it does not automatically beat the press.",
+          "ball": [
+            38,
+            39
+          ],
+          "moves": {
+            "6": [
+              39,
+              42
+            ]
+          },
+          "routes": [
+            [
+              "pass",
+              [
+                [
+                  36,
+                  42
+                ],
+                [
+                  22,
+                  30
+                ]
+              ]
+            ],
+            [
+              "pass",
+              [
+                [
+                  22,
+                  30
+                ],
+                [
+                  8,
+                  50
+                ]
+              ]
+            ]
+          ],
+          "space": null,
+          "cover": null
+        },
+        {
+          "title": "Find the other side",
+          "copy": "The goalkeeper can look toward the opposite centre-back and fullback. Watch whether that fullback can receive facing upfield before a wide presser arrives.",
+          "ball": [
+            10,
+            47
+          ],
+          "moves": {
+            "6": [
+              39,
+              42
+            ]
+          },
+          "routes": [
+            [
+              "pass",
+              [
+                [
+                  8,
+                  50
+                ],
+                [
+                  23,
+                  72
+                ]
+              ]
+            ],
+            [
+              "pass",
+              [
+                [
+                  23,
+                  72
+                ],
+                [
+                  40,
+                  91
+                ]
+              ]
+            ]
+          ],
+          "space": null,
+          "cover": [
+            [
+              32,
+              86
+            ],
+            [
+              48,
+              86
+            ],
+            [
+              48,
+              96
+            ],
+            [
+              32,
+              96
+            ]
+          ]
+        }
+      ],
+      "fact": "Marsch’s coaching account emphasizes support behind the first pressure. The illustrated passing sequence is an editorial example, not a documented move from this match.",
+      "question": "Can a quick return create an outlet that has time to face forward?",
+      "source": [
+        "coach"
+      ],
+      "gloss": "A switch moves play toward the other side of the pitch."
+    },
+    {
+      "tab": "Attack the gap",
+      "title": "One player comes short. Another goes beyond.",
+      "take": "A defender has a choice: follow the receiver or protect the space behind. Watch the second U.S. runner.",
+      "actors": [
+        [
+          "usa",
+          "MID",
+          49,
+          35
+        ],
+        [
+          "usa",
+          "9",
+          70,
+          45
+        ],
+        [
+          "usa",
+          "W",
+          65,
+          17
+        ],
+        [
+          "usa",
+          "MID",
+          53,
+          62
+        ],
+        [
+          "can",
+          "CB",
+          76,
+          40
+        ],
+        [
+          "can",
+          "CB",
+          80,
+          63
+        ],
+        [
+          "can",
+          "FB",
+          72,
+          13
+        ],
+        [
+          "can",
+          "MID",
+          58,
+          47
+        ],
+        [
+          "can",
+          "GK",
+          94,
+          50
+        ]
+      ],
+      "states": [
+        {
+          "title": "Come toward the ball",
+          "copy": "The U.S. forward drops toward the passer. A wide runner stays ready to move in the other direction.",
+          "ball": [
+            51,
+            32
+          ],
+          "moves": {},
+          "routes": [
+            [
+              "run",
+              [
+                [
+                  70,
+                  45
+                ],
+                [
+                  62,
+                  45
+                ]
+              ]
+            ]
+          ],
+          "space": null,
+          "cover": null
+        },
+        {
+          "title": "The defender decides",
+          "copy": "If the centre-back follows, a channel can appear behind the challenge. The covering defender still matters.",
+          "ball": [
+            51,
+            32
+          ],
+          "moves": {
+            "1": [
+              62,
+              45
+            ],
+            "4": [
+              68,
+              43
+            ]
+          },
+          "routes": [
+            [
+              "press",
+              [
+                [
+                  76,
+                  40
+                ],
+                [
+                  68,
+                  43
+                ]
+              ]
+            ],
+            [
+              "pass",
+              [
+                [
+                  49,
+                  35
+                ],
+                [
+                  62,
+                  45
+                ]
+              ]
+            ]
+          ],
+          "space": [
+            74,
+            24,
+            13,
+            17
+          ],
+          "cover": null
+        },
+        {
+          "title": "Watch the timed run",
+          "copy": "After a return pass, the passer can look into the channel. The runner is shown behind the covering defender at release; the dashed route is the possible next movement.",
+          "ball": [
+            51,
+            32
+          ],
+          "moves": {
+            "1": [
+              62,
+              45
+            ],
+            "4": [
+              68,
+              43
+            ],
+            "2": [
+              75,
+              23
+            ]
+          },
+          "routes": [
+            [
+              "pass",
+              [
+                [
+                  62,
+                  45
+                ],
+                [
+                  49,
+                  35
+                ]
+              ]
+            ],
+            [
+              "run",
+              [
+                [
+                  75,
+                  23
+                ],
+                [
+                  84,
+                  30
+                ]
+              ]
+            ],
+            [
+              "pass",
+              [
+                [
+                  49,
+                  35
+                ],
+                [
+                  84,
+                  30
+                ]
+              ]
+            ]
+          ],
+          "space": [
+            77,
+            25,
+            13,
+            17
+          ],
+          "cover": null
+        }
+      ],
+      "fact": "Marsch describes centre-backs challenging forward, with protection against the runners behind them.",
+      "question": "Does the forward’s short movement create a usable route for someone else?",
+      "source": [
+        "coach"
+      ],
+      "gloss": "Come short: move toward the ball. Go beyond: run into the space behind a defender."
+    },
+    {
+      "tab": "Cover the loss",
+      "title": "Who protects the space behind the attack?",
+      "take": "When a fullback advances, look behind them. A covering teammate can delay a counterattack while others recover.",
+      "actors": [
+        [
+          "usa",
+          "FB",
+          62,
+          88
+        ],
+        [
+          "usa",
+          "6",
+          42,
+          55
+        ],
+        [
+          "usa",
+          "CB",
+          31,
+          69
+        ],
+        [
+          "usa",
+          "CB",
+          32,
+          36
+        ],
+        [
+          "usa",
+          "GK",
+          8,
+          50
+        ],
+        [
+          "can",
+          "MID",
+          57,
+          58
+        ],
+        [
+          "can",
+          "W",
+          50,
+          80
+        ],
+        [
+          "can",
+          "9",
+          41,
+          43
+        ],
+        [
+          "can",
+          "W",
+          61,
+          28
+        ]
+      ],
+      "states": [
+        {
+          "title": "Possession changes sides",
+          "copy": "Canada now have the ball with a U.S. fullback high upfield. The highlighted space is the channel to watch, not a measured danger map.",
+          "ball": [
+            59,
+            55
+          ],
+          "moves": {},
+          "routes": [],
+          "space": [
+            24,
+            74,
+            25,
+            17
+          ],
+          "cover": null
+        },
+        {
+          "title": "Delay and recover",
+          "copy": "An early diagonal pass can start the counterattack. Watch the U.S. holding midfielder cover, the centre-back protect depth and the fullback begin recovering.",
+          "ball": [
+            59,
+            55
+          ],
+          "moves": {
+            "6": [
+              44,
+              81
+            ]
+          },
+          "routes": [
+            [
+              "pass",
+              [
+                [
+                  57,
+                  58
+                ],
+                [
+                  44,
+                  81
+                ]
+              ]
+            ],
+            [
+              "run",
+              [
+                [
+                  44,
+                  81
+                ],
+                [
+                  23,
+                  84
+                ]
+              ]
+            ],
+            [
+              "run",
+              [
+                [
+                  42,
+                  55
+                ],
+                [
+                  36,
+                  70
+                ]
+              ]
+            ],
+            [
+              "run",
+              [
+                [
+                  31,
+                  69
+                ],
+                [
+                  27,
+                  73
+                ]
+              ]
+            ],
+            [
+              "run",
+              [
+                [
+                  62,
+                  88
+                ],
+                [
+                  47,
+                  86
+                ]
+              ]
+            ]
+          ],
+          "space": [
+            24,
+            74,
+            25,
+            17
+          ],
+          "cover": null
+        },
+        {
+          "title": "Find the protection",
+          "copy": "The first defender does not have to win the ball immediately. Watch whether the covering positions make time for teammates to get back.",
+          "ball": [
+            46,
+            78
+          ],
+          "moves": {
+            "1": [
+              36,
+              70
+            ],
+            "2": [
+              27,
+              73
+            ],
+            "0": [
+              47,
+              86
+            ],
+            "6": [
+              44,
+              81
+            ]
+          },
+          "routes": [
+            [
+              "run",
+              [
+                [
+                  41,
+                  43
+                ],
+                [
+                  21,
+                  51
+                ]
+              ]
+            ],
+            [
+              "run",
+              [
+                [
+                  61,
+                  28
+                ],
+                [
+                  28,
+                  35
+                ]
+              ]
+            ]
+          ],
+          "space": null,
+          "cover": [
+            [
+              8,
+              50
+            ],
+            [
+              27,
+              73
+            ],
+            [
+              32,
+              36
+            ]
+          ]
+        }
+      ],
+      "fact": "Marsch describes early forward diagonal passes after regains. Separately, Shaffelburg scored both goals against Peru; that result does not establish where these illustrated runs began.",
+      "question": "Who is already protecting the channel when possession changes?",
+      "source": [
+        "coach",
+        "peru"
+      ],
+      "gloss": "Transition: the moment possession changes. Cover: protecting space behind a teammate.",
+      "person": "Player to notice · Jacob Shaffelburg scored twice in the October 3 win. This role illustration is not a promise of his selection, fitness or flank."
+    },
+    {
+      "tab": "Press together",
+      "title": "Can the U.S. make the next pass difficult?",
+      "take": "A backpass can invite pressure. Watch whether the other U.S. players support the first runner.",
+      "actors": [
+        [
+          "can",
+          "GK",
+          92,
+          50
+        ],
+        [
+          "can",
+          "CB",
+          78,
+          28
+        ],
+        [
+          "can",
+          "CB",
+          78,
+          72
+        ],
+        [
+          "can",
+          "MID",
+          64,
+          48
+        ],
+        [
+          "can",
+          "FB",
+          71,
+          91
+        ],
+        [
+          "usa",
+          "9",
+          72,
+          45
+        ],
+        [
+          "usa",
+          "W",
+          65,
+          24
+        ],
+        [
+          "usa",
+          "W",
+          65,
+          73
+        ],
+        [
+          "usa",
+          "MID",
+          55,
+          53
+        ]
+      ],
+      "states": [
+        {
+          "title": "The backpass",
+          "copy": "Canada’s centre-back returns the ball to the goalkeeper. This is a possible cue for a press, not a claim about tonight’s instructions.",
+          "ball": [
+            80,
+            25
+          ],
+          "moves": {},
+          "routes": [
+            [
+              "pass",
+              [
+                [
+                  78,
+                  28
+                ],
+                [
+                  92,
+                  50
+                ]
+              ]
+            ]
+          ],
+          "space": null,
+          "cover": null
+        },
+        {
+          "title": "Move together",
+          "copy": "The nearest U.S. attacker approaches the goalkeeper as teammates move toward the next options. One runner on their own is easier to pass around.",
+          "ball": [
+            94,
+            47
+          ],
+          "moves": {
+            "5": [
+              83,
+              42
+            ],
+            "6": [
+              74,
+              28
+            ],
+            "7": [
+              73,
+              71
+            ],
+            "8": [
+              61,
+              49
+            ]
+          },
+          "routes": [
+            [
+              "press",
+              [
+                [
+                  72,
+                  45
+                ],
+                [
+                  83,
+                  42
+                ]
+              ]
+            ],
+            [
+              "press",
+              [
+                [
+                  65,
+                  24
+                ],
+                [
+                  74,
+                  28
+                ]
+              ]
+            ],
+            [
+              "press",
+              [
+                [
+                  65,
+                  73
+                ],
+                [
+                  73,
+                  71
+                ]
+              ]
+            ],
+            [
+              "press",
+              [
+                [
+                  55,
+                  53
+                ],
+                [
+                  61,
+                  49
+                ]
+              ]
+            ]
+          ],
+          "space": null,
+          "cover": null
+        },
+        {
+          "title": "Watch the next pass",
+          "copy": "The goalkeeper may still find midfield. Watch whether the U.S. midfielder can make that pass difficult; the illustration does not promise an interception.",
+          "ball": [
+            94,
+            47
+          ],
+          "moves": {
+            "5": [
+              83,
+              42
+            ],
+            "6": [
+              74,
+              28
+            ],
+            "7": [
+              73,
+              71
+            ],
+            "8": [
+              61,
+              49
+            ]
+          },
+          "routes": [
+            [
+              "pass",
+              [
+                [
+                  92,
+                  50
+                ],
+                [
+                  64,
+                  48
+                ]
+              ]
+            ]
+          ],
+          "space": [
+            62,
+            43,
+            27,
+            12
+          ],
+          "cover": null
+        }
+      ],
+      "fact": "The USA–Mexico report records a Sullivan goal after pressure on the goalkeeper and a later Tillman interception and goal. These are two match events, not a team pressing rate.",
+      "question": "Do the supporting players make the goalkeeper’s next option harder?",
+      "source": [
+        "mexico"
+      ],
+      "gloss": "A pressing trigger is a cue to move together. A backpass is one possible example.",
+      "person": "Recent match fact · Cavan Sullivan and Malik Tillman supplied those Mexico moments. The anonymous roles here are not a confirmed U.S. lineup."
+    }
+  ]
+}

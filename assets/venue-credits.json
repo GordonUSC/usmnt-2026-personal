@@ -1,0 +1,117 @@
+[
+  {
+    "id": "sofi",
+    "local": "assets/sofi.jpg",
+    "title": "SoFi Stadium interior 2021.jpg",
+    "author": "Troutfarm27",
+    "source": "https://commons.wikimedia.org/wiki/File:SoFi_Stadium_interior_2021.jpg",
+    "original": "https://upload.wikimedia.org/wikipedia/commons/b/b0/SoFi_Stadium_interior_2021.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "date": "2021-11-14",
+    "license": "CC BY-SA 4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0",
+    "localSHA256": "cb05fd9db66d4bdeb762915e9636a8719b485028b63172ec7280a5efff53d711",
+    "originalDimensions": [
+      4032,
+      3024
+    ],
+    "localDimensions": [
+      1600,
+      1200
+    ],
+    "modifications": "Resized to 1600 pixels wide in the existing site. Responsive crops, tint and gradient overlays are applied by CSS; the photograph itself is unchanged in this review.",
+    "verification": "Original author/license recovered from commit bfc782a; source image visually matched and Commons metadata checked October 6, 2026.",
+    "comparisonMeanAbsoluteError": 1.711
+  },
+  {
+    "id": "levis",
+    "local": "assets/levis.jpg",
+    "title": "Levi's Stadium interior 1.jpg",
+    "author": "Matthew Roth",
+    "source": "https://commons.wikimedia.org/wiki/File:Levi%27s_Stadium_interior_1.jpg",
+    "original": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Levi%27s_Stadium_interior_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "date": "2014-08-12",
+    "license": "CC BY-SA 2.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/2.0",
+    "localSHA256": "fa7e4bce45a4fa33566bc3d0a42d9072c8bbea87808c48a9eb8145d6044a7499",
+    "originalDimensions": [
+      5616,
+      3744
+    ],
+    "localDimensions": [
+      1600,
+      1066
+    ],
+    "modifications": "Resized to 1600 pixels wide in the existing site. Responsive crops, tint and gradient overlays are applied by CSS; the photograph itself is unchanged in this review.",
+    "verification": "Original author/license recovered from commit bfc782a; source image visually matched and Commons metadata checked October 6, 2026.",
+    "comparisonMeanAbsoluteError": 1.7732
+  },
+  {
+    "id": "azteca",
+    "local": "assets/azteca.jpg",
+    "title": "Interior Estadio Azteca CDMX.jpg",
+    "author": "AnatGutman",
+    "source": "https://commons.wikimedia.org/wiki/File:Interior_Estadio_Azteca_CDMX.jpg",
+    "original": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Interior_Estadio_Azteca_CDMX.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "date": "2017-06-11",
+    "license": "CC0",
+    "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "localSHA256": "fd678cbb7cedca9410fb5c16d3483806044c05cf5b5f3926c71de3e273677113",
+    "originalDimensions": [
+      3840,
+      2160
+    ],
+    "localDimensions": [
+      1600,
+      900
+    ],
+    "modifications": "Resized to 1600 pixels wide in the existing site. Responsive crops, tint and gradient overlays are applied by CSS; the photograph itself is unchanged in this review.",
+    "verification": "Original author/license recovered from commit bfc782a; source image visually matched and Commons metadata checked October 6, 2026.",
+    "comparisonMeanAbsoluteError": 1.3064
+  },
+  {
+    "id": "olimpico",
+    "local": "assets/olimpico.jpg",
+    "title": "Stadio Olimpico (Rome) - 2014 - AS Roma v Juventus FC.jpg",
+    "author": "romazone",
+    "source": "https://commons.wikimedia.org/wiki/File:Stadio_Olimpico_(Rome)_-_2014_-_AS_Roma_v_Juventus_FC.jpg",
+    "original": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Stadio_Olimpico_%28Rome%29_-_2014_-_AS_Roma_v_Juventus_FC.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "date": "2014-05-11",
+    "license": "CC BY 2.0",
+    "licenseURL": "https://creativecommons.org/licenses/by/2.0",
+    "localSHA256": "3f1e333c52ca24aff80c8ddcaf750d35b1bf5998e452ca686c66201745f1bfd6",
+    "originalDimensions": [
+      6000,
+      4000
+    ],
+    "localDimensions": [
+      1600,
+      1066
+    ],
+    "modifications": "Resized to 1600 pixels wide in the existing site. Responsive crops, tint and gradient overlays are applied by CSS; the photograph itself is unchanged in this review.",
+    "verification": "Original author/license recovered from commit bfc782a; source image visually matched and Commons metadata checked October 6, 2026.",
+    "comparisonMeanAbsoluteError": 1.1924
+  },
+  {
+    "id": "lumen",
+    "local": "assets/lumen.jpg",
+    "title": "CenturyLink Field in soccer configuration from Stadium Place.jpg",
+    "author": "SounderBruce (Bruce Englehardt)",
+    "source": "https://commons.wikimedia.org/wiki/File:CenturyLink_Field_in_soccer_configuration_from_Stadium_Place.jpg",
+    "original": "https://upload.wikimedia.org/wikipedia/commons/4/4a/CenturyLink_Field_in_soccer_configuration_from_Stadium_Place.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "date": "2019-07-20",
+    "license": "CC BY-SA 4.0",
+    "licenseURL": "https://creativecommons.org/licenses/by-sa/4.0",
+    "localSHA256": "adf3051f1421e1a19af6adedf7932d913ef7628b3088c0a6f544269fa3b7c968",
+    "originalDimensions": [
+      3430,
+      2264
+    ],
+    "localDimensions": [
+      1600,
+      1056
+    ],
+    "modifications": "Resized to 1600 pixels wide in the existing site. Responsive crops, tint and gradient overlays are applied by CSS; the photograph itself is unchanged in this review.",
+    "verification": "Original author/license recovered from commit bfc782a; source image visually matched and Commons metadata checked October 6, 2026.",
+    "comparisonMeanAbsoluteError": 2.8376
+  }
+]
