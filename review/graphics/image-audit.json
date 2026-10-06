@@ -1,0 +1,887 @@
+{
+  "date": "2026-10-06",
+  "images": [
+    {
+      "path": "assets/g-pete-pitch-0625.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 761175,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "soccer-journey.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/quinn-soccerhouse-0611.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 818056,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "summer.html",
+        "friends.html",
+        "arcade/longgame.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/g-mural-0611.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 597145,
+      "category": "existing personal archive or venue photograph",
+      "pages": [],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/fifa-couch-0716.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 596572,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "experience.html",
+        "friends.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/scarf-friends.jpg",
+      "width": 1800,
+      "height": 1350,
+      "bytes": 502548,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "friends.html",
+        "r16.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/olimpico.jpg",
+      "width": 1600,
+      "height": 1066,
+      "bytes": 377000,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "soccer-journey.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/bronze-heyjude-0718.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 376166,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "run.html",
+        "experience.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/final-table-0719.jpg",
+      "width": 1800,
+      "height": 1350,
+      "bytes": 441087,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "run.html",
+        "experience.html",
+        "summer.html",
+        "friends.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/soccer-bar-nyc.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 573318,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "experience.html",
+        "friends.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/board-0625.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 426153,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "run.html",
+        "index.html",
+        "experience.html",
+        "summer.html",
+        "friends.html",
+        "arcade/longgame.html",
+        "arcade/belamini.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/belamini27-preview.webp",
+      "width": 816,
+      "height": 571,
+      "bytes": 35140,
+      "category": "authored game screenshot",
+      "pages": [
+        "play.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/bluelock-after.jpg",
+      "width": 1800,
+      "height": 1350,
+      "bytes": 457971,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "experience.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/metlife.jpg",
+      "width": 1600,
+      "height": 981,
+      "bytes": 532351,
+      "category": "existing personal archive or venue photograph",
+      "pages": [],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/g-cutout.png",
+      "width": 525,
+      "height": 700,
+      "bytes": 206114,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "arcade/longgame.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/levis.jpg",
+      "width": 1600,
+      "height": 1066,
+      "bytes": 407032,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "r32.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/sofi.jpg",
+      "width": 1600,
+      "height": 1200,
+      "bytes": 730911,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "arcade/longgame.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/g-sofi-0625.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 745098,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "meta.html",
+        "soccer-journey.html",
+        "run.html",
+        "experience.html",
+        "summer.html",
+        "arcade/longgame.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/andy-fanfest-0718.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 546422,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "experience.html",
+        "friends.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/delphi-0618.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 573645,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "experience.html",
+        "kits.html",
+        "friends.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/foster-birthday-0718.jpg",
+      "width": 1800,
+      "height": 1350,
+      "bytes": 404558,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "experience.html",
+        "summer.html",
+        "friends.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/minecraft-dragonhouse.jpg",
+      "width": 1800,
+      "height": 1350,
+      "bytes": 586166,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "experience.html",
+        "summer.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/office-groupd.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 520274,
+      "category": "existing personal archive or venue photograph",
+      "pages": [],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/final-ceremony-0719.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 520895,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "run.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/entry12-0618.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 522341,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "soccer-journey.html",
+        "experience.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/panel-1994.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 577043,
+      "category": "existing personal archive or venue photograph",
+      "pages": [],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/g-pete-bowl-0625.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 869439,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "soccer-journey.html",
+        "play.html",
+        "index.html",
+        "now.html",
+        "experience.html",
+        "summer.html",
+        "friends.html",
+        "sources.html",
+        "arcade/longgame.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/concourse-0625.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 931981,
+      "category": "existing personal archive or venue photograph",
+      "pages": [],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/crowd-0625.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 779303,
+      "category": "existing personal archive or venue photograph",
+      "pages": [],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/fox-usa-aus-0619.jpg",
+      "width": 1800,
+      "height": 1350,
+      "bytes": 445347,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "experience.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/box-treats-0618.jpg",
+      "width": 1800,
+      "height": 1350,
+      "bytes": 802380,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "experience.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/fifa-party-0613.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 710884,
+      "category": "existing personal archive or venue photograph",
+      "pages": [],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/g-shaun-0625.jpg",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 642645,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "run.html",
+        "strategy.html",
+        "kits.html",
+        "friends.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/azteca.jpg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 276701,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "kits.html",
+        "lore.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/lumen.jpg",
+      "width": 1600,
+      "height": 1056,
+      "bytes": 339663,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "r32.html",
+        "r16.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/longgame-preview.webp",
+      "width": 998,
+      "height": 562,
+      "bytes": 71626,
+      "category": "authored game screenshot",
+      "pages": [
+        "play.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/crowd-joy-0625.jpg",
+      "width": 1127,
+      "height": 1800,
+      "bytes": 424750,
+      "category": "existing personal archive or venue photograph",
+      "pages": [
+        "experience.html",
+        "friends.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/art/number4-poster.jpg",
+      "width": 1045,
+      "height": 1400,
+      "bytes": 421297,
+      "category": "commissioned AI game/story art, not documentary",
+      "pages": [
+        "meta.html",
+        "soccer-journey.html",
+        "summer.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/art/hd-dusk.jpg",
+      "width": 1376,
+      "height": 768,
+      "bytes": 246451,
+      "category": "commissioned AI game/story art, not documentary",
+      "pages": [
+        "arcade/longgame.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/art/anime-warm.jpg",
+      "width": 1376,
+      "height": 768,
+      "bytes": 202046,
+      "category": "commissioned AI game/story art, not documentary",
+      "pages": [
+        "arcade/longgame.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/art/friends-table.jpg",
+      "width": 1376,
+      "height": 768,
+      "bytes": 445384,
+      "category": "commissioned AI game/story art, not documentary",
+      "pages": [
+        "friends.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/art/run-montage.jpg",
+      "width": 1376,
+      "height": 768,
+      "bytes": 486691,
+      "category": "commissioned AI game/story art, not documentary",
+      "pages": [
+        "run.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/art/hd-night.jpg",
+      "width": 1376,
+      "height": 768,
+      "bytes": 286143,
+      "category": "commissioned AI game/story art, not documentary",
+      "pages": [
+        "arcade/longgame.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/art/anime-blue.jpg",
+      "width": 1376,
+      "height": 768,
+      "bytes": 306144,
+      "category": "commissioned AI game/story art, not documentary",
+      "pages": [
+        "arcade/longgame.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/players/chris-brady.webp",
+      "width": 600,
+      "height": 800,
+      "bytes": 49948,
+      "category": "licensed player portrait / credits.json",
+      "pages": [
+        "image-credits.html",
+        "squad.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/players/sergino-dest.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 60826,
+      "category": "licensed player portrait / credits.json",
+      "pages": [
+        "image-credits.html",
+        "squad.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/players/tyler-adams.webp",
+      "width": 600,
+      "height": 879,
+      "bytes": 64838,
+      "category": "licensed player portrait / credits.json",
+      "pages": [
+        "image-credits.html",
+        "squad.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/players/brian-schwake.webp",
+      "width": 600,
+      "height": 800,
+      "bytes": 46844,
+      "category": "licensed player portrait / credits.json",
+      "pages": [
+        "image-credits.html",
+        "squad.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/players/auston-trusty.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 62326,
+      "category": "licensed player portrait / credits.json",
+      "pages": [
+        "image-credits.html",
+        "squad.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/players/peyton-miller.webp",
+      "width": 600,
+      "height": 799,
+      "bytes": 147410,
+      "category": "licensed player portrait / credits.json",
+      "pages": [
+        "image-credits.html",
+        "squad.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/players/antonee-robinson.webp",
+      "width": 600,
+      "height": 799,
+      "bytes": 70714,
+      "category": "licensed player portrait / credits.json",
+      "pages": [
+        "image-credits.html",
+        "squad.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/players/justin-ellis.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 82634,
+      "category": "licensed player portrait / credits.json",
+      "pages": [
+        "image-credits.html",
+        "squad.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/players/george-campbell.webp",
+      "width": 600,
+      "height": 800,
+      "bytes": 81822,
+      "category": "licensed player portrait / credits.json",
+      "pages": [
+        "image-credits.html",
+        "squad.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/players/cavan-sullivan.webp",
+      "width": 600,
+      "height": 800,
+      "bytes": 55312,
+      "category": "licensed player portrait / credits.json",
+      "pages": [
+        "image-credits.html",
+        "squad.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/players/julian-hall.webp",
+      "width": 600,
+      "height": 800,
+      "bytes": 59350,
+      "category": "licensed player portrait / credits.json",
+      "pages": [
+        "image-credits.html",
+        "squad.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/players/miles-robinson.webp",
+      "width": 600,
+      "height": 900,
+      "bytes": 76576,
+      "category": "licensed player portrait / credits.json",
+      "pages": [
+        "image-credits.html",
+        "squad.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/display/g-mural-0611.webp",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 467648,
+      "category": "display derivative / original retained",
+      "pages": [
+        "soccer-journey.html",
+        "friends.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/display/concourse-0625.webp",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 802670,
+      "category": "display derivative / original retained",
+      "pages": [
+        "experience.html",
+        "lore.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/display/fifa-party-0613.webp",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 562328,
+      "category": "display derivative / original retained",
+      "pages": [
+        "friends.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/display/crowd-0625.webp",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 649942,
+      "category": "display derivative / original retained",
+      "pages": [
+        "experience.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/display/panel-1994.webp",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 404648,
+      "category": "display derivative / original retained",
+      "pages": [],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/display/office-groupd.webp",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 357816,
+      "category": "display derivative / original retained",
+      "pages": [
+        "experience.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/display/final-ceremony-0719.webp",
+      "width": 1350,
+      "height": 1800,
+      "bytes": 357570,
+      "category": "display derivative / original retained",
+      "pages": [
+        "experience.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/cc/balogun.jpg",
+      "width": 1280,
+      "height": 853,
+      "bytes": 292353,
+      "category": "licensed editorial / existing register",
+      "pages": [
+        "run.html",
+        "r32.html",
+        "image-credits.html",
+        "roster.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/cc/pochettino.jpg",
+      "width": 1280,
+      "height": 853,
+      "bytes": 394881,
+      "category": "licensed editorial / existing register",
+      "pages": [
+        "image-credits.html",
+        "roster.html",
+        "friends.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/cc/tillman.jpg",
+      "width": 1280,
+      "height": 1920,
+      "bytes": 550983,
+      "category": "licensed editorial / existing register",
+      "pages": [
+        "run.html",
+        "image-credits.html",
+        "roster.html",
+        "r16.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/cc/ream.jpg",
+      "width": 1280,
+      "height": 853,
+      "bytes": 264284,
+      "category": "licensed editorial / existing register",
+      "pages": [
+        "run.html",
+        "image-credits.html",
+        "roster.html",
+        "group-d.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/cc/outlaws.jpg",
+      "width": 1280,
+      "height": 853,
+      "bytes": 368002,
+      "category": "licensed editorial / existing register",
+      "pages": [
+        "image-credits.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/cc/metlife-aerial.jpg",
+      "width": 1280,
+      "height": 785,
+      "bytes": 459335,
+      "category": "licensed editorial / existing register",
+      "pages": [
+        "image-credits.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/cc/metlife-bowl.jpg",
+      "width": 1280,
+      "height": 853,
+      "bytes": 567613,
+      "category": "licensed editorial / existing register",
+      "pages": [
+        "image-credits.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/cc/wc26-crowd.jpg",
+      "width": 1280,
+      "height": 853,
+      "bytes": 229730,
+      "category": "licensed editorial / existing register",
+      "pages": [
+        "image-credits.html",
+        "roster.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/cc/levis-bowl.jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 323095,
+      "category": "licensed editorial / existing register",
+      "pages": [
+        "run.html",
+        "image-credits.html",
+        "group-d.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/cc/spain-celebration.jpg",
+      "width": 1280,
+      "height": 960,
+      "bytes": 291838,
+      "category": "licensed editorial / existing register",
+      "pages": [
+        "image-credits.html"
+      ],
+      "visuallyReviewed": true
+    },
+    {
+      "path": "assets/cc/pulisic.jpg",
+      "width": 1280,
+      "height": 853,
+      "bytes": 326225,
+      "category": "licensed editorial / existing register",
+      "pages": [
+        "image-credits.html",
+        "roster.html"
+      ],
+      "visuallyReviewed": true
+    }
+  ],
+  "orientationCorrections": {
+    "g-mural-0611.jpg": 90,
+    "office-groupd.jpg": 90,
+    "panel-1994.jpg": 90,
+    "concourse-0625.jpg": 90,
+    "crowd-0625.jpg": 90,
+    "fifa-party-0613.jpg": 90,
+    "final-ceremony-0719.jpg": 90
+  },
+  "blockedPortraits": [
+    "alex-freeman",
+    "chris-richards",
+    "matt-freese",
+    "damion-downs",
+    "frankie-westfield"
+  ],
+  "legacyCreditsUnresolved": [
+    "assets/azteca.jpg",
+    "assets/levis.jpg",
+    "assets/lumen.jpg",
+    "assets/olimpico.jpg",
+    "assets/sofi.jpg"
+  ]
+}

@@ -71,6 +71,7 @@
   .movement .mood {flex:1;min-width:150px;margin:0;}
   @media(max-width:600px){.movement{gap:8px}.movement .control-label{display:none}.movement .pad{grid-template-columns:repeat(4,1fr);width:100%;grid-template-rows:48px}.movement .mood{font-size:11px}.transport{gap:6px}.transport button{padding:8px;font-size:11px}}
 
+  .visual-build{font:700 10px Inter,sans-serif;letter-spacing:.12em;color:#b8c9bd;margin-top:8px}
   .trial-entry{border-top:1px solid #6e775f;border-bottom:1px solid #6e775f;padding:16px 0;margin:20px 0;background:linear-gradient(90deg,#36452c33,transparent)}
   .trial-entry h2{font:800 18px Inter,system-ui;margin-bottom:7px;letter-spacing:.05em}.trial-entry p{font-size:13px;line-height:1.5;color:#c5cbbd;margin-bottom:12px}.trial-options{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.trial-options label{font-size:12px}.trial-options button:first-of-type{background:#f5d267;color:#18221d}
   #trial-panel{border-left:4px solid #f5d267;padding:4px 0 4px 15px;margin:12px 0}#trial-panel[hidden],#trial-actions[hidden]{display:none}#trial-panel h2{font:800 clamp(18px,3vw,28px) Inter,system-ui}#trial-goal{font-size:14px;line-height:1.5;margin:8px 0;max-width:850px}.trial-stats{display:flex;gap:15px;flex-wrap:wrap;font:600 13px Inter,system-ui;color:#f5d267}#trial-cue{font-size:12px;line-height:1.4;margin-top:7px;color:#ecf2e0}#trial-feedback{font-size:14px;line-height:1.5;min-height:42px;margin:10px 0;color:#f3d370}#trial-craft,#trial-save{font-size:11px;color:#b3bdb1;line-height:1.5;margin-top:8px}
@@ -81,7 +82,7 @@
 <body class="longgame-page">
 <main class="shell">
 <nav class="topline" aria-label="Arcade navigation"><a href="../meta.html">← The arcade / Making of</a><a href="belamini.html">Belamini ’26 →</a></nav>
-<header><h1>THE LONG GAME</h1><p class="intro"><strong>Playable experiment / Gordon’s idea.</strong> Explore freely, or play the eight-era challenge run below. Fifty-two years. Eight ways to see the game. Walk from a green kit in 1974 to a real seat in 2026. Every era has something to play with.</p></header>
+<header><h1>THE LONG GAME</h1><p class="visual-build">THE WALK + EIGHT ERA RUN · ART EDITION 02</p><p class="intro"><strong>Playable experiment / Gordon’s idea.</strong> Explore freely, or play the eight-era challenge run below. Fifty-two years. Eight ways to see the game. Walk from a green kit in 1974 to a real seat in 2026. Every era has something to play with.</p></header>
 <div class="transport" aria-label="Playback settings"><button id="pause" aria-pressed="false">Pause</button><button id="sound" aria-pressed="false">Sound off</button><button id="motion" aria-pressed="false">Calm motion</button><button id="restart">Walk again ↺</button></div>
 <section class="trial-entry" aria-label="Challenge modes"><h2>THE EIGHT ERA RUN</h2><p>Eight short games. Three chances per stage. One score to bring home. These are fictional training challenges in historical visual styles, not recreations of real matches or console emulation.</p><div class="trial-options"><label for="trial-level">Pace</label><select id="trial-level"><option value="club">Club · generous windows</option><option value="pro">Pro · tighter, ×1.5 points</option></select><button id="trial-run">Play all 8 eras</button><button id="trial-resume" hidden>Resume run</button><label for="trial-era">Practice</label><select id="trial-era"></select><button id="trial-practice">Play this era</button></div><p id="trial-record">Your best run stays on this device.</p></section>
 <section id="trial-panel" hidden aria-label="Current challenge"><h2 id="trial-title"></h2><p id="trial-goal"></p><div class="trial-stats"><span id="trial-progress"></span><span id="trial-lives"></span><span id="trial-time"></span><span id="trial-total"></span></div><p id="trial-cue" aria-live="polite"></p></section>
@@ -94,12 +95,13 @@
 <div class="readout"><div><div id="year">1974</div><div id="engine">PONG</div></div><div><p id="story" aria-live="polite"></p><p id="discovery">Walk right to find the next memory.</p></div></div>
 <div class="controls"><section aria-label="Era toys"><p class="control-label" id="toy-title">Play in this era</p><div id="toys"></div><p id="feedback" role="status">Try a toy. Then walk into another world.</p></section></div>
 <div class="collection"><span id="collection">0 / 8 eras explored</span><span id="save-state">Progress stays on this device.</span></div>
-<details><summary>How to play · why the world changes</summary><p id="instructions">Focus the scene to use arrows or W A S D. Left rewinds, right advances; up and down change the heart and the atmosphere. Walk into a ball to shoot. On a phone, hold the direction buttons or drag the scene. Tap an era to explore directly. No memory is locked behind a score.</p><p>Space cheers, M calls MATCHDAY, H sends hearts. The toy buttons reveal each era’s keys. Escape pauses. Your discoveries and place are saved locally; “Walk again” keeps discoveries. Sound is opt-in.</p><p><strong>Playable experiment:</strong> time changes the renderer, and mood changes the world. The graphics grow from a Pong-inspired paddle era to polygon rendering. Anime is a stylistic branch, not a hardware generation. The journey ends in a real photograph. This keeps the act of remembering at the center of the game. HD and anime environments use the existing commissioned AI art; the finale uses Gordon’s existing photographs.</p></details>
+<details><summary>How to play · why the world changes</summary><p id="instructions">Focus the scene to use arrows or W A S D. Left rewinds, right advances; up and down change the heart and the atmosphere. Walk into a ball to shoot. On a phone, hold the direction buttons or drag the scene. Tap an era to explore directly. No memory is locked behind a score.</p><p>Space cheers, M calls MATCHDAY, H sends hearts. The toy buttons reveal each era’s keys. Escape pauses. Your discoveries and place are saved locally; “Walk again” keeps discoveries. Sound is opt-in.</p><p><strong>Playable experiment:</strong> time changes the renderer, and mood changes the world. The graphics grow from a Pong-inspired paddle era to polygon rendering. Anime is a stylistic branch, not a hardware generation. The journey ends in a real photograph. This keeps the act of remembering at the center of the game. Both modes use the same era character renderer. The HD and anime environments use the existing commissioned AI artwork, now wired into the challenge run too; the finale uses Gordon’s existing photograph without cropping away his face. <a href="../review/graphics/ART-DIRECTION.md">Art direction and sources</a>.</p></details>
 <details><summary>Just read the journey</summary><div id="read-story"></div></details>
 <p class="note">A playable idea by Gordon, built by Darby. <a href="../meta.html">The Making Of</a> · <a href="../index.html">Back to the USMNT story</a></p>
 </main>
 
-<script src="longgame-trials.js"></script>
+<script src="longgame-visuals.js?v=20261006-art2"></script>
+<script src="longgame-trials.js?v=20261006-art2"></script>
 <script>
 (function () {
   "use strict";
@@ -150,6 +152,7 @@
     { name: "ANIME",    sub: "the anime arc", until: .975, rw: 960, rh: 540, smooth: true },
     { name: "REAL",     sub: "2026",       until: 1.01, rw: 960, rh: 540, smooth: true }
   ];
+  ERAS.forEach(function(era,i){var p=LongGameVisuals.profiles[i];era.rw=p.w;era.rh=p.h;era.smooth=p.smooth;});
   function progress() { return Math.max(0, Math.min(1, px / WORLD)); }
   function eraIndex(p) { for (var i = 0; i < ERAS.length; i++) if (p < ERAS[i].until) return i; return ERAS.length - 1; }
   function year(p) { return Math.round(1974 + p * 52); }
@@ -262,6 +265,7 @@
   var animeBlue = new Image(); animeBlue.src = "../assets/art/anime-blue.jpg";
   var animeWarm = new Image(); animeWarm.src = "../assets/art/anime-warm.jpg";
   function imOk(img) { return img.complete && img.naturalWidth > 0; }
+  [photo,stadiumPhoto,cutout,hdDusk,hdNight,animeBlue,animeWarm].forEach(function(img){img.addEventListener("load",function(){needsRender=true;});});
   var cutoutFaded = null;
   function fadedCutout() { /* the photo crops at the thigh; fade the edge so he emerges from light, not amputation */
     if (cutoutFaded || !imOk(cutout)) return cutoutFaded;
@@ -369,197 +373,8 @@
       bob: Math.abs(Math.sin(walkT * .35)) * 1.2
     };
   }
-  function drawChar(g2, x, y, era, s, walkT) {
-    var bob = Math.sin(walkT * .35) * (mood > 0 ? 2.2 : 1) * s;
-    var skin = "#7a4a22", navy = moodColor([40, 60, 160], [22, 28, 60]), white = "#f0f0e8";
-    var green = moodColor([52, 150, 70], [20, 60, 30]); /* the Reston Rattlers kit was green */
-    y += (mood < -.3 ? 1.5 * s : 0) - bob;
-    if (era === 0) { /* pong: a paddle-square being, already wearing green */
-      g2.fillStyle = green; g2.fillRect(x - 3 * s, y - 10 * s, 6 * s, 10 * s);
-      g2.fillStyle = white; g2.fillRect(x - 1 * s, y - 7 * s, 2 * s, 3 * s); /* the 4, abstracted to a block */
-      return;
-    }
-    if (era === 1) { /* atari: chunky biped in white and blue */
-      g2.fillStyle = skin; g2.fillRect(x - 2 * s, y - 12 * s, 4 * s, 3 * s);
-      g2.fillStyle = white; g2.fillRect(x - 3 * s, y - 9 * s, 6 * s, 5 * s);
-      g2.fillStyle = moodColor([50, 80, 200], [24, 32, 80]); g2.fillRect(x - 3 * s, y - 7.6 * s, 6 * s, 1.6 * s); /* the blue hoop */
-      g2.fillStyle = skin; g2.fillRect(x - 3 * s, y - 4 * s, 2 * s, 4 * s); g2.fillRect(x + 1 * s, y - 4 * s, 2 * s, 4 * s);
-      return;
-    }
-    if (era === 3) { /* 16-bit hero from behind, digitized Madden 95 style: proper proportions, real stride */
-      var G = gait(walkT);
-      y -= G.bob * s * .6;
-      g2.fillStyle = "rgba(0,0,0,.35)"; g2.fillRect(x - 4 * s, y - 1, 8 * s, 2);
-      var lA = 6 * s + G.hipA * 2.4 * s, lB = 6 * s + G.hipB * 2.4 * s;
-      g2.fillStyle = skin;
-      g2.fillRect(x - 2.6 * s + G.hipB * s, y - lA, 2 * s, lA);
-      g2.fillRect(x + .6 * s + G.hipA * s, y - lB, 2 * s, lB);
-      g2.fillStyle = navy; /* socks */
-      g2.fillRect(x - 2.6 * s + G.hipB * s, y - 2.2 * s, 2 * s, 2.2 * s);
-      g2.fillRect(x + .6 * s + G.hipA * s, y - 2.2 * s, 2 * s, 2.2 * s);
-      g2.fillStyle = white; g2.fillRect(x - 3.2 * s, y - 9.5 * s, 6.4 * s, 3.6 * s); /* shorts */
-      g2.fillStyle = navy; g2.fillRect(x - 3.2 * s, y - 9.5 * s, Math.max(1, s * .5), 3.6 * s); g2.fillRect(x + 2.7 * s, y - 9.5 * s, Math.max(1, s * .5), 3.6 * s);
-      g2.fillStyle = navy; g2.fillRect(x - 3.6 * s, y - 17 * s, 7.2 * s, 7.5 * s); /* shirt from behind */
-      g2.fillStyle = skin; /* arms pumping */
-      g2.fillRect(x - 5 * s, y - 16 * s + G.armA * 2 * s, 1.5 * s, 4.5 * s);
-      g2.fillRect(x + 3.5 * s, y - 16 * s + G.armB * 2 * s, 1.5 * s, 4.5 * s);
-      g2.fillStyle = white; /* the big 4 on the back */
-      g2.fillRect(x + .6 * s, y - 16 * s, s, 4.5 * s);
-      g2.fillRect(x - 1.6 * s, y - 16 * s, s, 2.5 * s);
-      g2.fillRect(x - 1.6 * s, y - 13.5 * s, 3.2 * s, s);
-      g2.fillStyle = skin; g2.fillRect(x - 1.4 * s, y - 20.4 * s, 2.8 * s, 3.4 * s); /* head, smaller */
-      g2.fillStyle = "#181820"; g2.fillRect(x - 1.6 * s, y - 21 * s, 3.2 * s, 1.4 * s); /* hair */
-      return;
-    }
-    if (era <= 3) { /* 8-bit sprite */
-      g2.fillStyle = skin; g2.fillRect(x - 2 * s, y - 15 * s, 4 * s, 4 * s);
-      g2.fillStyle = era === 3 ? navy : moodColor([190, 40, 60], [70, 20, 28]); g2.fillRect(x - 3 * s, y - 11 * s, 6 * s, 6 * s); /* the red 1988 years, then the USA navy */
-      g2.fillStyle = white; g2.fillRect(x - 1 * s, y - 10 * s, 2 * s, 3 * s); /* the 4 patch, always */
-      g2.fillStyle = white; g2.fillRect(x - 3 * s, y - 5 * s, 6 * s, 2 * s);
-      var leg = Math.sin(walkT * .35) * 2 * s;
-      g2.fillStyle = skin;
-      g2.fillRect(x - 3 * s, y - 3 * s, 2 * s, 3 * s + leg);
-      g2.fillRect(x + 1 * s, y - 3 * s, 2 * s, 3 * s - leg);
-      return;
-    }
-    if (era === 4) { /* polygon: the FIFA 97-99 build. Popeye forearms, cylinder limbs, flat shade, vertex snap */
-      var G4 = gait(walkT);
-      x = Math.round(x) + ((walkT % 47) === 0 ? 1 : 0); y = Math.round(y - G4.bob * s * .5);
-      var g4 = g2;
-      g4.fillStyle = "rgba(0,0,0,.5)";
-      g4.beginPath(); g4.ellipse(x, y + 1.2 * s, 4.5 * s, 1.2 * s, 0, 0, 6.29); g4.fill(); /* hard blob shadow */
-      g4.save(); g4.translate(x, y); g4.lineCap = "butt";
-      var hipY = -7.5 * s;
-      var leg4 = function (hipA, knee, lit) {
-        var kx = Math.sin(hipA) * 4 * s, ky = hipY + Math.cos(hipA) * 4 * s;
-        var fx2 = kx + Math.sin(hipA - knee) * 3.6 * s, fy2 = Math.min(ky + Math.cos(hipA - knee) * 3.6 * s, 0);
-        g4.strokeStyle = lit ? "#8a5a2e" : "#5c3a1c"; g4.lineWidth = 2.2 * s;
-        g4.beginPath(); g4.moveTo(0, hipY); g4.lineTo(kx, ky); g4.stroke();
-        g4.beginPath(); g4.moveTo(kx, ky); g4.lineTo(fx2, fy2); g4.stroke();
-        g4.fillStyle = "#101014"; g4.fillRect(fx2 - 1 * s, fy2 - .6 * s, 2.8 * s, 1.2 * s); /* boot */
-      };
-      var arm4 = function (swing, lit) {
-        var sy4 = -15 * s;
-        var ex4 = Math.sin(swing) * 3.2 * s, ey4 = sy4 + Math.cos(swing) * 3.2 * s;
-        g4.strokeStyle = lit ? moodColor([64, 88, 200], [28, 36, 78]) : moodColor([40, 56, 150], [18, 24, 56]);
-        g4.lineWidth = 1.8 * s;
-        g4.beginPath(); g4.moveTo(0, sy4); g4.lineTo(ex4, ey4); g4.stroke();
-        var fx4 = ex4 + Math.sin(swing + .9) * 2.6 * s, fy4 = ey4 - Math.cos(swing + .9) * 1.2 * s;
-        g4.strokeStyle = lit ? "#8a5a2e" : "#5c3a1c"; g4.lineWidth = 2.4 * s; /* the big forearm */
-        g4.beginPath(); g4.moveTo(ex4, ey4); g4.lineTo(fx4, fy4); g4.stroke();
-        g4.fillStyle = lit ? "#8a5a2e" : "#5c3a1c"; g4.fillRect(fx4 - 1.1 * s, fy4 - 1.1 * s, 2.2 * s, 2.2 * s); /* clenched fist */
-      };
-      leg4(G4.hipB, G4.kneeB, false);
-      arm4(G4.armB - .3, false);
-      /* torso: broad chest, two flat shades, elbows-out build */
-      g4.fillStyle = moodColor([54, 74, 180], [24, 30, 66]);
-      g4.beginPath(); g4.moveTo(-4.4 * s, -16.5 * s); g4.lineTo(0, -17 * s); g4.lineTo(0, -7 * s); g4.lineTo(-2.6 * s, -7 * s); g4.closePath(); g4.fill();
-      g4.fillStyle = moodColor([34, 48, 130], [15, 19, 46]);
-      g4.beginPath(); g4.moveTo(4.4 * s, -16.5 * s); g4.lineTo(0, -17 * s); g4.lineTo(0, -7 * s); g4.lineTo(2.6 * s, -7 * s); g4.closePath(); g4.fill();
-      g4.fillStyle = "#e8e8e0"; g4.fillRect(-2.8 * s, -8 * s, 5.6 * s, 2.6 * s); /* shorts */
-      g4.fillStyle = "#f0f0e8"; g4.font = "bold " + (3.6 * s) + "px Inter"; g4.textAlign = "center"; g4.fillText("4", 0, -10.5 * s);
-      /* head box + hair silhouette (identity by hair, as was the law) */
-      g4.fillStyle = "#7a4a22"; g4.fillRect(-1.8 * s, -21.5 * s, 3.6 * s, 4 * s);
-      g4.fillStyle = "#14141c"; g4.fillRect(-2 * s, -22 * s, 4 * s, 1.6 * s);
-      leg4(G4.hipA, G4.kneeA, true);
-      arm4(G4.armA - .3, true);
-      g4.restore(); g4.textAlign = "left";
-      return;
-    }
-    if (era === 6) { /* the anime years: tall lean cel hero, bold outline, an aura that knows your heart */
-      var GA = gait(walkT);
-      var g6 = g2;
-      g6.save(); g6.translate(x, y - GA.bob * s * .5);
-      if (mood < -.15) { /* the ego aura, boiling blue flame, unmissable now */
-        for (var fl = 0; fl < 2; fl++) {
-          g6.fillStyle = fl ? "rgba(60,130,255,.5)" : "rgba(90,180,255,.28)";
-          g6.beginPath();
-          for (var av = 0; av <= 10; av++) {
-            var aa = Math.PI + (av / 10) * Math.PI;
-            var ar = (fl ? 11 : 16) * s + Math.sin(t * .35 + av * 2.1 + fl) * 3 * s;
-            var axp = Math.cos(aa) * ar * .85, ayp = -12 * s + Math.sin(aa) * ar * 1.6;
-            if (av) g6.lineTo(axp, ayp); else g6.moveTo(axp, ayp);
-          }
-          g6.closePath(); g6.fill();
-        }
-      } else if (mood > .3) { /* warm apex glow */
-        var glow6 = g6.createRadialGradient(0, -12 * s, 2, 0, -12 * s, 18 * s);
-        glow6.addColorStop(0, "rgba(255,220,150,.3)"); glow6.addColorStop(1, "rgba(255,220,150,0)");
-        g6.fillStyle = glow6; g6.fillRect(-18 * s, -30 * s, 36 * s, 36 * s);
-      }
-      g6.rotate(Math.sin(walkT * .35) * .04 + .06);
-      g6.lineCap = "round";
-      var lim = function (x1, y1, a1, l1, a2, l2, wd, col) {
-        var kx = x1 + Math.sin(a1) * l1, ky = y1 + Math.cos(a1) * l1;
-        var ex2 = kx + Math.sin(a2) * l2, ey2 = ky + Math.cos(a2) * l2;
-        g6.strokeStyle = "#101020"; g6.lineWidth = wd + Math.max(1.2, s * .6);
-        g6.beginPath(); g6.moveTo(x1, y1); g6.lineTo(kx, ky); g6.lineTo(ex2, ey2); g6.stroke();
-        g6.strokeStyle = col; g6.lineWidth = wd;
-        g6.beginPath(); g6.moveTo(x1, y1); g6.lineTo(kx, ky); g6.lineTo(ex2, ey2); g6.stroke();
-      };
-      var hip6 = -8.5 * s;
-      lim(0, hip6, GA.hipB, 4.6 * s, GA.hipB - GA.kneeB, 4.2 * s, 1.9 * s, skin);
-      lim(.4 * s, -16 * s, GA.armB + .25, 3.4 * s, GA.armB + 1.1, 3 * s, 1.5 * s, skin);
-      g6.strokeStyle = "#101020"; g6.lineWidth = Math.max(1.5, s * .5);
-      g6.fillStyle = "#1c2a6e";
-      g6.beginPath(); g6.ellipse(0, -12.5 * s, 3.2 * s, 6.4 * s, 0, 0, 6.29); g6.fill(); g6.stroke();
-      g6.fillStyle = "rgba(0,0,20,.35)"; g6.beginPath(); g6.ellipse(1.3 * s, -11.5 * s, 1.8 * s, 5.4 * s, 0, -1.4, 1.4); g6.fill();
-      g6.fillStyle = "rgba(255,255,255,.5)"; g6.fillRect(-2.2 * s, -17.4 * s, 1.1 * s, 3.2 * s);
-      g6.fillStyle = "#fff"; g6.font = "bold " + (4.2 * s) + "px Inter"; g6.textAlign = "center"; g6.fillText("4", 0, -10.5 * s);
-      lim(0, hip6, GA.hipA, 4.6 * s, GA.hipA - GA.kneeA, 4.2 * s, 1.9 * s, skin);
-      lim(-.4 * s, -16 * s, GA.armA + .25, 3.4 * s, GA.armA + 1.1, 3 * s, 1.5 * s, skin);
-      g6.fillStyle = skin; g6.beginPath(); g6.arc(0, -21.5 * s, 2.7 * s, 0, 6.29); g6.fill(); g6.stroke();
-      g6.fillStyle = "#14141e";
-      g6.beginPath(); g6.moveTo(-3.2 * s, -22 * s); g6.lineTo(-2 * s, -26 * s); g6.lineTo(-.7 * s, -23.4 * s); g6.lineTo(.6 * s, -26.6 * s); g6.lineTo(1.8 * s, -23.2 * s); g6.lineTo(3.1 * s, -25 * s); g6.lineTo(3.2 * s, -21.6 * s); g6.closePath(); g6.fill();
-      if (mood < -.15) { g6.strokeStyle = "rgba(140,200,255,.85)"; g6.lineWidth = Math.max(1, s * .5); g6.beginPath(); g6.arc(0, -21.5 * s, 2.9 * s, 3.4, 5.2); g6.stroke(); }
-      g6.restore(); g6.textAlign = "left";
-      return;
-    }
-    /* HD/real: athletic broadcast-era figure. Kit, socks, boots, real stride, rim light at night */
-    var GH = gait(walkT);
-    var g3 = g2;
-    g3.save();
-    g3.translate(x, y - GH.bob * s * .5);
-    g3.fillStyle = "rgba(0,0,0,.32)";
-    g3.beginPath(); g3.ellipse(0, 1.5 * s, 5 * s, 1.4 * s, 0, 0, 6.29); g3.fill();
-    g3.rotate(Math.sin(walkT * .35) * .04 + .05);
-    g3.lineCap = "round";
-    var limb = function (x1, y1, a1, l1, a2, l2, wd, c1, c2, cBoot) {
-      var kx = x1 + Math.sin(a1) * l1, ky = y1 + Math.cos(a1) * l1;
-      var ex2 = kx + Math.sin(a2) * l2, ey2 = ky + Math.cos(a2) * l2;
-      g3.strokeStyle = c1; g3.lineWidth = wd;
-      g3.beginPath(); g3.moveTo(x1, y1); g3.lineTo(kx, ky); g3.stroke();
-      g3.strokeStyle = c2; g3.lineWidth = wd * .92;
-      g3.beginPath(); g3.moveTo(kx, ky); g3.lineTo(ex2, ey2); g3.stroke();
-      if (cBoot) { g3.fillStyle = cBoot; g3.beginPath(); g3.ellipse(ex2 + .8 * s, ey2, 1.4 * s, .7 * s, 0, 0, 6.29); g3.fill(); }
-    };
-    var hipH = -8 * s, shH = -15.5 * s;
-    var sockN = moodColor([30, 42, 120], [16, 20, 52]);
-    limb(0, hipH, GH.hipB, 4.4 * s, GH.hipB - GH.kneeB, 4 * s, 2 * s, "#6b4423", sockN, "#0c0c12");
-    limb(.3 * s, shH, GH.armB + .3, 3 * s, GH.armB + 1.2, 2.8 * s, 1.4 * s, moodColor([48, 66, 170], [22, 28, 62]), "#6b4423", null);
-    g3.fillStyle = "#e8e8e2"; /* shorts */
-    g3.beginPath(); g3.moveTo(-2.6 * s, hipH - 1.6 * s); g3.lineTo(2.6 * s, hipH - 1.6 * s); g3.lineTo(2.2 * s, hipH + 2 * s); g3.lineTo(-2.2 * s, hipH + 2 * s); g3.closePath(); g3.fill();
-    var grad = g3.createLinearGradient(0, shH - 3 * s, 0, hipH);
-    grad.addColorStop(0, moodColor([60, 84, 200], [26, 32, 70]));
-    grad.addColorStop(1, moodColor([28, 40, 120], [14, 18, 42]));
-    g3.fillStyle = grad;
-    g3.beginPath(); g3.ellipse(0, -12 * s, 3.1 * s, 5.4 * s, 0, 0, 6.29); g3.fill();
-    g3.fillStyle = "#f0f0e8"; g3.font = "600 " + (3.4 * s) + "px Inter"; g3.textAlign = "center"; g3.fillText("4", 0, -10.4 * s);
-    limb(0, hipH, GH.hipA, 4.4 * s, GH.hipA - GH.kneeA, 4 * s, 2 * s, "#7a4a22", sockN, "#0c0c12");
-    limb(-.3 * s, shH, GH.armA + .3, 3 * s, GH.armA + 1.2, 2.8 * s, 1.4 * s, moodColor([64, 90, 210], [28, 36, 78]), "#7a4a22", null);
-    g3.fillStyle = "#7a4a22"; g3.beginPath(); g3.arc(0, -18.8 * s, 2.3 * s, 0, 6.29); g3.fill();
-    g3.fillStyle = "#181820"; g3.beginPath(); g3.arc(0, -19.4 * s, 2.3 * s, Math.PI, 0); g3.fill();
-    if (mood < 0 && era === 5) { /* floodlight rim so the night never swallows you again */
-      g3.strokeStyle = "rgba(200,225,255,.75)"; g3.lineWidth = Math.max(1, s * .45);
-      g3.beginPath(); g3.arc(0, -18.8 * s, 2.5 * s, 3.3, 5.1); g3.stroke();
-      g3.beginPath(); g3.moveTo(-3 * s, -15.5 * s); g3.lineTo(-3.3 * s, -9 * s); g3.stroke();
-    }
-    g3.strokeStyle = "#f0f0e8"; g3.lineWidth = .5 * s;
-    g3.beginPath();
-    if (mood >= 0) g3.arc(0, -18.4 * s, 1 * s, .3, 2.8);
-    else g3.arc(0, -17.4 * s, 1 * s, 3.6, 5.8);
-    g3.stroke();
-    g3.restore(); g3.textAlign = "left";
+  function drawChar(g2,x,y,era,size,walkT){
+    LongGameVisuals.drawWalker(g2,x,y,era,g2.canvas.height*(era<4?.30:.36),walkT,null,kickFlash>0);
   }
 
   /* ---------------- scenes per era ---------------- */
@@ -1253,7 +1068,8 @@
     renderCore(i, p, true);
     ctx.clearRect(0, 0, VW, VH);
     ctx.imageSmoothingEnabled = ERAS[i].smooth;
-    ctx.drawImage(off, 0, 0, VW, VH);
+    ctx.fillStyle="#03080c";ctx.fillRect(0,0,VW,VH);
+    var artWidth=i<5?VH*4/3:VW;ctx.drawImage(off,(VW-artWidth)/2,0,artWidth,VH);
     if (i2 >= 0 && blend > 0) {
       var keepOff = off, keepOg = og;
       off = off2; og = og2;
@@ -1261,7 +1077,7 @@
       off = keepOff; og = keepOg;
       ctx.globalAlpha = Math.min(1, Math.max(0, blend));
       ctx.imageSmoothingEnabled = ERAS[i2].smooth;
-      ctx.drawImage(off2, 0, 0, VW, VH);
+      var nextArtWidth=i2<5?VH*4/3:VW;ctx.drawImage(off2,(VW-nextArtWidth)/2,0,nextArtWidth,VH);
       ctx.globalAlpha = 1;
     }
     drawHUD(s.era, s.p);
@@ -1433,13 +1249,13 @@
   function trialExit(){checkpointTrials();releaseKeys();trial=null;document.body.classList.remove("trials-active");cv.setAttribute("aria-label","Playable journey. Arrow keys move through time and change mood. Escape pauses.");cv.setAttribute("aria-describedby","instructions story");document.getElementById("trial-panel").hidden=true;document.getElementById("trial-actions").hidden=true;padOriginal.forEach(function(p){p.b.innerHTML=p.html;p.b.disabled=false;p.b.setAttribute("aria-label",p.label);});needsRender=true;setPaused(false);syncUI(eraIndex(progress()));document.getElementById("g").focus({preventScroll:true});}
   function trialRetry(){if(!trial)return;setupTrial(trial.era,trialMode,trial.pro,trialScores.slice(0,trial.era));}
   function trialAdvance(){if(!trial)return;if(trial.phase==="ready"){releaseKeys();Trials.start(trial);setPaused(false);updateTrialUI();cv.focus({preventScroll:true});}else if(trial.phase==="lost")trialRetry();else if(trial.phase==="won"){if(trialMode==="run"&&trial.era<7)setupTrial(trial.era+1,"run",trial.pro,trialScores);else trialExit();}}
-  function updateTrialUI(){if(!trial)return;var uiKey=[trial.era,trial.phase,trial.event,Math.floor(trial.elapsed*4),Trials.openLane(trial),trial.lane,trial.choice,trial.hits,trial.lives,trial.score,trialActionHeld].join(":");if(uiKey===trialUiKey)return;trialUiKey=uiKey;var d=Trials.stages[trial.era];document.getElementById("trial-title").textContent=(trial.era+1)+" / 8 · "+d.name;document.getElementById("trial-goal").textContent=d.hint;document.getElementById("trial-progress").textContent=trial.hits+" / "+d.target+" complete";document.getElementById("trial-lives").textContent=trial.lives+" chances";document.getElementById("trial-time").textContent=Math.max(0,Math.ceil(d.limit-trial.elapsed))+"s";document.getElementById("trial-total").textContent=(trialMode==="run"?"Run ":"Score ")+trialSum();document.getElementById("trial-craft").textContent=trialLabels[trial.era]+" · "+d.craft+". 4:3 through early 3D; 16:9 from HD. Buffers are production choices, not hardware specifications.";
+  function updateTrialUI(){if(!trial)return;var uiKey=[trial.era,trial.phase,trial.event,Math.floor(trial.elapsed*4),Trials.openLane(trial),trial.lane,trial.choice,trial.hits,trial.lives,trial.score,trialActionHeld].join(":");if(uiKey===trialUiKey)return;trialUiKey=uiKey;var d=Trials.stages[trial.era];document.getElementById("trial-title").textContent=(trial.era+1)+" / 8 · "+d.name;document.getElementById("trial-goal").textContent=d.hint;document.getElementById("trial-progress").textContent=trial.hits+" / "+d.target+" complete";document.getElementById("trial-lives").textContent=trial.lives+" chances";document.getElementById("trial-time").textContent=Math.max(0,Math.ceil(d.limit-trial.elapsed))+"s";document.getElementById("trial-total").textContent=(trialMode==="run"?"Run ":"Score ")+trialSum();document.getElementById("trial-craft").textContent=trialLabels[trial.era]+" · "+d.craft+". 4:3 through early 3D; 16:9 from HD. Raster dimensions are chosen for these homages, not a claim of hardware emulation.";
     var cue="";if(trial.era===3){var open=Trials.openLane(trial);cue="Selected "+["A","B","C"][trial.lane]+" · OPEN route "+["A","B","C"][open]+". Space passes; 1 / 2 / 3 also select.";}else if(trial.era===5){var open=Trials.openLane(trial),role=trial.lane===open?"line-breaking pass +150":trial.lane===(open+1)%3?"safe recycle +75":"marked / interception risk";cue="Selected #"+["7","10","11"][trial.lane]+" · "+role+".";}else if(trial.era===6)cue="Match "+Trials.direction(trial).toUpperCase()+" · "+(trial.choice?"you selected "+trial.choice.toUpperCase():"choose a direction first")+".";else if(trial.era===1)cue="Selected "+["left","center","right"][trial.lane]+" lane · empty lane: "+["left","center","right"][Trials.openLane(trial)]+".";var cueEl=document.getElementById("trial-cue");if(cueEl.textContent!==cue)cueEl.textContent=cue;
     var action=document.getElementById("trial-action");action.textContent=d.action;action.disabled=trial.phase!=="playing"||trial.era===0;action.setAttribute("aria-pressed",String(trialActionHeld));
     var next=document.getElementById("trial-next");next.hidden=trial.phase==="playing";next.textContent=trial.phase==="ready"?"Start stage":trial.phase==="lost"?"Try again":trialMode==="run"&&trial.era<7?"Next era →":"Return to your story";
     document.getElementById("trial-scoreboard").textContent=trial.phase==="won"&&trial.era===7&&trialMode==="run"?"RUN COMPLETE · "+trialSum()+" points · "+(trial.pro?"Pro":"Club")+". Play again to improve your score, or return to the real moment.":"Fictional challenge · "+(trial.pro?"Pro: tighter windows, ×1.5 action points":"Club: generous windows")+" · Best this era: "+(trialRecord.stages[(trial.pro?"pro":"club")+":"+trial.era]||0)+" · R retries · Escape pauses.";
     if(trial.event!==trialEvent){trialEvent=trial.event;document.getElementById("trial-feedback").textContent=trial.feedback;if(trial.phase==="won"){trialScores[trial.era]=trial.score;var recordKey=(trial.pro?"pro":"club")+":"+trial.era;trialRecord.stages[recordKey]=Math.max(trialRecord.stages[recordKey]||0,trial.score);if(trialMode==="run"&&trial.era===7){var level=trial.pro?"pro":"club";trialRecord[level]=Math.max(trialRecord[level],trialSum());}checkpointTrials();saveTrials();trialUiKey="";sfxGoal();}else if(trial.phase==="lost")sfxSave();else if(trial.lastGood)beep(660,.08,trial.era<4?"square":"sine",.045);}}
-  function trialFrame(dt){if(!trial)return;if(!paused)Trials.step(trial,dt,{left:keys.left||trialTapKeys.left,right:keys.right||trialTapKeys.right,up:keys.up||trialTapKeys.up,down:keys.down||trialTapKeys.down,action:trialActionHeld||trialActionTap});trialActionTap=false;trialTapKeys={};var d=Trials.stages[trial.era];if(trialCanvas.width!==d.w||trialCanvas.height!==d.h){trialCanvas.width=d.w;trialCanvas.height=d.h;}Trials.render(trialCtx,trial,photo,calm);ctx.imageSmoothingEnabled=trial.era>=5;ctx.clearRect(0,0,VW,VH);ctx.fillStyle="#03080c";ctx.fillRect(0,0,VW,VH);var contentWidth=trial.era<5?VH*4/3:VW;ctx.drawImage(trialCanvas,(VW-contentWidth)/2,0,contentWidth,VH);needsRender=false;updateTrialUI();}
+  function trialFrame(dt){if(!trial)return;if(!paused)Trials.step(trial,dt,{left:keys.left||trialTapKeys.left,right:keys.right||trialTapKeys.right,up:keys.up||trialTapKeys.up,down:keys.down||trialTapKeys.down,action:trialActionHeld||trialActionTap});trialActionTap=false;trialTapKeys={};var d=Trials.stages[trial.era];if(trialCanvas.width!==d.w||trialCanvas.height!==d.h){trialCanvas.width=d.w;trialCanvas.height=d.h;}var artReceipt=Trials.render(trialCtx,trial,photo,calm,{hdDusk:hdDusk,hdNight:hdNight,animeBlue:animeBlue,animeWarm:animeWarm});cv.dataset.renderer=artReceipt.version;cv.dataset.era=String(trial.era);ctx.imageSmoothingEnabled=trial.era>=5;ctx.clearRect(0,0,VW,VH);ctx.fillStyle="#03080c";ctx.fillRect(0,0,VW,VH);var contentWidth=trial.era<5?VH*4/3:VW;ctx.drawImage(trialCanvas,(VW-contentWidth)/2,0,contentWidth,VH);needsRender=false;updateTrialUI();}
   document.getElementById("trial-run").addEventListener("click",function(){setupTrial(0,"run",document.getElementById("trial-level").value==="pro",[]);});
   document.getElementById("trial-practice").addEventListener("click",function(){setupTrial(Number(document.getElementById("trial-era").value),"practice",document.getElementById("trial-level").value==="pro",[]);});
   document.getElementById("trial-resume").addEventListener("click",function(){var cp=trialRecord.checkpoint;if(cp)setupTrial(cp.era,"run",cp.pro,cp.scores);});
@@ -1447,9 +1263,11 @@
   var actionButton=document.getElementById("trial-action");actionButton.addEventListener("pointerdown",function(e){e.preventDefault();actionButton.setPointerCapture(e.pointerId);trialActionHeld=true;trialActionTap=true;});["pointerup","pointercancel","lostpointercapture"].forEach(function(event){actionButton.addEventListener(event,function(){trialActionHeld=false;});});actionButton.addEventListener("keydown",function(e){if(e.key===" "||e.key==="Enter"){e.preventDefault();e.stopPropagation();trialActionHeld=true;trialActionTap=true;}});actionButton.addEventListener("keyup",function(e){if(e.key===" "||e.key==="Enter"){e.preventDefault();e.stopPropagation();trialActionHeld=false;}});actionButton.addEventListener("blur",function(){trialActionHeld=false;});
   window.addEventListener("pagehide",checkpointTrials);
   refreshTrialRecord();
+  if(new URLSearchParams(location.search).get("mode")==="run"){var resume=trialRecord.checkpoint;if(resume)setupTrial(resume.era,"run",resume.pro,resume.scores);else setupTrial(0,"run",false,[]);}
   syncUI(eraIndex(progress()));
 
-  document.fonts && document.fonts.ready.then(function () { frame(); }) || frame();
+  // Gameplay must start even if a font fails; no visual or input gate.
+  frame();
 })();
 </script>
 </body>
