@@ -10,9 +10,9 @@ No build step or npm dependencies are required by the site. All main fonts and e
 
 ## Routes
 
-- `index.html`: current front door, personal archive entrances and reading-route experiment.
-- `now.html`: October6,2026 football snapshot, match status, viewing lens and November dates.
-- `squad.html`: current28-player camp, role comparisons and a separately labeled2030 watchlist.
+- `index.html`: a first-minute drill/kit/Canada front door, personal photo archive and reading-route experiment.
+- `now.html`: October 6, 2026 football snapshot, switchable friendly-match charts, source-backed Belgium metrics, Mexico event sequence, tactical viewing lens and November dates.
+- `squad.html`: current 28-player camp, filterable age/caps plot, raw experience bands, role comparisons and a separately labeled 2030 watchlist.
 - `canada.html`: dated opponent dossier, availability reconciliation and tactical viewing lenses.
 - `summer.html`: original home and memories, preserved as an archive.
 - Existing narrative chapters retain their URLs. Historical roster and tactical notes remain dated.
@@ -33,4 +33,4 @@ Navigation and core content work without JavaScript. Route selection is ephemera
 
 ## Review
 
-See `review/next-pass/REVIEW.md` for the expanded review. `review/DECISIONS.md` and `review/CHANGELOG.md` record the earlier published revision. This revision was prepared locally for review; no deployment is implied by these files.
+See `review/next-pass/RELEASE-REFINEMENT.md` for the first-minute, visual and analytics pass. See `review/next-pass/REVIEW.md` for the expanded review. `review/DECISIONS.md` and `review/CHANGELOG.md` record the earlier published revision. This revision was prepared locally for review; no deployment is implied by these files.

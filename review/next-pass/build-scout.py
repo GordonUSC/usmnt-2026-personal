@@ -1,12 +1,12 @@
 from pathlib import Path
 from html import escape as h
-import json,re
+import json,re,runpy
 root=Path(__file__).resolve().parents[2]
 base=(root/'now.html').read_text(); header=re.search(r'<a class="skip-link".*?</header>',base).group(); footer=re.search(r'<footer.*?</footer>',base).group()
 def sources(ids,data):
  return ' · '.join(f'<a href="{h(data["sources"][i]["url"],quote=True)}">{h(data["sources"][i]["label"])} ↗</a>' for i in dict.fromkeys(ids))
 def shell(title,desc,body):
- return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101d36"><title>{h(title)} · USA 26 with Gordon</title><meta name="description" content="{h(desc,quote=True)}"><link rel="stylesheet" href="fonts-selfhosted.css"><link rel="stylesheet" href="october.css"><link rel="stylesheet" href="scout.css"><script src="october.js" defer></script><script src="scout.js" defer></script></head><body class="edition scout-page">{header}<main id="main-content" tabindex="-1">{body}</main>{footer}</body></html>'
+ return f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101d36"><title>{h(title)} · USA 26 with Gordon</title><meta name="description" content="{h(desc,quote=True)}"><link rel="stylesheet" href="fonts-selfhosted.css"><link rel="stylesheet" href="october.css"><link rel="stylesheet" href="scout.css"><link rel="stylesheet" href="refinements.css"><script src="october.js" defer></script><script src="scout.js" defer></script></head><body class="edition scout-page">{header}<main id="main-content" tabindex="-1">{body}</main>{footer}</body></html>'
 def explorer(data,heading,intro,cohorts):
  rows=[];profiles=[]
  for p in data['players']:
@@ -28,8 +28,9 @@ def lines(items):
  return '<div class="notebook-lines">'+''.join(f'<article><span class="line-no">{i+1:02}</span><div><h3>{h(item["title"])}</h3><p>{h(item["text"])}</p></div></article>' for i,item in enumerate(items))+'</div>'
 if __name__=='__main__':
  data=json.loads((root/'review/next-pass/squad-data.json').read_text())
- body=cover('THE U.S. MEN · THE NEXT CYCLE','THE SQUAD.<br><em>THE HORIZON.</em>',data['intro'],'<a href="#players">Explore the players ↓</a><a href="#cycle">The 2030 questions ↓</a><a href="canada.html">Canada match notebook ↗</a><a href="#evidence">Evidence ↓</a>')
+ body=cover('THE U.S. MEN · THE NEXT CYCLE','THE SQUAD.<br><em>THE HORIZON.</em>',data['intro'],'<a href="#experience">See the experience gap ↓</a><a href="#players">Explore the players ↓</a><a href="#cycle">The 2030 questions ↓</a><a href="canada.html">Canada match notebook ↗</a><a href="#evidence">Evidence ↓</a>')
  body+=f'<section class="scout-standfirst"><p>{h(data["standfirst"])}</p></section>'
+ body+=runpy.run_path(str(root/'review/next-pass/build-analytics.py'))['roster_analytics'](data)
  body+=explorer(data,'Names are only<br>the beginning.',h(data['explorerIntro']),[('camp','Current camp'),('prospect','2030 watchlist'),('withdrawn','Withdrawn / unavailable'),('all','All profiles')])
  body+='<section class="scout-section" id="cycle"><p class="eyebrow">2030 · QUESTIONS, NOT CERTAINTIES</p><h2>A cycle is earned<br>one camp at a time.</h2>'+lines(data['cycle'])+'</section>'+source_list(data)
  (root/'squad.html').write_text(shell('The squad & the horizon','Explore the current USMNT camp, roles and a clearly labeled 2030 prospect watchlist.',body))

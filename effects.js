@@ -87,13 +87,8 @@
     el.dataset.done = "1";
     var end = parseFloat(el.dataset.count || "0");
     var fmt = function (n) { return Math.round(n).toLocaleString("en-US"); };
-    if (rm()) { el.textContent = fmt(end); return; }
-    var dur = 900, t0 = performance.now();
-    (function frame(t) {
-      var p = Math.min((t - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
-      el.textContent = fmt(end * e);
-      if (p < 1) requestAnimationFrame(frame);
-    })(t0);
+    // A score is a fact, including during the first second of a visit.
+    el.textContent = fmt(end);
   }
 
   /* ---------- lightbox ---------- */
