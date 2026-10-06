@@ -1,0 +1,62 @@
+[
+  {
+    "id": "peru",
+    "date": "Sep 26",
+    "opponent": "Peru",
+    "shots": [
+      16,
+      5
+    ],
+    "sot": [
+      6,
+      2
+    ],
+    "corners": [
+      5,
+      2
+    ],
+    "score": "4\u20131",
+    "url": "https://www.ussoccer.com/stories/2026/09/usmnt-vs-peru-match-recap-highlights-orlando-florida",
+    "context": "Eleven U.S. debuts; eleven substitutions permitted."
+  },
+  {
+    "id": "chile",
+    "date": "Sep 29",
+    "opponent": "Chile",
+    "shots": [
+      18,
+      17
+    ],
+    "sot": [
+      9,
+      8
+    ],
+    "corners": [
+      5,
+      13
+    ],
+    "score": "4\u20132",
+    "url": "https://www.ussoccer.com/stories/2026/09/usmnt-vs-chile-match-recap-highlights-st-louis",
+    "context": "Ten changes from the Peru starting XI. Different exposure, different opponent."
+  },
+  {
+    "id": "mexico",
+    "date": "Oct 3",
+    "opponent": "Mexico",
+    "shots": [
+      8,
+      6
+    ],
+    "sot": [
+      4,
+      1
+    ],
+    "corners": [
+      2,
+      3
+    ],
+    "score": "3\u20130",
+    "url": "https://www.ussoccer.com/stories/2026/10/usmnt-vs-mexico-match-recap-highlights-arizona",
+    "context": "USA already led 2\u20130 before the 67\u2032 red. Whole-match totals mix 11v11 and 11v10."
+  }
+]

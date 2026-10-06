@@ -1,5 +1,7 @@
 # October 6, 2026 · reviewed local revision
 
+Historical review record: this initial revision was published through PR #2. The later, unpublished expansion is documented in [next-pass/REVIEW.md](next-pass/REVIEW.md).
+
 The public root previously opened only the summer archive, while the September preview still advertised Peru as next. This revision provides a current, source-dated entrance and keeps the personal summer as a distinct chapter.
 
 ## Changes

@@ -1,0 +1,1169 @@
+{
+  "snapshot": "Age and club checked October 6, 2026. Caps/goals: official October 5 pre-Canada preview. Camp inclusion is not a fitness certification.",
+  "intro": "A current camp, a changing leadership group, and a longer horizon. Inspect the roles, compare the evidence, and keep the next four years in perspective.",
+  "standfirst": "28 players in the current camp. Four goalkeepers, ten defenders, nine midfielders and five forwards. Tonight’s lineup is still unannounced.",
+  "explorerIntro": "Start with the current 28, or switch to a 2030 watchlist of emerging senior players and six youth-pathway names. The watchlist is editorial, not ranked. Official camp groups are preserved even where club roles differ. Clubs and ages are dated; caps and goals use the pre-Canada preview.",
+  "sources": {
+    "camp": {
+      "label": "U.S. Soccer · Canada preview, Oct 5",
+      "url": "https://www.ussoccer.com/stories/2026/10/usmnt/canada-match-st-paul-minnesota",
+      "note": "Current camp groups and pre-Canada caps/goals. Profile counters can lag."
+    },
+    "replacement": {
+      "label": "U.S. Soccer · Downs replaces Pepi, Sep 20",
+      "url": "https://www.ussoccer.com/stories/2026/09/usmnt/damion-downs-added-to-fall-roster",
+      "note": "Pepi withdrew with injury; Downs joined the camp."
+    },
+    "chris-brady": {
+      "label": "Chris Brady · official biography",
+      "url": "https://www.ussoccer.com/players/b/chris-brady",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "matt-freese": {
+      "label": "Matt Freese · official biography",
+      "url": "https://www.ussoccer.com/players/f/matt-freese",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "diego-kochen": {
+      "label": "Diego Kochen · official biography",
+      "url": "https://www.ussoccer.com/players/k/diego-kochen",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "brian-schwake": {
+      "label": "Brian Schwake · official biography",
+      "url": "https://www.ussoccer.com/players/s/brian-schwake",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "george-campbell": {
+      "label": "George Campbell · official biography",
+      "url": "https://www.ussoccer.com/players/c/george-campbell",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "sergino-dest": {
+      "label": "Sergiño Dest · official biography",
+      "url": "https://www.ussoccer.com/players/d/sergino-dest",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "alex-freeman": {
+      "label": "Alex Freeman · official biography",
+      "url": "https://www.ussoccer.com/players/f/alex-freeman",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "peyton-miller": {
+      "label": "Peyton Miller · official biography",
+      "url": "https://www.ussoccer.com/players/m/peyton-miller",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "neil-pierre": {
+      "label": "Neil Pierre · official biography",
+      "url": "https://www.ussoccer.com/players/p/neil-pierre",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "chris-richards": {
+      "label": "Chris Richards · official biography",
+      "url": "https://www.ussoccer.com/players/r/chris-richards",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "antonee-robinson": {
+      "label": "Antonee Robinson · official biography",
+      "url": "https://www.ussoccer.com/players/r/antonee-robinson",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "miles-robinson": {
+      "label": "Miles Robinson · official biography",
+      "url": "https://www.ussoccer.com/players/r/miles-robinson",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "auston-trusty": {
+      "label": "Auston Trusty · official biography",
+      "url": "https://www.ussoccer.com/players/t/auston-trusty",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "frankie-westfield": {
+      "label": "Frankie Westfield · official biography",
+      "url": "https://www.ussoccer.com/players/w/frankie-westfield",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "tyler-adams": {
+      "label": "Tyler Adams · official biography",
+      "url": "https://www.ussoccer.com/players/a/tyler-adams",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "mathis-albert": {
+      "label": "Mathis Albert · official biography",
+      "url": "https://www.ussoccer.com/players/a/mathis-albert",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "sebastian-berhalter": {
+      "label": "Sebastian Berhalter · official biography",
+      "url": "https://www.ussoccer.com/players/b/sebastian-berhalter",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "zavier-gozo": {
+      "label": "Zavier Gozo · official biography",
+      "url": "https://www.ussoccer.com/players/g/zavier-gozo",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "adri-mehmeti": {
+      "label": "Adri Mehmeti · official biography",
+      "url": "https://www.ussoccer.com/players/m/adri-mehmeti",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "yunus-musah": {
+      "label": "Yunus Musah · official biography",
+      "url": "https://www.ussoccer.com/players/m/yunus-musah",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "brooklyn-raines": {
+      "label": "Brooklyn Raines · official biography",
+      "url": "https://www.ussoccer.com/players/r/brooklyn-raines",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "gio-reyna": {
+      "label": "Gio Reyna · official biography",
+      "url": "https://www.ussoccer.com/players/r/gio-reyna",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "malik-tillman": {
+      "label": "Malik Tillman · official biography",
+      "url": "https://www.ussoccer.com/players/t/malik-tillman",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "cole-campbell": {
+      "label": "Cole Campbell · official biography",
+      "url": "https://www.ussoccer.com/players/c/cole-campbell",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "damion-downs": {
+      "label": "Damion Downs · official biography",
+      "url": "https://www.ussoccer.com/players/d/damian-downs",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "justin-ellis": {
+      "label": "Justin Ellis · official biography",
+      "url": "https://www.ussoccer.com/players/e/justin-ellis",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "julian-hall": {
+      "label": "Julian Hall · official biography",
+      "url": "https://www.ussoccer.com/players/h/julian-hall",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "cavan-sullivan": {
+      "label": "Cavan Sullivan · official biography",
+      "url": "https://www.ussoccer.com/players/s/cavan-sullivan",
+      "note": "Club and age checked October 6; use the match preview for international totals."
+    },
+    "new-faces": {
+      "label": "U.S. Soccer · Meet the new faces, Sep 23",
+      "url": "https://www.ussoccer.com/stories/2026/usmnt/meet-the-team-uncapped-players-in-fall-camp",
+      "note": "Club figures are the September 23 snapshot. Most of these players have since earned senior caps."
+    },
+    "mexico": {
+      "label": "U.S. Soccer · Mexico performance, Oct 3",
+      "url": "https://www.ussoccer.com/stories/2026/10/usmnt/julian-hall-cavan-sullivan-goals-vs-mexico-team-performance",
+      "note": ""
+    },
+    "coach": {
+      "label": "Pochettino · pre-Canada comments, Oct 5",
+      "url": "https://www.ussoccer.com/stories/2026/10/usmnt/mauricio-pochettino-match-preview-vs-canada-st-paul-minnesota",
+      "note": ""
+    },
+    "albert-coach": {
+      "label": "Dortmund · development coach on Albert, Jan 9",
+      "url": "https://www.bvb.de/de/en/news/news-overview/news.html/2026/1/9/These-young-players-stood-out-at-the-training-camp.html",
+      "note": ""
+    },
+    "hall-mexico": {
+      "label": "Red Bull New York · Hall vs Mexico",
+      "url": "https://www.newyorkredbulls.com/news/red-bull-new-york-forward-julian-hall-scores-in-usmnt-s-3-0-victory-over-mexico",
+      "note": ""
+    },
+    "mehmeti-analysis": {
+      "label": "Joseph Lowery / MLS · Mehmeti analysis",
+      "url": "https://www.mlssoccer.com/news/what-we-learned-adri-mehmeti-red-bull-new-york-must-watch",
+      "note": "An attributed analyst assessment, not an objective prospect ranking."
+    },
+    "miller-club": {
+      "label": "New England · Miller profile",
+      "url": "https://www.revolutionsoccer.net/players/peyton-miller/",
+      "note": ""
+    },
+    "union-callups": {
+      "label": "Philadelphia · senior call-ups",
+      "url": "https://www.philadelphiaunion.com/news/philadelphia-union-homegrown-trio-earn-first-senior-u-s-men-s-national-team-call-ups",
+      "note": "Pierre’s age is verified; exact DOB and height are omitted because official sources conflict."
+    },
+    "raines-club": {
+      "label": "New England · Raines and Miller call-ups, Sep 17",
+      "url": "https://www.revolutionsoccer.net/news/peyton-miller-brooklyn-raines-earn-first-senior-call-ups-to-us-mens-national-team",
+      "note": ""
+    },
+    "kochen-loan": {
+      "label": "Barcelona · Kochen loan",
+      "url": "https://www.fcbarcelona.com/en/news/4529935/diego-kochen-loaned-to-lyngby-boldklub/amp",
+      "note": ""
+    },
+    "ellis-club": {
+      "label": "Orlando · Ellis call-up, Sep 17",
+      "url": "https://www.orlandocitysc.com/news/orlando-city-sc-forward-justin-ellis-earns-first-senior-u-s-men-s-national-team-call-up",
+      "note": "Competition-specific assist totals vary across club/federation snapshots; no unqualified live total is given here."
+    },
+    "berhalter": {
+      "label": "U.S. Soccer · Berhalter impact",
+      "url": "https://www.ussoccer.com/stories/2026/09/usmnt/sebastian-berhalter-priceless-goals-assists-middlesbrough",
+      "note": ""
+    },
+    "berhalter-coach": {
+      "label": "SBI · Pochettino on Berhalter’s roles",
+      "url": "https://sbisoccer.com/2026/09/sebastian-berhalter-remains-priceless-to-usmnt-after-latest-impactful-performance",
+      "note": "Coach comments reported by SBI, a secondary source."
+    },
+    "u20": {
+      "label": "U.S. Soccer · September/October U-20 camp",
+      "url": "https://www.ussoccer.com/stories/2026/09/ynt-u20-mnt/us-under-20-mens-national-team-training-camp-spain",
+      "note": ""
+    },
+    "u19": {
+      "label": "U.S. Soccer · Marbella U-19 camp",
+      "url": "https://www.ussoccer.com/stories/2026/09/ynt-u19-mnt/us-under-19-mens-national-team-training-camp-marbella-spain",
+      "note": ""
+    },
+    "pathways": {
+      "label": "U.S. Soccer · original call-up and academy pathways, Sep 17",
+      "url": "https://www.ussoccer.com/stories/2026/09/usmnt/mauricio-pochettino-september-october-roster",
+      "note": "Original selection is not the current roster: Pepi subsequently withdrew and Downs replaced him."
+    }
+  },
+  "players": [
+    {
+      "id": "chris-brady",
+      "name": "Chris Brady",
+      "position": "GK",
+      "club": "Chicago Fire",
+      "age": 22,
+      "caps": 2,
+      "goals": 0,
+      "cohort": "camp",
+      "role": "Goalkeeper / pressure-release lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "22 years old on October 6. Listed in the official goalkeeper group for this camp.",
+        "Academy pathway noted by the federation: Chicago Fire. This is one part of the development story, not a complete biography.",
+        "Chicago academy goalkeeper with substantial MLS starting experience and two senior U.S. caps in the October 5 snapshot."
+      ],
+      "sources": [
+        "camp",
+        "chris-brady",
+        "pathways",
+        "chris-brady"
+      ],
+      "analysis": {
+        "strength": "A pressured back-pass asks for a decision before the ball reaches the goalkeeper.",
+        "question": "Where is his starting position as the defence steps up?",
+        "watch": "Separate club starting experience from international experience."
+      }
+    },
+    {
+      "id": "matt-freese",
+      "name": "Matt Freese",
+      "position": "GK",
+      "club": "New York City FC",
+      "age": 28,
+      "caps": 20,
+      "goals": 0,
+      "cohort": "camp",
+      "role": "Goalkeeper / continuity lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "28 years old on October 6. Listed in the official goalkeeper group for this camp.",
+        "Academy pathway noted by the federation: Philadelphia Union. This is one part of the development story, not a complete biography.",
+        "With 20 caps, he is the most capped goalkeeper in this camp. His federation profile documents three shootout saves against Costa Rica in the 2025 Gold Cup."
+      ],
+      "sources": [
+        "camp",
+        "matt-freese",
+        "pathways",
+        "matt-freese"
+      ],
+      "analysis": {
+        "strength": "A goalkeeper’s international experience is one part of the selection context.",
+        "question": "What does his distribution show when the opponent removes the easy first pass?",
+        "watch": "Judge build-up separately from shot-stopping and shootout pedigree; no guaranteed No. 1 status is asserted."
+      }
+    },
+    {
+      "id": "diego-kochen",
+      "name": "Diego Kochen",
+      "position": "GK",
+      "club": "Lyngby Boldklub",
+      "age": 20,
+      "caps": 2,
+      "goals": 0,
+      "cohort": "camp prospect",
+      "role": "Goalkeeper / first-pass lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "20 years old on October 6. Listed in the official goalkeeper group for this camp.",
+        "Barcelona confirms a loan to Lyngby until June 30, 2027, with a purchase option.",
+        "Academy pathway noted by the federation: Weston. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "diego-kochen",
+        "kochen-loan",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "The goalkeeper can help choose where the first contest happens.",
+        "question": "Short support, a switch, or a longer pass with teammates prepared to contest it?",
+        "watch": "The first decision under pressure. Academy pedigree is not a distribution metric."
+      }
+    },
+    {
+      "id": "brian-schwake",
+      "name": "Brian Schwake",
+      "position": "GK",
+      "club": "Nashville SC",
+      "age": 25,
+      "caps": 1,
+      "goals": 0,
+      "cohort": "camp prospect",
+      "role": "New senior goalkeeper option",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "25 years old on October 6. Listed in the official goalkeeper group for this camp.",
+        "The September 23 federation feature records a 2025 Open Cup-winning run, 12 league clean sheets and a 0.81 goals-against average in its season snapshot.",
+        "Academy pathway noted by the federation: Sockers. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "brian-schwake",
+        "new-faces",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "An additional senior option broadens the competition in goal.",
+        "question": "What do his saves, box decisions and build-up each show?",
+        "watch": "Separate those jobs: clean sheets also reflect the defence and opposition. He is a new senior option, not a teenage prospect."
+      }
+    },
+    {
+      "id": "george-campbell",
+      "name": "George Campbell",
+      "position": "DEF",
+      "club": "West Bromwich Albion",
+      "age": 25,
+      "caps": 2,
+      "goals": 0,
+      "cohort": "camp",
+      "role": "Defender / line-breaking lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "25 years old on October 6. Listed in the official defender group for this camp.",
+        "Academy pathway noted by the federation: Atlanta United. This is one part of the development story, not a complete biography.",
+        "His return this window followed a January 2025 senior debut."
+      ],
+      "sources": [
+        "camp",
+        "george-campbell",
+        "pathways",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "A defender’s next pass can beat pressure or simply transfer it to a teammate.",
+        "question": "Does the recipient have a usable next action?",
+        "watch": "How quickly the defensive line resets after his pass. A low cap count alone does not establish playing level."
+      }
+    },
+    {
+      "id": "sergino-dest",
+      "name": "Sergiño Dest",
+      "position": "DEF",
+      "club": "PSV Eindhoven",
+      "age": 25,
+      "caps": 45,
+      "goals": 3,
+      "cohort": "camp",
+      "role": "Right-back / inside-outside lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "25 years old on October 6. Listed in the official defender group for this camp.",
+        "An experienced right-back option at PSV, with 45 caps in the dated preview."
+      ],
+      "sources": [
+        "camp",
+        "sergino-dest",
+        "sergino-dest"
+      ],
+      "analysis": {
+        "strength": "Going outside, receiving inside and staying behind the attack create different relationships.",
+        "question": "Which movement best complements the player ahead?",
+        "watch": "The covering responsibility behind an advance; compare with Freeman without assuming a fixed depth chart."
+      }
+    },
+    {
+      "id": "alex-freeman",
+      "name": "Alex Freeman",
+      "position": "DEF",
+      "club": "Villarreal",
+      "age": 22,
+      "caps": 25,
+      "goals": 3,
+      "cohort": "camp",
+      "role": "Right-side connection lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "22 years old on October 6. Listed in the official defender group for this camp.",
+        "His right-side combination with Gio Reyna helped create Hall’s Mexico opener.",
+        "Academy pathway noted by the federation: Weston / Orlando City. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "alex-freeman",
+        "mexico",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "Width and an inside receiver can create complementary options.",
+        "question": "Who supplies width, and who moves inside?",
+        "watch": "The coordination with the next receiver. One sequence does not establish a permanent partnership."
+      }
+    },
+    {
+      "id": "peyton-miller",
+      "name": "Peyton Miller",
+      "position": "DEF",
+      "club": "New England Revolution",
+      "age": 18,
+      "caps": 2,
+      "goals": 0,
+      "cohort": "camp prospect",
+      "role": "Defender / winger role lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "18 years old on October 6. Listed in the official defender group for this camp.",
+        "New England lists both defender and winger roles and records 50 MLS starts before his 19th birthday. Its latest profile snapshot lists seven league goals and four assists this season.",
+        "Academy pathway noted by the federation: New England Revolution. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "peyton-miller",
+        "miller-club",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "A wide player’s advance can stretch a compact midfield.",
+        "question": "Who protects the channel when he goes forward?",
+        "watch": "The timing of the advance and the covering position. Attacking totals do not measure defensive reliability."
+      }
+    },
+    {
+      "id": "neil-pierre",
+      "name": "Neil Pierre",
+      "position": "DEF",
+      "club": "Philadelphia Union",
+      "age": 18,
+      "caps": 2,
+      "goals": 0,
+      "cohort": "camp prospect",
+      "role": "Centre-back role lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "18 years old on October 6. Listed in the official defender group for this camp.",
+        "Philadelphia’s call-up announcement records four goals in 10 MLS appearances. His exact birth date and height are omitted because official sources conflict.",
+        "Academy pathway noted by the federation: Philadelphia Union. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "neil-pierre",
+        "union-callups",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "A centre-back may add set-piece threat while still carrying a separate defensive responsibility.",
+        "question": "How does he decide between stepping forward and protecting the space behind?",
+        "watch": "Assess set-piece movement separately from defending space."
+      }
+    },
+    {
+      "id": "chris-richards",
+      "name": "Chris Richards",
+      "position": "DEF",
+      "club": "Crystal Palace",
+      "age": 26,
+      "caps": 42,
+      "goals": 4,
+      "cohort": "camp",
+      "role": "Centre-back / depth-protection lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "26 years old on October 6. Listed in the official defender group for this camp.",
+        "Richards and Trusty anchored the Mexico clean sheet.",
+        "Academy pathway noted by the federation: FC Dallas. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "chris-richards",
+        "mexico",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "One defender’s advance works with the other’s protection of depth.",
+        "question": "If one steps into midfield, who covers the space behind?",
+        "watch": "Judge the coordination across possessions; a single clean sheet is not a complete defensive grade."
+      }
+    },
+    {
+      "id": "antonee-robinson",
+      "name": "Antonee Robinson",
+      "position": "DEF",
+      "club": "Fulham",
+      "age": 29,
+      "caps": 61,
+      "goals": 5,
+      "cohort": "camp",
+      "role": "Left-back / overlap lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "29 years old on October 6. Listed in the official defender group for this camp.",
+        "An experienced left-back at Fulham, with 61 caps in the dated preview."
+      ],
+      "sources": [
+        "camp",
+        "antonee-robinson",
+        "antonee-robinson"
+      ],
+      "analysis": {
+        "strength": "An overlap can give the winger an additional decision and stretch the next defender.",
+        "question": "Does the overlap arrive at the right moment relative to the winger’s first touch?",
+        "watch": "The cover behind him if the cross is blocked. Attacking ambition is only part of fullback evaluation."
+      }
+    },
+    {
+      "id": "miles-robinson",
+      "name": "Miles Robinson",
+      "position": "DEF",
+      "club": "FC Cincinnati",
+      "age": 29,
+      "caps": 42,
+      "goals": 3,
+      "cohort": "camp",
+      "role": "Defender / step-or-cover lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "29 years old on October 6. Listed in the official defender group for this camp.",
+        "Academy pathway noted by the federation: Boston Bolts. This is one part of the development story, not a complete biography.",
+        "The Cincinnati defender scored the winner in the 2021 Gold Cup final."
+      ],
+      "sources": [
+        "camp",
+        "miles-robinson",
+        "pathways",
+        "miles-robinson"
+      ],
+      "analysis": {
+        "strength": "A defender can contest a receiver or preserve depth; the choice changes the next duel.",
+        "question": "When should he step, and when should he hold the line?",
+        "watch": "At attacking set pieces, the first movement before the delivery. His role deserves more than a backup label."
+      }
+    },
+    {
+      "id": "auston-trusty",
+      "name": "Auston Trusty",
+      "position": "DEF",
+      "club": "Celtic",
+      "age": 28,
+      "caps": 13,
+      "goals": 1,
+      "cohort": "camp",
+      "role": "Centre-back / depth-protection lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "28 years old on October 6. Listed in the official defender group for this camp.",
+        "Richards and Trusty anchored the Mexico clean sheet.",
+        "Academy pathway noted by the federation: Philadelphia Union. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "auston-trusty",
+        "mexico",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "One defender’s advance works with the other’s protection of depth.",
+        "question": "If one steps into midfield, who covers the space behind?",
+        "watch": "Judge the coordination across possessions; a single clean sheet is not a complete defensive grade."
+      }
+    },
+    {
+      "id": "frankie-westfield",
+      "name": "Frankie Westfield",
+      "position": "DEF",
+      "club": "Philadelphia Union",
+      "age": 20,
+      "caps": 2,
+      "goals": 0,
+      "cohort": "camp prospect",
+      "role": "Wide-defender / delivery lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "20 years old on October 6. Listed in the official defender group for this camp.",
+        "The federation’s September 23 feature records nine assists in 22 club matches, all starts.",
+        "Academy pathway noted by the federation: Philadelphia Union. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "frankie-westfield",
+        "new-faces",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "A defender joining play can change the angle of the final delivery.",
+        "question": "When is the early cross best, and when does another combination improve it?",
+        "watch": "The choice before the cross; an assist count cannot describe every possession."
+      }
+    },
+    {
+      "id": "tyler-adams",
+      "name": "Tyler Adams",
+      "position": "MID",
+      "club": "AFC Bournemouth",
+      "age": 27,
+      "caps": 61,
+      "goals": 2,
+      "cohort": "camp",
+      "role": "Captain / midfield reference",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "27 years old on October 6. Listed in the official midfielder group for this camp.",
+        "He is captain for the new cycle. Pochettino’s pre-Canada comments emphasize veteran-to-young-player learning and workload rotation."
+      ],
+      "sources": [
+        "camp",
+        "tyler-adams",
+        "coach"
+      ],
+      "analysis": {
+        "strength": "A midfield reference can help younger teammates understand when to move together.",
+        "question": "What remains protected when the first player presses?",
+        "watch": "The support behind pressure, as well as the visible ball-winning action."
+      }
+    },
+    {
+      "id": "mathis-albert",
+      "name": "Mathis Albert",
+      "position": "MID",
+      "club": "Borussia Dortmund",
+      "age": 17,
+      "caps": 3,
+      "goals": 1,
+      "cohort": "camp prospect",
+      "role": "Attacking / wing role lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "17 years old on October 6. Listed in the official midfielder group for this camp.",
+        "Dortmund development coach Mathias Schiele highlights his willingness to isolate and beat defenders, then attack goal.",
+        "Academy pathway noted by the federation: LA Galaxy. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "mathis-albert",
+        "albert-coach",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "A one-against-one option can force a second defender to leave another job.",
+        "question": "After attracting that second defender, when does the next pass arrive?",
+        "watch": "The choice after the dribble, not only whether the first opponent is beaten."
+      }
+    },
+    {
+      "id": "sebastian-berhalter",
+      "name": "Sebastian Berhalter",
+      "position": "MID",
+      "club": "Middlesbrough",
+      "age": 25,
+      "caps": 21,
+      "goals": 4,
+      "cohort": "camp",
+      "role": "Flexible midfield role lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "25 years old on October 6. Listed in the official midfielder group for this camp.",
+        "Pochettino describes flexibility across holding, box-to-box, attacking and wide midfield tasks. His first two window matches produced two goals and two assists.",
+        "Academy pathway noted by the federation: Columbus Crew. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "sebastian-berhalter",
+        "berhalter",
+        "berhalter-coach",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "Flexibility can connect phases without keeping the same on-paper position.",
+        "question": "Does his job change when the team builds, attacks and loses the ball?",
+        "watch": "The next supporting position after his first contribution."
+      }
+    },
+    {
+      "id": "zavier-gozo",
+      "name": "Zavier Gozo",
+      "position": "MID",
+      "club": "Crystal Palace",
+      "age": 19,
+      "caps": 1,
+      "goals": 0,
+      "cohort": "camp prospect",
+      "role": "Wide / wingback role lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "19 years old on October 6. Listed in the official midfielder group for this camp.",
+        "Official camp group: midfielder. His player profile says forward. The federation feature traces RSL, the 2025 U-20 World Cup, and six goals plus four assists before the Palace move.",
+        "Academy pathway noted by the federation: Real Salt Lake. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "zavier-gozo",
+        "new-faces",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "A wide player can either stretch the touchline or attack the channel inside.",
+        "question": "Which movement creates room for the next teammate?",
+        "watch": "A transfer is a development step, not evidence of immediate starting status."
+      }
+    },
+    {
+      "id": "adri-mehmeti",
+      "name": "Adri Mehmeti",
+      "position": "MID",
+      "club": "Red Bull New York",
+      "age": 17,
+      "caps": 2,
+      "goals": 0,
+      "cohort": "camp prospect",
+      "role": "Deep-midfield distribution lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "17 years old on October 6. Listed in the official midfielder group for this camp.",
+        "MLS analyst Joseph Lowery highlights his turning, passing range, movement to receive and defensive instincts. This is Lowery’s assessment.",
+        "Academy pathway noted by the federation: Red Bull. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "adri-mehmeti",
+        "mehmeti-analysis",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "A receiving midfielder can connect the first line with players facing forward.",
+        "question": "Can he receive beyond the press while leaving the centre protected after a turnover?",
+        "watch": "His shoulder check, support angle and next action—not a speculative potential score."
+      }
+    },
+    {
+      "id": "yunus-musah",
+      "name": "Yunus Musah",
+      "position": "MID",
+      "club": "AC Milan",
+      "age": 23,
+      "caps": 49,
+      "goals": 1,
+      "cohort": "camp",
+      "role": "Midfield / carry-and-connect lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "23 years old on October 6. Listed in the official midfielder group for this camp.",
+        "The AC Milan midfielder is in his first U.S. window of 2026."
+      ],
+      "sources": [
+        "camp",
+        "yunus-musah",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "Carrying past the first defender can open a pass that was not available before.",
+        "question": "Where is the next supporting midfielder when he advances?",
+        "watch": "Whether the progression connects to a useful next action."
+      }
+    },
+    {
+      "id": "brooklyn-raines",
+      "name": "Brooklyn Raines",
+      "position": "MID",
+      "club": "New England Revolution",
+      "age": 21,
+      "caps": 3,
+      "goals": 0,
+      "cohort": "camp prospect",
+      "role": "Central-midfield support lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "21 years old on October 6. Listed in the official midfielder group for this camp.",
+        "New England’s September 17 release records 23 league starts this season and previous U-21 captaincy."
+      ],
+      "sources": [
+        "camp",
+        "brooklyn-raines",
+        "raines-club"
+      ],
+      "analysis": {
+        "strength": "Repeated responsibility offers development evidence beyond a goals tally.",
+        "question": "Where is his support angle when the first pass enters midfield?",
+        "watch": "His position after the ball moves wide, when the next central pass or turnover becomes possible."
+      }
+    },
+    {
+      "id": "gio-reyna",
+      "name": "Gio Reyna",
+      "position": "MID",
+      "club": "RC Strasbourg Alsace",
+      "age": 23,
+      "caps": 46,
+      "goals": 10,
+      "cohort": "camp",
+      "role": "Between-lines / connection lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "23 years old on October 6. Listed in the official midfielder group for this camp.",
+        "His combination with Alex Freeman helped create Hall’s Mexico opener.",
+        "Academy pathway noted by the federation: NYCFC. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "gio-reyna",
+        "mexico",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "An inside receiver can connect the wide route with the penalty area.",
+        "question": "Does the first touch open the next forward action?",
+        "watch": "His relationship with the wide player and forward, rather than an isolated touch count."
+      }
+    },
+    {
+      "id": "malik-tillman",
+      "name": "Malik Tillman",
+      "position": "MID",
+      "club": "Bayer Leverkusen",
+      "age": 24,
+      "caps": 38,
+      "goals": 7,
+      "cohort": "camp",
+      "role": "Attacking / regain lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "24 years old on October 6. Listed in the official midfielder group for this camp.",
+        "His late Mexico goal followed a takeaway."
+      ],
+      "sources": [
+        "camp",
+        "malik-tillman",
+        "mexico"
+      ],
+      "analysis": {
+        "strength": "Pressure and regains can be attacking contributions before the final pass.",
+        "question": "When is the moment to attack the ball rather than hold the shape?",
+        "watch": "What happens immediately after a turnover, not only his positioning as a No. 10."
+      }
+    },
+    {
+      "id": "cole-campbell",
+      "name": "Cole Campbell",
+      "position": "FWD",
+      "club": "SV Elversberg",
+      "age": 20,
+      "caps": 0,
+      "goals": 0,
+      "cohort": "camp prospect",
+      "role": "Forward / senior-debut watch",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "20 years old on October 6. Listed in the official forward group for this camp.",
+        "The September 23 feature traces Atlanta, professional football in Iceland at 15, Dortmund, and this summer’s move to Elversberg. He remains uncapped in the October 5 preview.",
+        "Academy pathway noted by the federation: Atlanta United. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "cole-campbell",
+        "new-faces",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "A new senior option may be asked to perform a narrower role than at club level.",
+        "question": "What is his first senior job if selected?",
+        "watch": "Zero caps is missing senior evidence, not proof of a low ceiling."
+      }
+    },
+    {
+      "id": "damion-downs",
+      "name": "Damion Downs",
+      "position": "FWD",
+      "club": "St. Louis CITY SC",
+      "age": 22,
+      "caps": 7,
+      "goals": 0,
+      "cohort": "camp",
+      "role": "Centre-forward / movement lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "22 years old on October 6. Listed in the official forward group for this camp.",
+        "Joined as the replacement for the injured Ricardo Pepi on September 20.",
+        "He is on loan to St. Louis from Southampton. His 2024–25 Köln promotion season produced ten goals and five assists."
+      ],
+      "sources": [
+        "camp",
+        "damion-downs",
+        "replacement",
+        "replacement"
+      ],
+      "analysis": {
+        "strength": "Pinning a centre-back and checking short create different spaces for teammates.",
+        "question": "Which movement complements the next runner?",
+        "watch": "Whether another attacker uses the space his movement releases."
+      }
+    },
+    {
+      "id": "justin-ellis",
+      "name": "Justin Ellis",
+      "position": "FWD",
+      "club": "Orlando City SC",
+      "age": 19,
+      "caps": 2,
+      "goals": 1,
+      "cohort": "camp prospect",
+      "role": "Forward / playmaking lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "19 years old on October 6. Listed in the official forward group for this camp.",
+        "Orlando’s September 17 release records double-digit MLS assists and his 2025 Generation adidas Cup MVP and Golden Boot. Exact current assist totals are not asserted here.",
+        "Academy pathway noted by the federation: Orlando City. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "justin-ellis",
+        "ellis-club",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "A dropping forward can create a path for another runner.",
+        "question": "Does he re-enter the box after helping the attack connect?",
+        "watch": "The return movement after the first pass, not simply the assist."
+      }
+    },
+    {
+      "id": "julian-hall",
+      "name": "Julian Hall",
+      "position": "FWD",
+      "club": "Red Bull New York",
+      "age": 18,
+      "caps": 3,
+      "goals": 3,
+      "cohort": "camp prospect",
+      "role": "Penalty-area forward role lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "18 years old on October 6. Listed in the official forward group for this camp.",
+        "He scored in each of his first three senior appearances. The Mexico opener was a first-time finish around the six-yard area.",
+        "Academy pathway noted by the federation: Red Bull. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "julian-hall",
+        "hall-mexico",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "A box runner can turn a second ball into a finish before the defence resets.",
+        "question": "Where does he move before the delivery, and after the first clearance?",
+        "watch": "His position one action before the ball reaches him. Three caps do not establish a long-term striker ranking."
+      }
+    },
+    {
+      "id": "cavan-sullivan",
+      "name": "Cavan Sullivan",
+      "position": "FWD",
+      "club": "Philadelphia Union",
+      "age": 17,
+      "caps": 3,
+      "goals": 1,
+      "cohort": "camp prospect",
+      "role": "Creative attacking role lens",
+      "status": "Current camp · lineup unannounced",
+      "facts": [
+        "17 years old on October 6. Listed in the official forward group for this camp.",
+        "Philadelphia lists him as a midfielder; this camp lists him as a forward. His Mexico goal followed an interception of the goalkeeper’s pass.",
+        "Academy pathway noted by the federation: Philadelphia Union. This is one part of the development story, not a complete biography."
+      ],
+      "sources": [
+        "camp",
+        "cavan-sullivan",
+        "mexico",
+        "pathways"
+      ],
+      "analysis": {
+        "strength": "An attacker can create danger by choosing the right passing lane to close.",
+        "question": "When should he press the ball, and when should he hold the lane?",
+        "watch": "His connection in settled possession after the immediate transition ends."
+      }
+    },
+    {
+      "id": "jonny-shore",
+      "name": "Jonny Shore",
+      "position": "MID",
+      "club": "New York City FC",
+      "cohort": "prospect youth",
+      "role": "Youth-pathway watchlist",
+      "status": "U-20 pathway · outside current senior camp",
+      "snapshot": "Club and youth-camp selection: September/October federation announcement. Senior totals and age are not asserted in this profile.",
+      "facts": [
+        "Selected for the September/October U-20 camp. This is a small evidence-backed watchlist, not a ranking or a prediction of 2030 selection."
+      ],
+      "analysis": {
+        "strength": "Youth international selection provides an opportunity to observe the player in a national-team environment.",
+        "question": "How does the next stage of club and international responsibility develop?",
+        "watch": "Repeated minutes and a clearly defined role before inferring senior readiness."
+      },
+      "sources": [
+        "u20"
+      ]
+    },
+    {
+      "id": "snyder-brunell",
+      "name": "Snyder Brunell",
+      "position": "MID",
+      "club": "Seattle Sounders",
+      "cohort": "prospect youth",
+      "role": "Youth-pathway watchlist",
+      "status": "U-20 pathway · outside current senior camp",
+      "snapshot": "Club and youth-camp selection: September/October federation announcement. Senior totals and age are not asserted in this profile.",
+      "facts": [
+        "Selected for the September/October U-20 camp. This is a small evidence-backed watchlist, not a ranking or a prediction of 2030 selection."
+      ],
+      "analysis": {
+        "strength": "Youth international selection provides an opportunity to observe the player in a national-team environment.",
+        "question": "How does the next stage of club and international responsibility develop?",
+        "watch": "Repeated minutes and a clearly defined role before inferring senior readiness."
+      },
+      "sources": [
+        "u20"
+      ]
+    },
+    {
+      "id": "cooper-sanchez",
+      "name": "Cooper Sanchez",
+      "position": "MID",
+      "club": "Atlanta United",
+      "cohort": "prospect youth",
+      "role": "Youth-pathway watchlist",
+      "status": "U-20 pathway · outside current senior camp",
+      "snapshot": "Club and youth-camp selection: September/October federation announcement. Senior totals and age are not asserted in this profile.",
+      "facts": [
+        "Selected for the September/October U-20 camp. This is a small evidence-backed watchlist, not a ranking or a prediction of 2030 selection."
+      ],
+      "analysis": {
+        "strength": "Youth international selection provides an opportunity to observe the player in a national-team environment.",
+        "question": "How does the next stage of club and international responsibility develop?",
+        "watch": "Repeated minutes and a clearly defined role before inferring senior readiness."
+      },
+      "sources": [
+        "u20"
+      ]
+    },
+    {
+      "id": "din-klapija",
+      "name": "Din Klapija",
+      "position": "FWD",
+      "club": "RB Leipzig",
+      "cohort": "prospect youth",
+      "role": "Youth-pathway watchlist",
+      "status": "U-20 pathway · outside current senior camp",
+      "snapshot": "Club and youth-camp selection: September/October federation announcement. Senior totals and age are not asserted in this profile.",
+      "facts": [
+        "Selected for the September/October U-20 camp. This is a small evidence-backed watchlist, not a ranking or a prediction of 2030 selection."
+      ],
+      "analysis": {
+        "strength": "Youth international selection provides an opportunity to observe the player in a national-team environment.",
+        "question": "How does the next stage of club and international responsibility develop?",
+        "watch": "Repeated minutes and a clearly defined role before inferring senior readiness."
+      },
+      "sources": [
+        "u20"
+      ]
+    },
+    {
+      "id": "maximo-carrizo-ballesteros",
+      "name": "Maximo Carrizo Ballesteros",
+      "position": "MID",
+      "club": "New York City FC",
+      "cohort": "prospect youth",
+      "role": "Youth-pathway watchlist",
+      "status": "U-19 pathway · outside current senior camp",
+      "snapshot": "Club and youth-camp selection: September/October federation announcement. Senior totals and age are not asserted in this profile.",
+      "facts": [
+        "Selected for the September/October U-19 camp. This is a small evidence-backed watchlist, not a ranking or a prediction of 2030 selection."
+      ],
+      "analysis": {
+        "strength": "Youth international selection provides an opportunity to observe the player in a national-team environment.",
+        "question": "How does the next stage of club and international responsibility develop?",
+        "watch": "Repeated minutes and a clearly defined role before inferring senior readiness."
+      },
+      "sources": [
+        "u19"
+      ]
+    },
+    {
+      "id": "jude-terry",
+      "name": "Jude Terry",
+      "position": "MID",
+      "club": "LAFC",
+      "cohort": "prospect youth",
+      "role": "Youth-pathway watchlist",
+      "status": "U-19 pathway · outside current senior camp",
+      "snapshot": "Club and youth-camp selection: September/October federation announcement. Senior totals and age are not asserted in this profile.",
+      "facts": [
+        "Selected for the September/October U-19 camp. This is a small evidence-backed watchlist, not a ranking or a prediction of 2030 selection."
+      ],
+      "analysis": {
+        "strength": "Youth international selection provides an opportunity to observe the player in a national-team environment.",
+        "question": "How does the next stage of club and international responsibility develop?",
+        "watch": "Repeated minutes and a clearly defined role before inferring senior readiness."
+      },
+      "sources": [
+        "u19"
+      ]
+    },
+    {
+      "id": "ricardo-pepi",
+      "name": "Ricardo Pepi",
+      "position": "FWD",
+      "club": "Not asserted in this snapshot",
+      "cohort": "withdrawn",
+      "role": "Forward · withdrawn from this camp",
+      "status": "Withdrew with injury · Sep 20",
+      "snapshot": "Withdrawal status: September 20 official replacement announcement. No current fitness clearance or return date is asserted.",
+      "facts": [
+        "Withdrew due to injury; Damion Downs replaced him in the current camp. This does not imply exclusion from the broader cycle."
+      ],
+      "sources": [
+        "replacement"
+      ]
+    }
+  ],
+  "cycle": [
+    {
+      "title": "A place in camp is the beginning.",
+      "text": "A senior call-up and a handful of caps are evidence of an opportunity, not proof that development is complete. Watch repeatable contributions across different game states."
+    },
+    {
+      "title": "Roles before a predicted XI.",
+      "text": "A useful cycle watchlist asks who can solve a particular football problem. It leaves room for changing systems, club minutes, availability and late development."
+    },
+    {
+      "title": "Keep the World Cup team in its own chapter.",
+      "text": "The archived 2026 roster preserves that tournament’s context. This notebook follows the next cycle without rewriting the summer."
+    }
+  ]
+}
