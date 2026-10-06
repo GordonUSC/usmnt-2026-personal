@@ -4,8 +4,8 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Enjoy the Match · A World Cup Fan Guide</title>
 <meta name="description" content="Everything anyone needs to enjoy a USA World Cup match, at SoFi or on the couch. Logistics, what to bring, soccer 101, the moments to watch for, and the photo atlas of actually being there.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+
 <link rel="stylesheet" href="effects.css">
 <style>
 :root{--navy:#0A1733;--navy2:#13234d;--red:#B31942;--white:#F7F8FB;--star:#FFFFFF;--gold:#E8B23A;--ink:#0A1733;--line:rgba(255,255,255,.14)}
@@ -90,8 +90,8 @@ footer a{color:var(--gold)}
 #share .door{margin-top:40px;text-align:left}
 footer .sound-toggle{margin-top:22px}
 footer .passport{max-width:760px;margin-left:auto;margin-right:auto}
-</style></head>
-<body data-page="guide">
+</style><link rel="stylesheet" href="fonts-selfhosted.css"><link rel="stylesheet" href="october.css"><script src="october.js" defer></script></head>
+<body data-page="guide"><a class="skip-link" href="#main-content">Skip to content</a><header class="site-header"><a class="site-brand" href="index.html" aria-label="USA 26 with Gordon, home"><b>USA<span>26</span></b><small>WITH GORDON</small></a><nav aria-label="Primary"><a href="index.html">Home</a><a href="now.html">The team now</a><a href="summer.html">Our summer</a><a href="play.html">Play</a></nav><details class="chapter-menu"><summary>All chapters <span aria-hidden="true">＋</span></summary><nav aria-label="All chapters"><a href="summer.html">The summer</a><a href="run.html">The Run</a><a href="friends.html">The Friends</a><a href="soccer-journey.html">My Journey</a><a href="roster.html">2026 roster</a><a href="strategy.html">Strategy</a><a href="group-d.html">Group D</a><a href="r32.html">Round of 32</a><a href="r16.html">Round of 16</a><a href="lore.html">Lore</a><a href="kits.html">Kits</a><a href="experience.html">Being there</a><a href="meta.html">Making of</a><a href="play.html">The arcade</a><a href="sources.html">Sources & updates</a></nav></details></header><aside class="archive-notice"><b>SUMMER ARCHIVE · 2026</b><span>Original stories and perspective. For current fixtures and squad news, <a href="now.html">see the team now →</a></span></aside><div id="main-content" tabindex="-1"></div>
 <div id="bar"></div>
 <div class="archived">⏸️ Time capsule · This guide was built for the USA's run at SoFi, June 2026. It worked. Kept as it stood at the final whistle, with two updates below.</div>
 <nav class="nav"><a href="#facts">📋 Facts</a><a href="#atlas">📸 Atlas</a><a href="#getting">🚆 Getting there</a><a href="#bag">🎒 Bring</a><a href="#day">⏰ Matchday</a><a href="#predict">🎯 Predict</a><a href="#soccer">⚽ Soccer 101</a><a href="#players">⭐ Players</a><a href="#opp">🇹🇷 Opponent</a><a href="#chants">📣 Chants</a><a href="#seat">🎟️ Seats</a><a href="#watch">📺 Watch home</a></nav>
@@ -340,7 +340,7 @@ document.getElementById('m-watch').onclick=()=>setMode(false);
 /* checklist */
 const BRING=['Phone, charged + portable battery','Ticket in your wallet app (screenshot too)','Clear bag (or go bagless)','A card or phone (cashless venue)','Sunscreen + hat (LA sun)','A light layer for the evening','USMNT scarf or jersey','Refillable empty water bottle','Patience for the exit, it crawls'];
 const CK='wc-bring';let cdone=JSON.parse(localStorage.getItem(CK)||'[]');
-function renderCheck(){const c=document.getElementById('checklist');c.innerHTML='';BRING.forEach((t,i)=>{const e=document.createElement('div');e.className='ci'+(cdone.includes(i)?' on':'');e.innerHTML=`<div class="b">${cdone.includes(i)?'✓':''}</div><div class="t">${t}</div>`;e.onclick=()=>{cdone.includes(i)?cdone=cdone.filter(x=>x!==i):cdone.push(i);localStorage.setItem(CK,JSON.stringify(cdone));renderCheck();};c.appendChild(e);});
+function renderCheck(){const c=document.getElementById('checklist');c.innerHTML='';BRING.forEach((t,i)=>{const e=document.createElement('button');e.type='button';e.setAttribute('aria-pressed',String(cdone.includes(i)));e.className='ci'+(cdone.includes(i)?' on':'');e.innerHTML=`<div class="b">${cdone.includes(i)?'✓':''}</div><div class="t">${t}</div>`;e.onclick=()=>{cdone.includes(i)?cdone=cdone.filter(x=>x!==i):cdone.push(i);localStorage.setItem(CK,JSON.stringify(cdone));renderCheck();};c.appendChild(e);});
   document.getElementById('cprog').style.width=Math.round(cdone.length/BRING.length*100)+'%';}
 renderCheck();
 /* timeline */

@@ -191,12 +191,18 @@
     var CIRC = 2 * Math.PI * 11;
     if (ring) { ring.style.strokeDasharray = CIRC; ring.style.strokeDashoffset = CIRC; }
     var t0 = 0, raf = 0;
+    var quick = document.createElement("button");
+    quick.type = "button"; quick.className = "hold-alt"; quick.textContent = "Reveal story";
+    btn.insertAdjacentElement("afterend", quick);
+    quick.addEventListener("click", open);
     function open() {
       target.hidden = false;
       target.setAttribute("data-reveal", "");
       reveal(target.parentNode);
       requestAnimationFrame(function () { target.classList.add("in"); });
       btn.style.display = "none";
+      quick.hidden = true;
+      target.setAttribute("tabindex", "-1"); target.focus({preventScroll:true});
       sound.chime(true);
     }
     function tick(t) {

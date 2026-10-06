@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!-- STYLE: Sega Genesis 16-bit (320x224, Press Start 2P, YM-style square-wave chiptune) | WHY: continuity with the Belamini demo and his Madden-era Genesis credits, so the run plays like the games he made | ALT: The SoFi videoboard, if the game should be a scoreboard toy rather than a cartridge -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>THE LONG GAME · 1974-2026</title>
@@ -25,18 +24,72 @@
   .note { font-size: .72rem; opacity: .8; max-width: 760px; text-align: center; line-height: 1.7; }
   .note a { color: #FFCD00; }
   @media (min-width: 700px) { .pad { display: none; } }
+
+  body { display:block; padding:24px 20px 40px; }
+  .shell { max-width:1000px; margin:auto; }
+  .topline { display:flex; justify-content:space-between; gap:12px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; margin-bottom:28px; }
+  a { color:#ffcd00; text-underline-offset:4px; }
+  h1 { text-align:left; font-size:clamp(1rem,3.5vw,1.85rem); }
+  .intro { max-width:660px; color:#c7cbdb; font-size:15px; line-height:1.6; margin:12px 0 22px; }
+  .transport { display:flex; gap:8px; flex-wrap:wrap; margin:14px 0; }
+  button, select { font:600 13px Inter,system-ui,sans-serif; color:#f5f1e8; background:#181c2d; border:1px solid #4a5068; border-radius:3px; min-height:44px; padding:10px 14px; cursor:pointer; }
+  button:hover { background:#30384e; } button[aria-pressed="true"] { background:#ffcd00;color:#101321; }
+  :focus-visible { outline:3px solid #ffcd00; outline-offset:4px; }
+  .frame { width:100%; border:1px solid #606575;border-radius:0; box-shadow:none; }
+  .frame::after { content:""; position:absolute; inset:0; pointer-events:none; box-shadow:inset 0 0 40px #0003; }
+  .chapters { display:grid; grid-template-columns:repeat(8,1fr); gap:3px; margin:8px 0 18px; }
+  .chapters button { padding:9px 2px; min-width:0; background:transparent; border:0; border-bottom:3px solid #414655; font-size:10px; }
+  .chapters button span { display:block; margin-top:6px; font-size:9px; color:#acb3c6; }
+  .chapters button[aria-current="step"] { color:#ffcd00;border-bottom-color:#ffcd00;background:#ffcd000a; }
+  .chapters button[data-found="true"] span::after { content:" •";color:#ffcd00; }
+  .readout { display:grid; grid-template-columns:130px 1fr; gap:20px; border-bottom:1px solid #414655; padding:0 0 16px; margin-bottom:16px; }
+  #year { color:#ffcd00; font-size:36px;font-weight:800;line-height:1; }
+  #engine { color:#acb3c6; font-size:11px; letter-spacing:.08em; margin-top:7px; }
+  #story { font-family:Fraunces,Georgia,serif;font-size:clamp(18px,2.5vw,25px);line-height:1.25; }
+  #discovery { margin-top:8px;color:#c7cbdb;font-size:12px;line-height:1.5; }
+  .controls { display:grid;grid-template-columns:190px 1fr;gap:28px;align-items:start; }
+  .pad { display:grid; grid-template-columns:repeat(3,56px);grid-template-rows:repeat(2,48px); }
+  .pad button { font-family:Inter,system-ui,sans-serif;font-size:17px;border-radius:3px; }
+  .pad button small { display:block;font-size:9px;margin-top:2px; }
+  .control-label { font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#acb3c6;margin:0 0 10px; }
+  #toys { display:flex;gap:6px;flex-wrap:wrap; }
+  #toys button { text-align:left; } #toys kbd { color:#ffcd00;margin-right:8px; }
+  #toys button[data-found="true"] { border-color:#c5a631; }
+  #feedback { min-height:40px; margin:12px 0 0;color:#ffcd00;font-size:14px;line-height:1.5; }
+  .mood { font-size:12px;line-height:1.5;color:#c7cbdb;margin:10px 0; }
+  details { border-top:1px solid #414655; margin-top:22px; padding-top:15px; font-size:13px; line-height:1.7; }
+  summary { cursor:pointer;min-height:40px; }
+  .note { text-align:left;font-size:12px;max-width:none;margin-top:20px; }
+  .collection { display:flex;gap:14px;flex-wrap:wrap;color:#acb3c6;font-size:12px;margin-top:16px; }
+  #read-story p { margin:10px 0; } #read-story b { color:#ffcd00;margin-right:12px; }
+  @media(max-width:600px) { body{padding:18px 12px 28px}.topline{margin-bottom:20px;font-size:10px}.intro{font-size:13px;margin-bottom:16px}.readout{grid-template-columns:70px 1fr;gap:12px}#year{font-size:28px}.controls{grid-template-columns:1fr;gap:12px}.pad{grid-template-columns:repeat(4,1fr);grid-template-rows:52px;width:100%;gap:6px}.pad .lf{grid-column:1;grid-row:1}.pad .rt{grid-column:2;grid-row:1}.pad .up{grid-column:3;grid-row:1}.pad .dn{grid-column:4;grid-row:1}.chapters{grid-template-columns:repeat(4,1fr)}.chapters button{font-size:11px}.chapters button span{font-size:9px}.transport button{padding:8px 10px;font-size:12px}#story{font-size:19px} }
+
+  .controls { display:block; }
+  .movement { display:flex;align-items:center;gap:16px;margin:14px 0;flex-wrap:wrap; }
+  .movement .control-label { margin:0; }
+  .movement .pad { grid-template-columns:repeat(4,60px);grid-template-rows:48px; }
+  .movement .pad .lf {grid-column:1;grid-row:1}.movement .pad .rt{grid-column:2;grid-row:1}.movement .pad .up{grid-column:3;grid-row:1}.movement .pad .dn{grid-column:4;grid-row:1}
+  .movement .mood {flex:1;min-width:150px;margin:0;}
+  @media(max-width:600px){.movement{gap:8px}.movement .control-label{display:none}.movement .pad{grid-template-columns:repeat(4,1fr);width:100%;grid-template-rows:48px}.movement .mood{font-size:11px}.transport{gap:6px}.transport button{padding:8px;font-size:11px}}
 </style>
 </head>
 <body>
-<h1>THE LONG GAME<small>walk right: time and realism advance · walk left: it all rewinds · up lifts the heart, down lowers it</small></h1>
-<div class="frame"><canvas id="g" width="960" height="540" aria-label="The Long Game: use arrow keys to walk through fifty-two years of loving soccer, from Pong graphics to a real photograph"></canvas></div>
-<div class="pad" aria-hidden="true">
-  <button class="up" data-k="up">▲</button>
-  <button class="lf" data-k="left">◀</button>
-  <button class="dn" data-k="down">▼</button>
-  <button class="rt" data-k="right">▶</button>
-</div>
-<p class="note">Arrows walk, up and down move the heart. And every other key on the keyboard does something, different in every era: SPACE cheers, M is for Matt, H is for hearts, 1-9 warps time, and each decade hides its own toys (try R in 1988, the Z X C windows in 1994, V in 1997, N in 2014, E in the anime years, P and T in 2026). Eight graphics engines from Pong to anime; the HD and anime worlds stand on commissioned AI environment art; the final era is a real photograph, because that's the most realistic renderer there is. <a href="belamini.html">Belamini '26 demo</a> · <a href="../meta.html">The Making Of</a></p>
+<main class="shell">
+<nav class="topline" aria-label="Arcade navigation"><a href="../meta.html">← The arcade / Making of</a><a href="belamini.html">Belamini ’26 →</a></nav>
+<header><h1>THE LONG GAME</h1><p class="intro"><strong>Playable experiment / Gordon’s idea.</strong> Fifty-two years. Eight ways to see the game. Walk from a green kit in 1974 to a real seat in 2026. Every era has something to play with.</p></header>
+<div class="transport" aria-label="Playback settings"><button id="pause" aria-pressed="false">Pause</button><button id="sound" aria-pressed="false">Sound off</button><button id="motion" aria-pressed="false">Calm motion</button><button id="restart">Walk again ↺</button></div>
+<div class="frame"><canvas id="g" width="960" height="540" tabindex="0" aria-label="Playable journey. Arrow keys move through time and change mood. Escape pauses." aria-describedby="instructions story">Use the chapter buttons and the story transcript below to explore this journey.</canvas></div>
+<section class="movement" aria-label="Movement"><p class="control-label">Hold to explore</p><div class="pad">
+<button class="up" data-k="up" aria-label="Lift the heart">↑<small>JOY</small></button><button class="lf" data-k="left" aria-label="Walk backward in time">←<small>REWIND</small></button><button class="dn" data-k="down" aria-label="Lower the heart">↓<small>SORROW</small></button><button class="rt" data-k="right" aria-label="Walk forward in time">→<small>FORWARD</small></button>
+</div><p class="mood" id="mood-readout">Heart: somewhere in between.</p></section>
+<nav id="chapters" class="chapters" aria-label="Jump to a graphics era"></nav>
+<div class="readout"><div><div id="year">1974</div><div id="engine">PONG</div></div><div><p id="story" aria-live="polite"></p><p id="discovery">Walk right to find the next memory.</p></div></div>
+<div class="controls"><section aria-label="Era toys"><p class="control-label" id="toy-title">Play in this era</p><div id="toys"></div><p id="feedback" role="status">Try a toy. Then walk into another world.</p></section></div>
+<div class="collection"><span id="collection">0 / 8 eras explored</span><span id="save-state">Progress stays on this device.</span></div>
+<details><summary>How to play · why the world changes</summary><p id="instructions">Focus the scene to use arrows or W A S D. Left rewinds, right advances; up and down change the heart and the atmosphere. Walk into a ball to shoot. On a phone, hold the direction buttons or drag the scene. Tap an era to explore directly. No memory is locked behind a score.</p><p>Space cheers, M calls MATCHDAY, H sends hearts. The toy buttons reveal each era’s keys. Escape pauses. Your discoveries and place are saved locally; “Walk again” keeps discoveries. Sound is opt-in.</p><p><strong>Playable experiment:</strong> time changes the renderer, and mood changes the world. The graphics grow from Pong to polygon to anime, ending in a real photograph. This keeps the act of remembering at the center of the game. HD and anime environments use the existing commissioned AI art; the finale uses Gordon’s existing photographs.</p></details>
+<details><summary>Just read the journey</summary><div id="read-story"></div></details>
+<p class="note">A playable idea by Gordon, built by Darby. <a href="../meta.html">The Making Of</a> · <a href="../index.html">Back to the USMNT story</a></p>
+</main>
 
 <script>
 (function () {
@@ -46,9 +99,18 @@
 
   /* world span: x 0..8000 maps 1974..2026 */
   var WORLD = 8000;
-  var px = 120, mood = 0, t = 0;      /* player world-x, mood -1..1 */
+  var px = 60, mood = 0, t = 0;      /* player world-x, mood -1..1 */
   var keys = { left: false, right: false, up: false, down: false };
   var walked = false, reachedEnd = false;
+  var paused = false, soundOn = false, calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var needsRender = true, found = {}, visited = {}, savedPosition = null, dirty = false;
+  var SAVE_KEY = "longgame_journey_v2";
+  try { var saved = JSON.parse(localStorage.getItem(SAVE_KEY) || "null");
+    if (saved && typeof saved === "object") { found = saved.found || {}; visited = saved.visited || {}; if (Number.isFinite(saved.px)) savedPosition = Math.max(60, Math.min(WORLD, saved.px)); }
+  } catch(e) {}
+  if (savedPosition !== null) { px = savedPosition; walked = true; }
+  function saveJourney() { if (!dirty) return; try { localStorage.setItem(SAVE_KEY, JSON.stringify({px:px,found:found,visited:visited})); document.getElementById("save-state").textContent="Place & discoveries saved on this device."; dirty=false; } catch(e) { document.getElementById("save-state").textContent="Storage unavailable; this walk still works."; } }
+  setInterval(saveJourney, 1200);
   var cam = { horizon: .47, charMult: 1, mode: 0, t: 0 }; /* PS1-era broadcast cameras: Tele and Wide */
   var replayT = 0;
   var win3 = null, bandFlash = 0; /* the Madden passing windows, and the crowd erupting */
@@ -64,7 +126,7 @@
     '"Maybe the World Cup was the friends we made along the way." · Jul 6',
     '"MATCHDAY!!!" · Matt, every matchday'
   ];
-  function pushFX(o) { o.t0 = o.t; fx2.push(o); if (fx2.length > 12) fx2.shift(); }
+  function pushFX(o) { if (calm && ["impact", "flash", "flashwave"].indexOf(o.type) >= 0) return; o.t0 = o.t; fx2.push(o); if (fx2.length > 12) fx2.shift(); }
   var couva = false;
   try { couva = localStorage.getItem("longgame_couva") === "1"; } catch (e) { }
 
@@ -86,12 +148,12 @@
   /* deep links: ?p=0.5, ?era=ANIME&mood=-1 jump the walk to an exact moment */
   try {
     var q = new URLSearchParams(location.search);
-    if (q.get("p")) px = Math.max(60, Math.min(WORLD, parseFloat(q.get("p")) * WORLD));
+    if (q.has("p") && Number.isFinite(parseFloat(q.get("p")))) px = Math.max(60, Math.min(WORLD, parseFloat(q.get("p")) * WORLD));
     if (q.get("era")) {
       var en = q.get("era").toUpperCase();
       ERAS.forEach(function (e2, ei) { if (e2.name === en) { var lo = ei ? ERAS[ei - 1].until : 0; px = WORLD * (lo + e2.until) / 2; } });
     }
-    if (q.get("mood")) mood = Math.max(-1, Math.min(1, parseFloat(q.get("mood"))));
+    if (q.has("mood") && Number.isFinite(parseFloat(q.get("mood")))) mood = Math.max(-1, Math.min(1, parseFloat(q.get("mood"))));
     if (q.get("p") || q.get("era")) walked = true;
   } catch (e) { }
 
@@ -124,7 +186,7 @@
 
   /* ---------------- audio: era + mood ---------------- */
   var AC = null, padOsc = null, padGain = null, lastStep = 0;
-  function ac() { if (!AC) { var A = window.AudioContext || window.webkitAudioContext; if (A) AC = new A(); } return AC; }
+  function ac() { if (!soundOn) return null; if (!AC) { var A = window.AudioContext || window.webkitAudioContext; if (A) AC = new A(); } return AC; }
   function beep(f, d, type, v, when) {
     var c = ac(); if (!c) return;
     var o = c.createOscillator(), g = c.createGain(), t0 = c.currentTime + (when || 0);
@@ -165,6 +227,7 @@
   /* particles: confetti when happy, rain when sad */
   var parts = [];
   function emitParticles(w, h) {
+    if (calm) return;
     if (mood > .45 && parts.length < 80) parts.push({ r: false, x: Math.random() * w, y: -4, vx: (Math.random() - .5) * .6, vy: .6 + Math.random(), c: ["#BF0A30", "#FFCD00", "#F5F1E8", "#3C6EF0"][Math.random() * 4 | 0], l: 220 });
     if (mood < -.45 && parts.length < 120) parts.push({ r: true, x: Math.random() * w, y: -4, vx: -.3, vy: 3.2 + Math.random() * 2, c: "rgba(160,190,230,.7)", l: 200 });
   }
@@ -231,6 +294,7 @@
           if (eraIndex(progress()) === 3) win3 = { t: 55, pick: (Math.random() * 3) | 0 }; /* Madden rule: the windows pop */
           if (eraIndex(progress()) === 6) animeFx = { t: 56, mode: mood < -.15 ? "ego" : "apex" };
           kickFlash = { msg: b.msg, t: 80 };
+          document.getElementById("feedback").textContent=b.msg+" Your forward step found the ball.";
           beep(196, .1, "square", .09);
           [392, 494, 587].forEach(function (f, i) { beep(f, .12, "square", .05, .06 + i * .07); });
         }
@@ -903,7 +967,7 @@
     if (!keys.up && !keys.down) mood *= .998;
     /* the PS1 broadcast truck cuts between cameras */
     cam.t++;
-    if (cam.t > 300) { cam.t = 0; cam.mode = 1 - cam.mode; }
+    if (!calm && cam.t > 300) { cam.t = 0; cam.mode = 1 - cam.mode; }
     cam.horizon += ((cam.mode ? .36 : .47) - cam.horizon) * .03;
     cam.charMult += ((cam.mode ? .72 : 1) - cam.charMult) * .03;
     if (replayT > 0) replayT--;
@@ -911,7 +975,7 @@
     if (win3) { win3.t--; if (win3.t <= 0) win3 = null; }
     if (animeFx) { animeFx.t--; if (animeFx.t <= 0) animeFx = null; }
     var p = progress(), era = eraIndex(p);
-    if (moved) { walked = true; stepSound(era); }
+    if (moved) { walked = true; dirty = true; stepSound(era); }
     reachedEnd = p > .985;
     var m = milestoneFor(year(p));
     if (m && m !== lastMile && walked) { lastMile = m; milestoneSound(era); }
@@ -921,8 +985,11 @@
       couva = true;
       try { localStorage.setItem("longgame_couva", "1"); } catch (e) { }
       kickFlash = { msg: "IT RAINED IN COUVA. WE STAYED FANS ANYWAY.", t: 220 };
+      document.getElementById("feedback").textContent="★ IT RAINED IN COUVA. WE STAYED FANS ANYWAY. Memory found; your original achievement is saved.";
       beep(196, .5, "triangle", .06); beep(165, .6, "triangle", .05, .3); beep(220, .9, "sine", .05, .7);
     }
+    if (walked && !visited[era]) { visited[era] = true; dirty = true; }
+    syncUI(era);
     return { p: p, era: era, moved: moved };
   }
 
@@ -988,7 +1055,7 @@
         }
       }
     }
-    if (idx === 6 && animeFx) { /* the anime kick: impact frames, then the ego eye or the apex time-stop */
+    if (idx === 6 && animeFx && !calm) { /* the anime kick: impact frames, then the ego eye or the apex time-stop */
       if (animeFx.t > 52) { /* 1-3 inversion impact frames */
         og.fillStyle = animeFx.mode === "ego" ? "#04060f" : "#ffffff";
         og.fillRect(0, 0, era.rw, era.rh);
@@ -1123,13 +1190,6 @@
         og.fillStyle = F.t % 2 ? "#fff" : "#04060f"; og.fillRect(0, 0, w2, h2);
       } else if (F.type === "flash") {
         og.fillStyle = "rgba(255,255,255," + (pgs * .8).toFixed(2) + ")"; og.fillRect(0, 0, w2, h2);
-      } else if (F.type === "warp") {
-        og.strokeStyle = "rgba(255,205,0," + (pgs * .7).toFixed(2) + ")"; og.lineWidth = 2;
-        for (var wr = 0; wr < 10; wr++) {
-          var wa = wr * .63;
-          og.beginPath(); og.moveTo(w2 / 2, h2 / 2);
-          og.lineTo(w2 / 2 + Math.cos(wa) * w2 * (1 - pgs), h2 / 2 + Math.sin(wa) * w2 * (1 - pgs)); og.stroke();
-        }
       } else if (F.type === "photo") {
         var pim = [extra1, extra2, extra3][F.i];
         if (pim && pim.complete && pim.naturalWidth) {
@@ -1153,8 +1213,15 @@
     }
   }
 
-  function frame() {
-    var s = update();
+  var lastFrame = 0;
+  function frame(now) {
+    requestAnimationFrame(frame);
+    if (document.hidden || (paused && !needsRender)) return;
+    if (now && now - lastFrame < 1000 / 60 - 1) return;
+    lastFrame = now || 0;
+    if (calm && !needsRender && !Object.keys(keys).some(function(k){return keys[k];}) && !fx2.length && !kickFlash) return;
+    needsRender = false;
+    var s = paused ? {p:progress(),era:eraIndex(progress())} : update();
     updateBalls();
     emitParticles(ERAS[s.era].rw, ERAS[s.era].rh);
     /* smoother transitions: near every era boundary, render BOTH worlds and dissolve */
@@ -1179,17 +1246,24 @@
       ctx.globalAlpha = 1;
     }
     drawHUD(s.era, s.p);
-    requestAnimationFrame(frame);
   }
 
   /* ---------------- the era keys: a playground on the keyboard ---------------- */
   function eraKey(k) {
+    if (paused) setPaused(false);
+    needsRender = true;
+    var toyEra = eraIndex(progress()), toy = TOYS[toyEra].find(function(item){return item[0] === k;});
+    if (toy) { found[toyEra + ":" + k] = true; dirty = true; document.getElementById("feedback").textContent = toy[2]; }
+    else if (k === " ") document.getElementById("feedback").textContent = "A cheer, in this era’s own voice.";
+    else if (k === "m") document.getElementById("feedback").textContent = "MATCHDAY!!!";
+    else if (k === "h") document.getElementById("feedback").textContent = "Hearts across the years.";
+    walked = true; visited[toyEra] = true; dirty = true;
     ac();
     var e = eraIndex(progress());
-    if (k >= "1" && k <= "9") { /* time warp across the decades */
-      var d = +k;
-      px = Math.max(60, Math.min(WORLD, WORLD * (d === 9 ? .999 : (d - 1) / 8 + .02)));
-      walked = true; whoosh(d > 5); pushFX({ type: "warp", t: 30 });
+    if (k >= "1" && k <= "9") { /* exact era shortcuts; 9 reaches the finale */
+      jumpEra(Math.min(7, +k - 1));
+      if (k === "9") px = WORLD;
+      whoosh(+k > 5); /* Era highlight + readable feedback replace the old radial burst. */
       return;
     }
     if (k === " ") { /* the cheer, answered in every era's own style */
@@ -1256,30 +1330,69 @@
     }
   }
 
-  /* ---------------- input ---------------- */
-  var KEYMAP = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", d: "right", w: "up", s: "down" };
-  document.addEventListener("keydown", function (e) {
-    var k = KEYMAP[e.key];
-    if (k) { e.preventDefault(); keys[k] = true; ac(); return; }
-    if (e.metaKey || e.ctrlKey || e.altKey) return;
-    if (e.key === " " || e.key.length === 1) { e.preventDefault(); eraKey(e.key === " " ? " " : e.key.toLowerCase()); }
+  /* Accessible filmstrip: existing story and toys, exposed equally to touch and keys. */
+  var TOYS = [
+    [["b","Bounce","A bouncing ball: the simplest toy still works."],["r","Rally","The first rally, remembered in blocks of light."]],
+    [["u","Sun hop","Even the sun can play."],["v","Pitch wave","The pitch ripples under your feet."],["j","Juggle","A first touch becomes a little rhythm."]],
+    [["r","Rain","October rain toggled. The field remembers."],["o","Olé","The stand answers: OLÉ!"],["p","Penalty","A playful coin flip: goal or save. Try again."]],
+    [["z","Left window","Left shot window selected."],["x","Center window","Center shot window selected."],["c","Right window","Right shot window selected."],["q","Switch","Switch the play."],["e","EA homage","Gordio. It’s in his game."],["t","Cart","A little sideline visitor."]],
+    [["r","Replay","A letterboxed replay, just like the polygon years."],["c","Camera","Broadcast camera switched."],["v","VCR","A pretend VCR freeze-frame. Use Pause above to stop time."],["l","Lens flare","Floodlights catch the lens."]],
+    [["f","Crowd lights","The crowd lights up."],["g","Goal call","A goal call for Belamini."],["n","Day / night","The stadium changes its light."]],
+    [["e","Ego","Blue energy: the ego moment."],["t","Apex","Warmth, hanging dust, the apex moment."],["i","Impact","An anime impact beat. Calm motion removes flashes."],["k","Manga call","A word fills the frame."]],
+    [["p","Photographs","An existing photograph from the summer. Tap again for the next."],["t","Messages","A preserved line from the summer. Tap again for the next."],["c","Celebrate","Fifty years. You can always come back."]]
+  ];
+  var uiEra = -1, uiStory = "";
+  var chapterLabels = ["1974","1982","1988","1994","1997","2010","2020","2026"];
+  ERAS.forEach(function(era, i) {
+    var b=document.createElement("button");b.type="button";b.innerHTML=chapterLabels[i]+"<span>"+era.name+"</span>";b.setAttribute("aria-label", "Explore " + era.name + " graphics era");b.addEventListener("click",function(){jumpEra(i);});document.getElementById("chapters").appendChild(b);
   });
-  document.addEventListener("keyup", function (e) { var k = KEYMAP[e.key]; if (k) keys[k] = false; });
-  document.querySelectorAll(".pad button").forEach(function (b) {
-    var k = b.dataset.k;
-    ["pointerdown", "touchstart"].forEach(function (ev) { b.addEventListener(ev, function (e) { e.preventDefault(); keys[k] = true; ac(); }, { passive: false }); });
-    ["pointerup", "pointerleave", "touchend", "touchcancel"].forEach(function (ev) { b.addEventListener(ev, function (e) { e.preventDefault(); keys[k] = false; }, { passive: false }); });
+  MILES.forEach(function(m){var p=document.createElement("p"),b=document.createElement("b");b.textContent=m.y;p.appendChild(b);p.appendChild(document.createTextNode(m.txt));document.getElementById("read-story").appendChild(p);});
+  function releaseKeys() { Object.keys(keys).forEach(function(k){keys[k]=false;}); dragging=false; }
+  function setPaused(value) { paused=value;releaseKeys();needsRender=true;document.getElementById("pause").textContent=paused?"Resume":"Pause";document.getElementById("pause").setAttribute("aria-pressed",String(paused));if(paused)saveJourney(); }
+  function jumpEra(i) { releaseKeys(); var lo=i?ERAS[i-1].until:0;px=i===7?WORLD:WORLD*(lo+Math.min(1,ERAS[i].until))/2;walked=true;visited[i]=true;dirty=true;needsRender=true;parts=[];fx2=[];uiEra=-1;syncUI(i);document.getElementById("feedback").textContent="Explore "+ERAS[i].name+". Try a toy or walk onward."; }
+  function syncUI(era) {
+    var yr=year(progress()), mile=milestoneFor(yr), text=mile?mile.txt:"";
+    document.getElementById("year").textContent=yr;
+    document.getElementById("engine").textContent=ERAS[era].name + " / " + (era+1) + " OF 8";
+    if(text!==uiStory){document.getElementById("story").textContent=text;uiStory=text;}
+    var count=TOYS[era].filter(function(toy){return found[era+":"+toy[0]];}).length;
+    document.getElementById("discovery").textContent=count+" / "+TOYS[era].length+" era toys discovered"+(era===7?" · You are here. Walk left to rewind.":" · Walk into a ball to shoot.");
+    document.getElementById("collection").textContent=Object.keys(visited).length+" / 8 eras explored · "+Object.keys(found).length+" / 28 toys discovered"+(couva?" · ★ Couva memory found":"");
+    document.getElementById("mood-readout").textContent="Heart: "+(mood>.4?"joyful":mood<-.4?"heavy":"somewhere in between")+". "+(mood<-.4?"The world changes with you.":"Hold ↑ or ↓ to change the world.");
+    if(uiEra===era){document.querySelectorAll("#toys button").forEach(function(b){b.dataset.found=String(!!found[era+":"+b.dataset.key]);});return;}uiEra=era;
+    document.querySelectorAll("#chapters button").forEach(function(b,i){b.setAttribute("aria-current",i===era?"step":"false");b.dataset.found=String(!!visited[i]);});
+    document.getElementById("toy-title").textContent="Play in "+ERAS[era].name;
+    var container=document.getElementById("toys");container.replaceChildren();
+    TOYS[era].concat([[" ","Cheer"],["m","Matchday"],["h","Hearts"]]).forEach(function(toy){var b=document.createElement("button");b.type="button";var key=document.createElement("kbd");key.textContent=toy[0]===" "?"SPC":toy[0].toUpperCase();b.appendChild(key);b.appendChild(document.createTextNode(toy[1]));b.dataset.key=toy[0];b.setAttribute("aria-label",toy[1]+" ("+(toy[0]===" "?"Space":toy[0].toUpperCase())+")");b.dataset.found=String(!!found[era+":"+toy[0]]);b.addEventListener("click",function(){eraKey(toy[0]);syncUI(eraIndex(progress()));});container.appendChild(b);});
+  }
+  document.getElementById("pause").addEventListener("click",function(){setPaused(!paused);});
+  document.getElementById("sound").addEventListener("click",function(){soundOn=!soundOn;this.textContent=soundOn?"Sound on":"Sound off";this.setAttribute("aria-pressed",String(soundOn));if(soundOn){var c=ac();if(c)c.resume();beep(523,.12,"sine",.05);}else if(AC)AC.suspend();});
+  document.getElementById("motion").setAttribute("aria-pressed",String(calm));
+  document.getElementById("motion").addEventListener("click",function(){calm=!calm;this.setAttribute("aria-pressed",String(calm));needsRender=true;parts=[];fx2=[];animeFx=null;});
+  document.getElementById("restart").addEventListener("click",function(){releaseKeys();px=60;mood=0;walked=false;reachedEnd=false;dirty=true;needsRender=true;fx2=[];parts=[];uiEra=-1;setPaused(false);syncUI(0);document.getElementById("feedback").textContent="Back to the green kit. Your discoveries are still yours.";});
+  var KEYMAP={ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down",a:"left",d:"right",w:"up",s:"down"};
+  document.addEventListener("keydown",function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey)return;
+    if(e.key==="Escape"){e.preventDefault();setPaused(!paused);return;}
+    if(e.target.closest("button,a,summary,input,select,textarea"))return;
+    var k=KEYMAP[e.key];if(k){e.preventDefault();if(paused)setPaused(false);keys[k]=true;needsRender=true;return;}
+    if(!e.repeat&&(e.key===" "||e.key.length===1)){e.preventDefault();eraKey(e.key.toLowerCase());}
   });
-  /* drag on canvas also works: horizontal = time, vertical = mood */
-  var dragging = false, dx0 = 0, dy0 = 0;
-  cv.addEventListener("pointerdown", function (e) { dragging = true; dx0 = e.clientX; dy0 = e.clientY; ac(); });
-  cv.addEventListener("pointermove", function (e) {
-    if (!dragging) return;
-    var dx = e.clientX - dx0, dy = e.clientY - dy0;
-    keys.right = dx > 12; keys.left = dx < -12;
-    keys.up = dy < -12; keys.down = dy > 12;
+  document.addEventListener("keyup",function(e){var k=KEYMAP[e.key];if(k)keys[k]=false;});
+  document.querySelectorAll(".pad button").forEach(function(b){var k=b.dataset.k;
+    b.addEventListener("pointerdown",function(e){e.preventDefault();b.setPointerCapture(e.pointerId);if(paused)setPaused(false);keys[k]=true;needsRender=true;});
+    ["pointerup","pointercancel","lostpointercapture"].forEach(function(ev){b.addEventListener(ev,function(){keys[k]=false;});});
+    b.addEventListener("keydown",function(e){if(e.key===" "||e.key==="Enter"){e.preventDefault();if(paused)setPaused(false);keys[k]=true;needsRender=true;}});
+    b.addEventListener("keyup",function(e){if(e.key===" "||e.key==="Enter"){e.preventDefault();keys[k]=false;}});b.addEventListener("blur",function(){keys[k]=false;});
   });
-  ["pointerup", "pointerleave", "pointercancel"].forEach(function (ev) { cv.addEventListener(ev, function () { dragging = false; keys.left = keys.right = keys.up = keys.down = false; }); });
+  var dragging=false,dx0=0,dy0=0;
+  cv.addEventListener("pointerdown",function(e){cv.focus({preventScroll:true});cv.setPointerCapture(e.pointerId);if(paused)setPaused(false);dragging=true;dx0=e.clientX;dy0=e.clientY;});
+  cv.addEventListener("pointermove",function(e){if(!dragging)return;var dx=e.clientX-dx0,dy=e.clientY-dy0;keys.right=dx>12;keys.left=dx<-12;keys.up=dy<-12;keys.down=dy>12;needsRender=true;});
+  ["pointerup","pointercancel","lostpointercapture"].forEach(function(ev){cv.addEventListener(ev,releaseKeys);});
+  window.addEventListener("blur",function(){releaseKeys();saveJourney();});
+  document.addEventListener("visibilitychange",function(){releaseKeys();saveJourney();});
+  window.addEventListener("pagehide",saveJourney);
+  syncUI(eraIndex(progress()));
 
   document.fonts && document.fonts.ready.then(function () { frame(); }) || frame();
 })();
